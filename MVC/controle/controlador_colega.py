@@ -1,6 +1,5 @@
 from limite.tela_colega import TelaColega
 
-# Listar Colegas
 # Cadastrar Colegas
 #   Associar Colega a disciplina
 # Excluir Colega
@@ -20,7 +19,7 @@ class ControladorColega:
         return
 
     def listar_colegas(self):
-        self.__tela.abrir(self.unpack_todos())
+        botao, dados = self.__tela.abrir(self.unpack_todos())
 
     def unpack(self, colega):
         return colega["nome"]

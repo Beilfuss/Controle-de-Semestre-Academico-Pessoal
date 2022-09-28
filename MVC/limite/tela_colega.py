@@ -9,14 +9,15 @@ class TelaColega:
 
     def inicializar_componentes(self, dados_colegas):
 
-        print(dados_colegas)
         layout = [
             [sg.Text("Colegas")],
             [sg.Text("Nome da Disciplina")],
             [sg.Table(dados_colegas, headings=[
                 "Nome"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
+            [sg.Button("Excluir", key=1)],
+            [sg.Text("Nome*"), sg.InputText("", key="nome")],
             [sg.Button("Voltar", key=0),
-             sg.Submit(button_text="Adicionar Colega")]
+             sg.Button("Adicionar Colega", key=2)]
         ]
 
         self.__janela = sg.Window("Colegas").Layout(layout)
@@ -24,12 +25,13 @@ class TelaColega:
     def abrir(self, dados_colegas):
         self.inicializar_componentes(dados_colegas)
         botao, valores = self.__janela.Read()
+        self.fechar()
+
+        if(botao == sg.WIN_CLOSED or botao == 0):
+            self.__janela.Close()
+            return (0, {})
+
         return botao, valores
 
     def fechar(self):
         self.__janela.Close()
-
-#   return [sg.Table([[entidade["titulo"], entidade["data"], entidade["participantes_total"]] for entidade in opcoes],  headings=["Título", "Data","Participantes"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE)]
-#
-#
-#
