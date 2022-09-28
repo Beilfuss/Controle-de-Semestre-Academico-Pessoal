@@ -1,4 +1,5 @@
 from entidade.professor import Professor
+from entidade.colega import Colega
 
 
 class Disciplina:
@@ -96,7 +97,7 @@ class Disciplina:
         if isinstance(atividades, list):
             self.__atividades = atividades
 
-    @colegas.setter
-    def colegas(self, colegas: list):
-        if isinstance(colegas, list):
-            self.__colegas = colegas
+
+    def adicionar_colega(self, colega: Colega):
+        if isinstance(colega, Colega):
+            self.__colegas.append(colega)

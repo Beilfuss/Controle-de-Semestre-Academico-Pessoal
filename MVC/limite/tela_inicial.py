@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 
+
 class TelaInicial():
 
     def __init__(self, controlador_sistema):
@@ -11,10 +12,12 @@ class TelaInicial():
         layout = [
             [sg.Text('Sistema de Gestão Acadêmica')],
             [sg.Text('Olá, [Aluno]! O que vamos fazer hoje?')],
-            [sg.Button('Cadastrar Disciplina'),  sg.Button('Finalizar Sistema')]
+            [sg.Button('Cadastrar Disciplina'), sg.Button(
+                'Colegas'),  sg.Button('Finalizar Sistema')]
         ]
 
-        self.__janela = sg.Window('TelaInicial', default_element_size=(40, 1)).Layout(layout)
+        self.__janela = sg.Window(
+            'TelaInicial', default_element_size=(40, 1)).Layout(layout)
 
     def abrir(self):
         botao, valores = self.__janela.Read()
