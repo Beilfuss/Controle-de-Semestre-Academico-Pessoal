@@ -1,8 +1,8 @@
 from limite.tela_colega import TelaColega
 from entidade.colega import Colega
 
-# Cadastrar Colegas
-#   Associar Colega a disciplina
+#
+# Associar Colega a disciplina
 # Excluir Colega
 #
 #
@@ -38,11 +38,21 @@ class ControladorColega:
             self.__colegas.append(colega)
         else:
             self.__tela.mostrar_mensagem("Colega já cadastrado!")
-        
+
         self.inicializar()
 
-    def excluir_colega(self, nome):
-        return
+    def excluir_colega(self, dados):
+
+        try:
+            
+            index = dados["row_index"][0]
+            del self.__colegas[index]
+
+        except:
+            self.__tela.mostrar_mensagem(
+                "É necessário selecionar um colega para exclusão")
+        finally:
+            self.inicializar()
 
     def colega_cadastrado(self, nome):
 
