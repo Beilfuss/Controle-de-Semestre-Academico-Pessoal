@@ -10,11 +10,15 @@ class TelaColega:
     def inicializar_componentes(self, dados_colegas):
 
         layout = [
-            [sg.Text("Colegas")],
-            [sg.Text("Nome da Disciplina")],
+            [sg.Text("Colegas", font="bold",
+                     justification="center0", expand_x=True)],
+            [sg.Text("Nome da Disciplina", font="bold",
+                     justification="center", expand_x=True)],
             [sg.Table(dados_colegas, headings=[
                 "Nome"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
             [sg.Button("Excluir", key=1)],
+            [sg.Text("Adicionar Colega", font="bold",
+                     justification="center0", expand_x=True)],
             [sg.Text("Nome*"), sg.InputText("", key="nome")],
             [sg.Button("Voltar", key=0),
              sg.Button("Adicionar Colega", key=2)]

@@ -44,10 +44,8 @@ class ControladorColega:
     def excluir_colega(self, dados):
 
         try:
-            
             index = dados["row_index"][0]
             del self.__colegas[index]
-
         except:
             self.__tela.mostrar_mensagem(
                 "É necessário selecionar um colega para exclusão")
