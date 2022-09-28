@@ -1,5 +1,6 @@
 from limite.tela_colega import TelaColega
 from entidade.colega import Colega
+from dao.colega_dao import ColegaDAO
 
 #
 # Associar Colega a disciplina
@@ -12,9 +13,12 @@ class ControladorColega:
 
         self.__controlador_sistema = controlador_sistema
         self.__tela = TelaColega(self)
+        self.__dao = ColegaDAO()
         self.__colegas = []
 
     def inicializar(self):
+
+        self.__dao.create_table()
 
         opcoes = {0: "", 1: self.excluir_colega, 2: self.cadastrar_colega}
 
@@ -22,6 +26,7 @@ class ControladorColega:
 
         if(opcao_escolhida != 0):
             opcoes[opcao_escolhida](dados)
+
 
     def listar_colegas(self):
         botao, dados = self.__tela.abrir(self.unpack_todos())
@@ -31,10 +36,9 @@ class ControladorColega:
     def cadastrar_colega(self, dados):
 
         nome = dados["nome"]
-        if(not self.colega_cadastrado(nome)):
-            colega = Colega(nome)
-            self.__colegas.append(colega)
-        else:
+        sucesso= self.__dao.persist_colega(nome)
+
+        if(not sucesso):
             self.__tela.mostrar_mensagem("Colega já cadastrado!")
 
         self.inicializar()
@@ -43,21 +47,15 @@ class ControladorColega:
 
         try:
             index = dados["row_index"][0]
-            del self.__colegas[index]
+            self.__dao.delete_colega(index)
         except:
             self.__tela.mostrar_mensagem(
                 "É necessário selecionar um colega para exclusão")
         finally:
             self.inicializar()
 
-    def colega_cadastrado(self, nome):
-
-        colegas_filtrado = list(
-            filter(lambda colega: colega.nome == nome, self.__colegas))
-        return len(colegas_filtrado) != 0
-
     def unpack(self, colega):
         return colega.nome
 
     def unpack_todos(self):
-        return list(map(self.unpack, self.__colegas))
+        return list(map(self.unpack, self.__dao.get_all()))
