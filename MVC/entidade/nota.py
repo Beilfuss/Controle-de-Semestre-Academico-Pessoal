@@ -1,5 +1,3 @@
-
-
 class Nota:
 
     def __init__(self, valor: int, peso: int):

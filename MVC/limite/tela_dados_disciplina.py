@@ -6,8 +6,7 @@ class TelaDadosDisciplina():
     def __init__(self, controlador_disciplina):
         self.__controlador_disciplina = controlador_disciplina
         self.__janela = None
-        self.inicializar_componentes(dados_disciplina={"nome": "", "codigo": "", "professor": "",
-                               "numero_aulas": "", "recuperacao": ""})
+        self.inicializar_componentes(dados_disciplina={"nome": "", "codigo": "", "professor": "", "numero_aulas": "", "recuperacao": ""})
 
     def inicializar_componentes(self, dados_disciplina):
         layout = [

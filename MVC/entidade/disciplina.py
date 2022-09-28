@@ -1,10 +1,8 @@
-from MVC.entidade.professor import Professor
-
+from entidade.professor import Professor
 
 class Disciplina:
 
-    def __init__(self, nome: str, codigo: str, professor: Professor, numAulas: int, rec: bool, aulas: list,
-                 faltas: list, atividades: list, colegas: list):
+    def __init__(self, nome: str, codigo: str, professor: Professor, numAulas: int, rec: bool, aulas: list, faltas: list, atividades: list, colegas: list):
         if isinstance(nome, str):
             self.__nome = nome
         if isinstance(codigo, str):
@@ -55,6 +53,10 @@ class Disciplina:
     @property
     def colegas(self):
         return self.__colegas
+
+    @property
+    def faltas(self):
+        return self.__faltas
 
     @nome.setter
     def nome(self, nome: str):

@@ -1,4 +1,4 @@
-from MVC.limite.tela_dados_disciplina import TelaDadosDisciplina
+from limite.tela_dados_disciplina import TelaDadosDisciplina
 # from MVC.limite.tela_disciplina import TelaDisciplina
 # from MVC.entidade.disciplina import Disciplina
 
@@ -12,8 +12,7 @@ class ControladorDisciplina:
     def incluir_disciplina(self, values=None):
         while True:
             botao, dados_disciplina = self.__tela_dados_disciplina.abrir(
-                dados_disciplina={"nome": "", "codigo": "", "professor": "",
-                               "numero_aulas": "", "recuperacao": ""}
+                dados_disciplina={"nome": "", "codigo": "", "professor": "", "numero_aulas": "", "recuperacao": ""}
             )
 
             self.__tela_dados_disciplina.fechar()
