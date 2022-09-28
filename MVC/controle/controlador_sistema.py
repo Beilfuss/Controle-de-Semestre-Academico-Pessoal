@@ -22,7 +22,7 @@ class ControladorSistema:
 
     def abrir_tela(self):
         dict_opcoes = {'Cadastrar Disciplina': self.cadastrar_disciplina,
-                       'Colegas': self.__controlador_colega.listar_colegas,
+                       'Colegas': self.__controlador_colega.inicializar,
                        'Finalizar Sistema': self.encerrar_sistema}
 
         while True:

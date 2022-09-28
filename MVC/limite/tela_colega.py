@@ -35,3 +35,13 @@ class TelaColega:
 
     def fechar(self):
         self.__janela.Close()
+
+    def mostrar_mensagem(self, mensagem: str):
+
+        layout = [[sg.Text(mensagem)],
+                  [sg.Submit(button_text="Ok")]]
+
+        self.__janela = sg.Window("Mensagem").Layout(layout)
+
+        self.__janela.Read()
+        self.fechar()
