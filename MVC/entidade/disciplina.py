@@ -1,4 +1,4 @@
-from MVC.entidade.professor import Professor
+from entidade.professor import Professor
 
 
 class Disciplina:

@@ -1,4 +1,4 @@
-from MVC.entidade.nota import Nota
+from entidade.nota import Nota
 
 
 class Atividade:

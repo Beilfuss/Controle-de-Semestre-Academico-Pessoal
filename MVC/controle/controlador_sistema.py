@@ -1,5 +1,5 @@
-from MVC.limite.tela_inicial import TelaInicial
-from MVC.controle.controlador_disciplina import ControladorDisciplina
+from limite.tela_inicial import TelaInicial
+from controle.controlador_disciplina import ControladorDisciplina
 
 class ControladorSistema:
 
