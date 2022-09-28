@@ -49,6 +49,10 @@ class Disciplina:
         return self.__aulas
 
     @property
+    def faltas(self):
+        return self.__faltas
+
+    @property
     def atividades(self):
         return self.__atividades
 

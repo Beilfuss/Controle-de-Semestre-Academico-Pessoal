@@ -22,3 +22,6 @@ class TelaInicial():
 
     def close(self):
         self.__janela.Close()
+
+    def mostrar_mensagem(self, titulo: str, mensagem: str):
+        sg.Popup(titulo, mensagem)
