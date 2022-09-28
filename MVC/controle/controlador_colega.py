@@ -3,8 +3,6 @@ from entidade.colega import Colega
 
 #
 # Associar Colega a disciplina
-# Excluir Colega
-#
 #
 
 

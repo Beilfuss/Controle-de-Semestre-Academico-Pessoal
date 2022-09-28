@@ -12,7 +12,11 @@ class TelaInicial():
         layout = [
             [sg.Text('Sistema de Gestão Acadêmica')],
             [sg.Text('Olá, [Aluno]! O que vamos fazer hoje?')],
-            [sg.Button('Cadastrar Disciplina'), sg.Button(
+            [sg.Text("Disciplinas")],
+            [sg.Text("Disciplina 1"), sg.Text("Disciplina 2")],
+            [sg.Text("Disciplina 3"), sg.Text("Disciplina 4")],
+            [sg.Text("Disciplina 5")],
+            [sg.Button('Emitir Relatório'), sg.Button('Cadastrar Disciplina'), sg.Button(
                 'Colegas'),  sg.Button('Finalizar Sistema')]
         ]
 
