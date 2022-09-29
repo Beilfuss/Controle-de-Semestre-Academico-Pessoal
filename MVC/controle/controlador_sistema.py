@@ -1,11 +1,14 @@
-from MVC.limite.tela_inicial import TelaInicial
-from MVC.controle.controlador_disciplina import ControladorDisciplina
+from limite.tela_inicial import TelaInicial
+from controle.controlador_disciplina import ControladorDisciplina
+from controle.controlador_colega import ControladorColega
+
 
 class ControladorSistema:
 
     def __init__(self):
         self.__tela_inicial = TelaInicial(self)
         self.__controlador_disciplina = ControladorDisciplina(self)
+        self.__controlador_colega = ControladorColega(self)
 
     def inicializar_sistema(self):
         self.abrir_tela()
@@ -18,6 +21,7 @@ class ControladorSistema:
 
     def abrir_tela(self):
         dict_opcoes = {'Cadastrar Disciplina': self.cadastrar_disciplina,
+                       'Colegas': self.__controlador_colega.inicializar,
                        'Finalizar Sistema': self.encerrar_sistema}
 
         while True:
