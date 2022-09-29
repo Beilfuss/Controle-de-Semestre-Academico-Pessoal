@@ -1,7 +1,7 @@
-from MVC.limite.tela_dados_disciplina import TelaDadosDisciplina
-from MVC.limite.tela_disciplina import TelaDisciplina
-from MVC.entidade.disciplina import Disciplina
-from MVC.entidade.professor import Professor
+from limite.tela_dados_disciplina import TelaDadosDisciplina
+from limite.tela_disciplina import TelaDisciplina
+from entidade.disciplina import Disciplina
+from entidade.professor import Professor
 
 
 class ControladorDisciplina:
