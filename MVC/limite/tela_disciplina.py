@@ -14,14 +14,14 @@ class TelaDisciplina():
 
         layout = [
             [sg.Text("{codigo} - {nome}".format(codigo=dados_disciplinas['codigo'],nome=dados_disciplinas['nome']))],
-            [sg.Text("Professor: "),sg.Text(dados_disciplinas['professor'])],
-            [sg.Text("Recuperação: "),sg.Text(dados_disciplinas['rec'])],
+            [sg.Text("Professor: {professor}".format(professor=dados_disciplinas['professor']))],
+            [sg.Text("Recuperação: {professor}".format(professor=dados_disciplinas['professor']))],
             [sg.Text("Média Parcial: ")],
             [sg.Text("Faltas Remanescentes: ")],
             [sg.Submit(button_text="Colegas"), sg.Submit(button_text="Registrar Falta")],
             [sg.Text("")],
             [sg.Text("Lista de Atividades")],
-            [sg.Text("TABELA")],
+            [sg.Table([[1,2,3], [4,5,6]], ['Col 1','Col 2','Col 3'], num_rows=2)],
             [sg.Submit(button_text="Ver Atividade"), sg.Submit(button_text="Cadastrar Atividade")],
             [sg.Text("")],
             [sg.Text("Aulas")],

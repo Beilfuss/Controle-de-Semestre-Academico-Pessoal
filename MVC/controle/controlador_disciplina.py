@@ -2,6 +2,7 @@ from limite.tela_dados_disciplina import TelaDadosDisciplina
 from limite.tela_disciplina import TelaDisciplina
 from entidade.disciplina import Disciplina
 from entidade.professor import Professor
+from dao.disciplina_dao import DisciplinaDAO
 
 
 class ControladorDisciplina:
@@ -9,6 +10,7 @@ class ControladorDisciplina:
         self.__controlador_sistema = controlador_sistema
         self.__tela_disciplina = TelaDisciplina(self)
         self.__tela_dados_disciplina = TelaDadosDisciplina(self)
+        self.__dao = DisciplinaDAO()
         self.__disciplinas = [] # ARMAZENAR DISCIPLINAS, TROCAR DEPOIS
 
     def incluir_disciplina(self, values=None):
@@ -18,6 +20,9 @@ class ControladorDisciplina:
                                "numAulas": "", "rec": ""})
 
             self.__tela_dados_disciplina.fechar()
+
+            if botao == "Cancelar":
+                break
 
             try:
                 int(dados_disciplina["numAulas"])
@@ -43,12 +48,22 @@ class ControladorDisciplina:
                 # PERSISTÊNCIA
                 self.__disciplinas.append(disciplina)
 
-                self.__tela_disciplina.abrir(dados_disciplina)
+                botao, valores = self.__tela_disciplina.abrir(dados_disciplina)
+
+                if botao == 'Alterar Disciplina':
+                    self.alterar_disciplina(dados_disciplina)
 
                 break
 
             except ValueError:
                 self.__tela_disciplina.mostrar_mensagem("Atenção","Dados inválidos. Tente novamente!")
                 continue
+    
+    def alterar_disciplina(self, dados_disciplina):
+        pass
 
+    def excluir_disciplina(self):
+        pass
 
+    def listar_disciplinas(self):
+        pass
