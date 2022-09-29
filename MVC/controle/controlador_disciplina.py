@@ -36,7 +36,7 @@ class ControladorDisciplina:
                     raise ValueError
                     # VERIFICAR SE A DISCIPLINA JÁ EXISTE
 
-                professor = Professor(dados_disciplina["nome"])
+                professor = Professor(dados_disciplina["professor"])
 
                 if dados_disciplina[0]:
                     dados_disciplina["rec"] = True

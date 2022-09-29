@@ -106,9 +106,10 @@ class Disciplina:
             self.__colegas.append(colega)
 
     def desempacotar(self):
+
         return {
             "nome": self.nome,
             "codigo": self.codigo,
-            "professor": self.professor,
+            "professor": self.professor.nome,
             "rec": self.rec,
         }
