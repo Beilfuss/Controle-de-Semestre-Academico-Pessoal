@@ -1,5 +1,4 @@
 from limite.tela_colega import TelaColega
-from entidade.colega import Colega
 from dao.colega_dao import ColegaDAO
 
 #
@@ -17,8 +16,6 @@ class ControladorColega:
 
     def inicializar(self):
 
-        self.__dao.create_table()
-
         opcoes = {0: "", 1: self.excluir_colega, 2: self.cadastrar_colega}
 
         opcao_escolhida, dados = self.listar_colegas()
@@ -27,19 +24,26 @@ class ControladorColega:
             opcoes[opcao_escolhida](dados)
 
     def listar_colegas(self):
-        botao, dados = self.__tela.abrir(self.unpack_todos())
+        botao, dados = self.__tela.abrir(self.desempacotar_todos())
 
         return botao, dados
 
     def cadastrar_colega(self, dados):
 
-        nome = dados["nome"]
-        sucesso = self.__dao.persist_colega(nome)
+        try:
+            nome = dados["nome"]
+            matricula = dados["matricula"]
+            if(len(nome) == 0 or len(matricula) == 0):
+                raise ValueError
 
-        if(not sucesso):
-            self.__tela.mostrar_mensagem("Colega já cadastrado!")
+            sucesso = self.__dao.persist_colega(nome, matricula)
 
-        self.inicializar()
+            if(not sucesso):
+                self.__tela.mostrar_mensagem("Colega já cadastrado!")
+        except ValueError:
+            self.__tela.mostrar_mensagem("Dados inválidos! Tente novamente.")
+        finally:
+            self.inicializar()
 
     def excluir_colega(self, dados):
 
@@ -53,8 +57,5 @@ class ControladorColega:
         finally:
             self.inicializar()
 
-    def unpack(self, colega):
-        return colega.nome
-
-    def unpack_todos(self):
-        return list(map(self.unpack, self.__dao.buscar_todos()))
+    def desempacotar_todos(self):
+        return list(map(lambda colega: colega.desempacotar(), self.__dao.buscar_todos()))

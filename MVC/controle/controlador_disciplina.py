@@ -10,14 +10,21 @@ class ControladorDisciplina:
         self.__controlador_sistema = controlador_sistema
         self.__tela_disciplina = TelaDisciplina(self)
         self.__tela_dados_disciplina = TelaDadosDisciplina(self)
-        self.__dao = DisciplinaDAO()
-        self.__disciplinas = [] # ARMAZENAR DISCIPLINAS, TROCAR DEPOIS
+        self.__disciplinas = []  # ARMAZENAR DISCIPLINAS, TROCAR DEPOIS
+
+    def obter_dados_disciplinas(self):
+
+        return [disciplina.desempacotar() for disciplina in self.__disciplinas]
+
+    def abrir_tela_disciplina(self, dados_disciplina):
+
+        self.__tela_disciplina.abrir(dados_disciplina)
 
     def incluir_disciplina(self, values=None):
         while True:
             botao, dados_disciplina = self.__tela_dados_disciplina.abrir(
                 dados_disciplina={"nome": "", "codigo": "", "professor": "",
-                               "numAulas": "", "rec": ""})
+                                  "numAulas": "", "rec": ""})
 
             self.__tela_dados_disciplina.fechar()
 
@@ -27,13 +34,13 @@ class ControladorDisciplina:
             try:
                 int(dados_disciplina["numAulas"])
                 if dados_disciplina == {"nome": "", "codigo": "", "professor": "", "numero_aulas": ""
-                                        #"rec": ???
-                } or (dados_disciplina["nome"]).isdigit() or (dados_disciplina["professor"]).isdigit() or \
-                (dados_disciplina["numAulas"]).isalpha():
+                                        # "rec": ???
+                                        } or (dados_disciplina["nome"]).isdigit() or (dados_disciplina["professor"]).isdigit() or \
+                        (dados_disciplina["numAulas"]).isalpha():
                     raise ValueError
                     # VERIFICAR SE A DISCIPLINA JÁ EXISTE
 
-                professor = Professor(dados_disciplina["nome"])
+                professor = Professor(dados_disciplina["professor"])
 
                 if dados_disciplina[0]:
                     dados_disciplina["rec"] = True
@@ -56,7 +63,8 @@ class ControladorDisciplina:
                 break
 
             except ValueError:
-                self.__tela_disciplina.mostrar_mensagem("Atenção","Dados inválidos. Tente novamente!")
+                self.__tela_disciplina.mostrar_mensagem(
+                    "Atenção", "Dados inválidos. Tente novamente!")
                 continue
     
     def alterar_disciplina(self, dados_disciplina):
