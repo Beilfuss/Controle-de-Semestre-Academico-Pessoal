@@ -33,13 +33,19 @@ class ControladorColega:
 
     def cadastrar_colega(self, dados):
 
-        nome = dados["nome"]
-        sucesso = self.__dao.persist_colega(nome)
+        try:
+            nome = dados["nome"]
+            if(len(dados["nome"]) == 0):
+                raise ValueError
 
-        if(not sucesso):
-            self.__tela.mostrar_mensagem("Colega já cadastrado!")
+            sucesso = self.__dao.persist_colega(nome)
 
-        self.inicializar()
+            if(not sucesso):
+                self.__tela.mostrar_mensagem("Colega já cadastrado!")
+        except ValueError:
+            self.__tela.mostrar_mensagem("Dados inválidos! Tente novamente.")
+        finally:
+            self.inicializar()
 
     def excluir_colega(self, dados):
 

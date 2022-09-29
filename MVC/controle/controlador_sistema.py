@@ -31,9 +31,10 @@ class ControladorSistema:
             opcao_escolhida = self.__tela_inicial.abrir(disciplinas)
 
             if (isinstance(opcao_escolhida, int)):
-                print("escolha:", opcao_escolhida)
                 self.__controlador_disciplina.abrir_tela_disciplina(
                     disciplinas[opcao_escolhida])
             else:
                 funcao_escolhida = dict_opcoes[opcao_escolhida]
                 funcao_escolhida()
+            
+            self.__tela_inicial.close()
