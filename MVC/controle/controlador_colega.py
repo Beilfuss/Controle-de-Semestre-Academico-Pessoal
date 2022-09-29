@@ -58,4 +58,4 @@ class ControladorColega:
         return colega.nome
 
     def unpack_todos(self):
-        return list(map(self.unpack, self.__dao.get_all()))
+        return list(map(self.unpack, self.__dao.buscar_todos()))
