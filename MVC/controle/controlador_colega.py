@@ -27,7 +27,6 @@ class ControladorColega:
         if(opcao_escolhida != 0):
             opcoes[opcao_escolhida](dados)
 
-
     def listar_colegas(self):
         botao, dados = self.__tela.abrir(self.unpack_todos())
 
@@ -36,7 +35,7 @@ class ControladorColega:
     def cadastrar_colega(self, dados):
 
         nome = dados["nome"]
-        sucesso= self.__dao.persist_colega(nome)
+        sucesso = self.__dao.persist_colega(nome)
 
         if(not sucesso):
             self.__tela.mostrar_mensagem("Colega já cadastrado!")
@@ -48,7 +47,8 @@ class ControladorColega:
         try:
             index = dados["row_index"][0]
             self.__dao.delete_colega(index)
-        except:
+        except Exception as err:
+            print(err)
             self.__tela.mostrar_mensagem(
                 "É necessário selecionar um colega para exclusão")
         finally:

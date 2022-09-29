@@ -37,9 +37,11 @@ class ColegaDAO(AbstractDAO):
             return False
 
     def delete_colega(self, index):
-        colega = self._cache[index]
+        
+        colega = list(self._cache.values())[index]
+    
 
         query = "DELETE from colega where nome=(?)"
-        query_params = colega.nome
+        query_params = (colega.nome,)
         self.executar_query(query, query_params)
-        del self._cache[index]
+        self._cache.pop(colega.nome)
