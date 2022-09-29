@@ -20,13 +20,20 @@ class ControladorSistema:
         self.__controlador_disciplina.incluir_disciplina()
 
     def abrir_tela(self):
-        disciplinas = self.__controlador_disciplina.obter_dados_disciplinas()
 
         dict_opcoes = {'Cadastrar Disciplina': self.cadastrar_disciplina,
                        'Colegas': self.__controlador_colega.inicializar,
                        'Finalizar Sistema': self.encerrar_sistema}
 
         while True:
+            disciplinas = self.__controlador_disciplina.obter_dados_disciplinas()
+
             opcao_escolhida = self.__tela_inicial.abrir(disciplinas)
-            funcao_escolhida = dict_opcoes[opcao_escolhida]
-            funcao_escolhida()
+
+            if (isinstance(opcao_escolhida, int)):
+                print("escolha:", opcao_escolhida)
+                self.__controlador_disciplina.abrir_tela_disciplina(
+                    disciplinas[opcao_escolhida])
+            else:
+                funcao_escolhida = dict_opcoes[opcao_escolhida]
+                funcao_escolhida()

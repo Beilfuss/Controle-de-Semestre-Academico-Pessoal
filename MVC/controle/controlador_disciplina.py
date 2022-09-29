@@ -13,7 +13,11 @@ class ControladorDisciplina:
 
     def obter_dados_disciplinas(self):
 
-        return [{"nome": disciplina.nome} for disciplina in self.__disciplinas]
+        return [disciplina.desempacotar() for disciplina in self.__disciplinas]
+
+    def abrir_tela_disciplina(self, dados_disciplina):
+
+        self.__tela_disciplina.abrir(dados_disciplina)
 
     def incluir_disciplina(self, values=None):
         while True:
@@ -46,8 +50,6 @@ class ControladorDisciplina:
                 print("Disciplina: ", disciplina)
                 # PERSISTÊNCIA
                 self.__disciplinas.append(disciplina)
-
-                self.__tela_disciplina.abrir(dados_disciplina)
 
                 break
 

@@ -101,7 +101,14 @@ class Disciplina:
         if isinstance(atividades, list):
             self.__atividades = atividades
 
-
     def adicionar_colega(self, colega: Colega):
         if isinstance(colega, Colega):
             self.__colegas.append(colega)
+
+    def desempacotar(self):
+        return {
+            "nome": self.nome,
+            "codigo": self.codigo,
+            "professor": self.professor,
+            "rec": self.rec,
+        }
