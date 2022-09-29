@@ -14,7 +14,6 @@ class ControladorColega:
         self.__controlador_sistema = controlador_sistema
         self.__tela = TelaColega(self)
         self.__dao = ColegaDAO()
-        self.__colegas = []
 
     def inicializar(self):
 
