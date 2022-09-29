@@ -9,6 +9,7 @@ class ControladorDisciplina:
         self.__controlador_sistema = controlador_sistema
         self.__tela_disciplina = TelaDisciplina(self)
         self.__tela_dados_disciplina = TelaDadosDisciplina(self)
+        self.__disciplinas = [] # ARMAZENAR DISCIPLINAS, TROCAR DEPOIS
 
     def incluir_disciplina(self, values=None):
         while True:
@@ -37,8 +38,12 @@ class ControladorDisciplina:
                 disciplina = Disciplina(dados_disciplina["nome"], dados_disciplina["codigo"], professor,
                                         dados_disciplina["numAulas"], dados_disciplina["rec"], None, None, None, None)
 
+                print("dados_disciplina", dados_disciplina)
                 print("Disciplina: ", disciplina)
                 # PERSISTÊNCIA
+                self.__disciplinas.append(disciplina)
+
+                self.__tela_disciplina.abrir(dados_disciplina)
 
                 break
 

@@ -7,10 +7,15 @@ class TelaDisciplina():
         self.__janela = None
         self.inicializar_componentes()
 
-    def inicializar_componentes(self, dados_disciplinas=[]):
+    def inicializar_componentes(self, dados_disciplinas=None):
+        if dados_disciplinas is None:
+            dados_disciplinas = {'nome': '', 'codigo': '', 'professor': '', 'numAulas': '',
+                                 0: '', 1: '', 'rec': ''}
+
         layout = [
-            [sg.Text("CÓDIGO DA DISCIPLINA - NOME DA DISCIPLINA")],
-            [sg.Text("Professor: ")],
+            [sg.Text("{codigo} - {nome}".format(codigo=dados_disciplinas['codigo'],nome=dados_disciplinas['nome']))],
+            [sg.Text("Professor: "),sg.Text(dados_disciplinas['professor'])],
+            [sg.Text("Recuperação: "),sg.Text(dados_disciplinas['rec'])],
             [sg.Text("Média Parcial: ")],
             [sg.Text("Faltas Remanescentes: ")],
             [sg.Submit(button_text="Colegas"), sg.Submit(button_text="Registrar Falta")],
@@ -21,8 +26,9 @@ class TelaDisciplina():
             [sg.Text("")],
             [sg.Text("Aulas")],
             [sg.Table([[1,2,3], [4,5,6]], ['Col 1','Col 2','Col 3'], num_rows=2)],
-            [sg.Text("Cadastrar Aula")],
-            [sg.Text("Excluir Disciplina"), sg.Text("Alterar Disciplina"), sg.Text("Voltar")]
+            [sg.Submit(button_text="Cadastrar Aula")],
+            [sg.Submit(button_text="Excluir Disciplina"), sg.Submit(button_text="Alterar Disciplina"),
+             sg.Submit(button_text="Voltar")]
         ]
 
         self.__janela = sg.Window("TelaDisciplina", default_element_size=(40, 1)).Layout(layout)

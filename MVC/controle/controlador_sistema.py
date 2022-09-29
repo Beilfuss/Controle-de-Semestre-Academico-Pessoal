@@ -15,7 +15,6 @@ class ControladorSistema:
 
     def cadastrar_disciplina(self):
         self.__controlador_disciplina.incluir_disciplina()
-        self.__tela_inicial.close()
 
     def abrir_tela(self):
         dict_opcoes = {'Cadastrar Disciplina': self.cadastrar_disciplina,
