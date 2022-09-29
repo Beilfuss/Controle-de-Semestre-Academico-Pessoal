@@ -9,55 +9,14 @@ class TelaInicial():
         self.inicializar_componentes()
 
     def inicializar_componentes(self, dados_disciplinas=[]):
+
+        cartoes = self.gerar_cartoes(dados_disciplinas)
+
         layout = [
             [sg.Text('Sistema de Gestão Acadêmica')],
             [sg.Text('Olá, [Aluno]! O que vamos fazer hoje?')],
             [sg.Text("Disciplinas")],
-            [[sg.Frame("Disciplina 1", [
-                [sg.Text("")],
-                [sg.Text("Média Parcial: -")],
-                [sg.Text("Faltas Remanescentes: -")],
-                [sg.Text("Risco de Reprovação: -")],
-                [sg.Text("Próxima Entrega: -")],
-                [sg.Button("Ver mais", key="1")]],
-                size=(200, 200),
-                relief="raised",  # raised, ridge, solid
-                element_justification="center",
-                vertical_alignment="center"),
-             sg.Frame("Disciplina 2", [
-                 [sg.Text("")],
-                 [sg.Text("Média Parcial: -")],
-                 [sg.Text("Faltas Remanescentes: -")],
-                 [sg.Text("Risco de Reprovação: -")],
-                 [sg.Text("Próxima Entrega: -")],
-                 [sg.Button("Ver mais", key="1")]],
-                size=(200, 200),
-                relief="raised",  # raised, ridge, solid
-                element_justification="center",
-                vertical_alignment="center")],
-             [sg.Frame("Disciplina 3", [
-                 [sg.Text("")],
-                 [sg.Text("Média Parcial: -")],
-                 [sg.Text("Faltas Remanescentes: -")],
-                 [sg.Text("Risco de Reprovação: -")],
-                 [sg.Text("Próxima Entrega: -")],
-                 [sg.Button("Ver mais", key="1")]],
-                 size=(200, 200),
-                 relief="raised",  # raised, ridge, solid
-                 element_justification="center",
-                 vertical_alignment="center"),
-             sg.Frame("Disciplina 4", [
-                 [sg.Text("")],
-                 [sg.Text("Média Parcial: -")],
-                 [sg.Text("Faltas Remanescentes: -")],
-                 [sg.Text("Risco de Reprovação: -")],
-                 [sg.Text("Próxima Entrega: -")],
-                 [sg.Button("Ver mais", key="1")]],
-                 size=(200, 200),
-                 relief="raised",  # raised, ridge, solid
-                 element_justification="center",
-                 vertical_alignment="center")],
-             ],
+            cartoes,
             [sg.Button('Emitir Relatório'), sg.Button('Cadastrar Disciplina'), sg.Button(
                 'Colegas'),  sg.Button('Finalizar Sistema')]
         ]
@@ -76,7 +35,21 @@ class TelaInicial():
     def mostrar_mensagem(self, titulo: str, mensagem: str):
         sg.Popup(titulo, mensagem)
 
-    def gerar_cartoes(dados_disciplinas):
+    def gerar_cartoes(self, dados_disciplinas):
+
+        frame_rows = []
 
         for disciplina in dados_disciplinas:
-            return
+            frame_rows.append(sg.Frame(disciplina["nome"], [
+                [sg.Text("")],
+                [sg.Text("Média Parcial: -")],
+                [sg.Text("Faltas Remanescentes: -")],
+                [sg.Text("Risco de Reprovação: -")],
+                [sg.Text("Próxima Entrega: -")],
+                [sg.Button("Ver mais", key="1")]],
+                size=(200, 200),
+                relief="raised",  # raised, ridge, solid
+                element_justification="center",
+                vertical_alignment="center"))
+
+        return frame_rows
