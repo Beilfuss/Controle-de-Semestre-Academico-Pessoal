@@ -13,6 +13,7 @@ class ColegaDAO(AbstractDAO):
     def __load(self):
 
         #Obtém todos os dados salvos no banco e inicializa o cash instanciando os objetos correspondentes
+        self.create_table()
         query = "SELECT nome from colega"
         res = self.executar_query(query)
         for (nome,) in res:
