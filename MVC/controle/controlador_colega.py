@@ -33,7 +33,7 @@ class ControladorColega:
         try:
             nome = dados["nome"]
             matricula = dados["matricula"]
-            if(len(nome) == 0 or len(matricula) == 0):
+            if(len(nome) == 0 or len(matricula) != 8 or not matricula.isdecimal()):
                 raise ValueError
 
             sucesso = self.__dao.persist_colega(nome, matricula)

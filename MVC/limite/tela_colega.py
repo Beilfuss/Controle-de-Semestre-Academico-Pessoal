@@ -11,6 +11,13 @@ class TelaColega:
 
         dados_display = [(colega["nome"], colega["matricula"])
                          for colega in dados_colegas]
+
+        frame_adicionar_colega = sg.Frame("Adicionar Colega", [
+            [sg.Text("Nome*"), sg.InputText("", key="nome")],
+            [sg.Text("Matricula*"), sg.InputText("", key="matricula")],
+            [sg.Button("Adicionar Colega", key=2)]
+        ])
+
         layout = [
             [sg.Text("Colegas", font="bold",
                      justification="center0", expand_x=True)],
@@ -19,12 +26,8 @@ class TelaColega:
             [sg.Table(dados_display, headings=[
                 "Nome", "Matrícula"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
             [sg.Button("Excluir", key=1)],
-            [sg.Text("Adicionar Colega", font="bold",
-                     justification="center0", expand_x=True)],
-            [sg.Text("Nome*"), sg.InputText("", key="nome")],
-            [sg.Text("Matricula*"), sg.InputText("", key="matricula")],
-            [sg.Button("Voltar", key=0),
-             sg.Button("Adicionar Colega", key=2)]
+            [frame_adicionar_colega],
+            [sg.Button("Voltar", key=0)]
         ]
 
         self.__janela = sg.Window("Colegas").Layout(layout)
