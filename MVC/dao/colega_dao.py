@@ -30,7 +30,9 @@ class ColegaDAO(AbstractDAO):
         query_params = (nome, matricula)
 
         try:
-            self.executar_query(query, query_params)
+            res = self.executar_query(query, query_params)
+            
+            
             self._cache[matricula] = Colega(nome, matricula)
             return True
         except Exception as err:
