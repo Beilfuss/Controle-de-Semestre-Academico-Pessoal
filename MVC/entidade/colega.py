@@ -1,9 +1,21 @@
 class Colega:
 
-    def __init__(self, nome: str, matricula: str):
+    def __init__(self, id: int, nome: str, matricula: str):
+        
+        if isinstance(id, int):
+            self.__id = id
+
         if isinstance(nome, str):
             self.__nome = nome
+
+        if isinstance(matricula, str):
             self.__matricula = matricula
+        
+
+
+    @property
+    def id(self):
+        return self.__id
 
     @property
     def nome(self):

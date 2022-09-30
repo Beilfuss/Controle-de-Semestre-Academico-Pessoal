@@ -1,4 +1,5 @@
 
+from readline import insert_text
 from dao.abstract_dao import AbstractDAO
 from entidade.colega import Colega
 
@@ -14,15 +15,25 @@ class ColegaDAO(AbstractDAO):
     def __load(self):
 
         # Obtém todos os dados salvos no banco e inicializa o cash instanciando os objetos correspondentes
-        query = "SELECT nome, matricula from COLEGAS"
+        query = "SELECT id, nome, matricula from COLEGAS"
         res = self.executar_query(query)
-        for (nome, matricula) in res:
-            self._cache[matricula] = Colega(nome, matricula)
+        for (id, nome, matricula) in res:
+            print(id)
+            self._cache[matricula] = Colega(id, nome, matricula)
 
     def create_table(self):
         # Cria a tabela na primeira execução do programa
         query = "CREATE TABLE IF NOT EXISTS COLEGAS(id INTEGER PRIMARY KEY ASC, matricula TEXT UNIQUE NOT NULL, nome TEXT NOT NULL)"
         self.executar_query(query)
+
+    def obter_por_id(self, id):
+
+        query = "SELECT id, nome, matricula FROM COLEGAS WHERE id=:id"
+        query_params = {"id": id}
+
+        colega = self.executar_query(query, query_params)[0]
+
+        return colega
 
     def persist_colega(self, nome, matricula):
         # Persiste um colega no banco de dados e instancia o objeto correspondente no cache
@@ -30,12 +41,14 @@ class ColegaDAO(AbstractDAO):
         query_params = (nome, matricula)
 
         try:
-            res = self.executar_query(query, query_params)
-            
-            
-            self._cache[matricula] = Colega(nome, matricula)
+            inserted_id = self.executar_query(query, query_params) #recebe o id do row inserido no banco
+
+            (id, nome, matricula) = self.obter_por_id(inserted_id) #recebe os dados do objeto inserido no banco
+
+            self._cache[matricula] = Colega(id, nome, matricula) #instancia o objeto  com os dados do banco
             return True
         except Exception as err:
+            print(err)
             return False
 
     def delete_colega(self, index):
