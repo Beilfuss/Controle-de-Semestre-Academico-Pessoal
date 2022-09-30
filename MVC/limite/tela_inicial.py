@@ -24,7 +24,7 @@ class TelaInicial():
         self.__janela = sg.Window(
             'TelaInicial', default_element_size=(40, 1)).Layout(layout)
 
-    def abrir(self, dados_disciplinas):
+    def abrir(self, dados_disciplinas=[]):
         self.inicializar_componentes(dados_disciplinas)
         botao, valores = self.__janela.Read()
         return botao
