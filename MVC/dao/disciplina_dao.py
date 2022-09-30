@@ -12,19 +12,19 @@ class DisciplinaDAO(AbstractDAO):
     def __load(self):
 
         self.create_table()
-        query = "SELECT codigo from disciplina"
+        query = "SELECT codigo, nome, professor, numAulas, rec from DISCIPLINAS"
         res = self.executar_query(query)
-        for (codigo,) in res:
-            self._cache[codigo] = Disciplina(codigo) # Aqui é só um atributo mesmo?
+        for (nome, codigo, professor, numAulas, rec, aulas, faltas, atividades, colegas) in res:
+            self._cache[codigo] = Disciplina(nome, codigo, professor, numAulas, rec, aulas, faltas, atividades, colegas)
 
     def create_table(self):
 
-        query = "CREATE TABLE IF NOT EXISTS disciplina(nome TEXT UNIQUE, codigo TEXT UNIQUE)"
+        query = "CREATE TABLE IF NOT EXISTS DISCIPLINAS(id INTEGER PRIMARY KEY ASC, nome TEXT NOT NULL, codigo TEXT NOT NULL, numAulas INTEGER NOT NULL, rec INTEGER NOT NULL, professor TEXT NOT NULL)"
         self.executar_query(query)
 
     def persist_disciplina(self, nome, codigo, professor, numAulas, rec, aulas, faltas, atividades, colegas):
 
-        query = "INSERT INTO disciplina VALUES(?)"
+        query = "INSERT INTO DISCIPLINA(nome, codigo, professor, numAulas, rec, aulas, faltas, atividades, colegas) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)"
         query_params = (nome, codigo, professor, numAulas, rec, aulas, faltas, atividades, colegas)
 
         try:

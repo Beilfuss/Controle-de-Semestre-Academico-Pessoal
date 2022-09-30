@@ -1,7 +1,6 @@
 from limite.tela_dados_disciplina import TelaDadosDisciplina
 from limite.tela_disciplina import TelaDisciplina
 from entidade.disciplina import Disciplina
-from entidade.professor import Professor
 from dao.disciplina_dao import DisciplinaDAO
 
 
@@ -10,7 +9,7 @@ class ControladorDisciplina:
         self.__controlador_sistema = controlador_sistema
         self.__tela_disciplina = TelaDisciplina(self)
         self.__tela_dados_disciplina = TelaDadosDisciplina(self)
-        self.__disciplinas = []  # ARMAZENAR DISCIPLINAS, TROCAR DEPOIS
+        self.__dao = DisciplinaDAO()  # ARMAZENAR DISCIPLINAS, TROCAR DEPOIS
 
     def obter_dados_disciplinas(self):
 
@@ -21,6 +20,7 @@ class ControladorDisciplina:
         self.__tela_disciplina.abrir(dados_disciplina)
 
     def incluir_disciplina(self, values=None):
+
         while True:
             botao, dados_disciplina = self.__tela_dados_disciplina.abrir(
                 dados_disciplina={"nome": "", "codigo": "", "professor": "",
@@ -33,32 +33,25 @@ class ControladorDisciplina:
 
             try:
                 int(dados_disciplina["numAulas"])
-                if dados_disciplina == {"nome": "", "codigo": "", "professor": "", "numero_aulas": ""
-                                        # "rec": ???
-                                        } or (dados_disciplina["nome"]).isdigit() or (dados_disciplina["professor"]).isdigit() or \
+                if dados_disciplina == {"nome": "", "codigo": "", "professor": "", "numero_aulas": "", "rec": ""
+                        } or (dados_disciplina["nome"]).isdigit() or (dados_disciplina["professor"]).isdigit() or \
                         (dados_disciplina["numAulas"]).isalpha():
                     raise ValueError
                     # VERIFICAR SE A DISCIPLINA JÁ EXISTE
-
-                professor = Professor(dados_disciplina["professor"])
 
                 if dados_disciplina[0]:
                     dados_disciplina["rec"] = True
                 else:
                     dados_disciplina["rec"] = False
-
-                disciplina = Disciplina(dados_disciplina["nome"], dados_disciplina["codigo"], professor,
+                
+                sucesso = self.__dao.persist_disciplina(dados_disciplina["nome"], dados_disciplina["codigo"], dados_disciplina["professor"],
                                         dados_disciplina["numAulas"], dados_disciplina["rec"], None, None, None, None)
+                
+                if not sucesso:
+                    self.__tela_disciplina.mostrar_mensagem("Atenção", "Disciplina já cadastrada!")
 
-                print("dados_disciplina", dados_disciplina)
-                print("Disciplina: ", disciplina)
-                # PERSISTÊNCIA
-                self.__disciplinas.append(disciplina)
-
-                botao, valores = self.__tela_disciplina.abrir(dados_disciplina)
-
-                if botao == 'Alterar Disciplina':
-                    self.alterar_disciplina(dados_disciplina)
+                '''if botao == 'Alterar Disciplina':
+                    self.alterar_disciplina(dados_disciplina)'''
 
                 break
 

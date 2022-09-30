@@ -1,16 +1,15 @@
-from entidade.professor import Professor
 from entidade.colega import Colega
 
 
 class Disciplina:
 
-    def __init__(self, nome: str, codigo: str, professor: Professor, numAulas: int, rec: bool, aulas: list,
+    def __init__(self, nome: str, codigo: str, professor: str, numAulas: int, rec: bool, aulas: list,
                  faltas: list, atividades: list, colegas: list):
         if isinstance(nome, str):
             self.__nome = nome
         if isinstance(codigo, str):
             self.__codigo = codigo
-        if isinstance(professor, Professor):
+        if isinstance(professor, str):
             self.__professor = professor
         if isinstance(numAulas, int):
             self.__numAulas = numAulas
@@ -72,8 +71,8 @@ class Disciplina:
             self.__codigo = codigo
 
     @professor.setter
-    def professor(self, professor: Professor):
-        if isinstance(professor, Professor):
+    def professor(self, professor: str):
+        if isinstance(professor, str):
             self.__professor = professor
 
     @numAulas.setter
@@ -110,6 +109,6 @@ class Disciplina:
         return {
             "nome": self.nome,
             "codigo": self.codigo,
-            "professor": self.professor.nome,
+            "professor": self.professor,
             "rec": self.rec,
         }
