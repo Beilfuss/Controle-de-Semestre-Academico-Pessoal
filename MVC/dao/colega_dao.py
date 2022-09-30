@@ -14,19 +14,19 @@ class ColegaDAO(AbstractDAO):
     def __load(self):
 
         # Obtém todos os dados salvos no banco e inicializa o cash instanciando os objetos correspondentes
-        query = "SELECT nome, matricula from colega"
+        query = "SELECT nome, matricula from COLEGAS"
         res = self.executar_query(query)
         for (nome, matricula) in res:
             self._cache[matricula] = Colega(nome, matricula)
 
     def create_table(self):
         # Cria a tabela na primeira execução do programa
-        query = "CREATE TABLE IF NOT EXISTS colega(nome TEXT, matricula TEXT UNIQUE)"
+        query = "CREATE TABLE IF NOT EXISTS COLEGAS(id INTEGER PRIMARY KEY ASC, matricula TEXT UNIQUE NOT NULL, nome TEXT NOT NULL)"
         self.executar_query(query)
 
     def persist_colega(self, nome, matricula):
         # Persiste um colega no banco de dados e instancia o objeto correspondente no cache
-        query = "INSERT INTO colega VALUES(?, ?)"
+        query = "INSERT INTO COLEGAS(nome, matricula) VALUES(?, ?)"
         query_params = (nome, matricula)
 
         try:
@@ -41,7 +41,7 @@ class ColegaDAO(AbstractDAO):
 
         colega = list(self._cache.values())[index]
 
-        query = "DELETE from colega where matricula=(?)"
+        query = "DELETE from COLEGAS where matricula=(?)"
         query_params = (colega.matricula,)
         res = self.executar_query(query, query_params)
 
