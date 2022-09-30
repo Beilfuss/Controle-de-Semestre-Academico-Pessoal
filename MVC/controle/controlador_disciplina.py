@@ -98,6 +98,15 @@ class ControladorDisciplina:
                 continue
 
     def excluir_disciplina(self):
+        '''
+        Por enquanto você está usando código como identificador único, que deverá mudar para id posteriormente.
+        Os seguintes passos devem funcionar com código e provavelmente quando trocar com id, mas podem ser necessárias adaptações
+        - Passo 1: método excluir_disciplina deverá receber o código/id da disciplina como argumento. Fácil de fazer, pois o método abrir tela recebe os dados da disciplina, que incluem o código e incluirão o id
+        - Passo 2: chamar o método delete disciplina do DAO, passando o código da disciplina como argumento em vez de um index. Trocar o nome do argumento para representar corretamente
+        - Passo 3: excluir a linha disciplina = list(... etc, não será necessária
+        - Passo 4: Corrigir a query conforme o nome da tabela. Utilizar o codigo/id da disciplina com parâmetro
+        - Passo 5: Excluir a disciplina do cache, usando o codigo/id como argumento do pop
+        '''
         pass
 
     def listar_disciplinas(self):
