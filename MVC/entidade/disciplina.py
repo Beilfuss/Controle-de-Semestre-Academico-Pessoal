@@ -3,7 +3,7 @@ from entidade.colega import Colega
 
 class Disciplina:
 
-    def __init__(self, nome: str, codigo: str, professor: str, numAulas: int, rec: bool, aulas: list,
+    def __init__(self, nome: str, codigo: str, professor: str, numAulas: int, rec: int, aulas: list,
                  faltas: list, atividades: list, colegas: list):
         if isinstance(nome, str):
             self.__nome = nome
@@ -13,7 +13,7 @@ class Disciplina:
             self.__professor = professor
         if isinstance(numAulas, int):
             self.__numAulas = numAulas
-        if isinstance(rec, bool):
+        if isinstance(rec, int):
             self.__rec = rec
         if isinstance(aulas, list):
             self.__aulas = aulas
@@ -110,5 +110,6 @@ class Disciplina:
             "nome": self.nome,
             "codigo": self.codigo,
             "professor": self.professor,
+            "numAulas": self.numAulas,
             "rec": self.rec,
         }

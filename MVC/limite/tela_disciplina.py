@@ -13,7 +13,8 @@ class TelaDisciplina():
                                  0: '', 1: '', 'rec': ''}
 
         layout = [
-            [sg.Text("{codigo} - {nome}".format(codigo=dados_disciplinas['codigo'],nome=dados_disciplinas['nome']))],
+            [sg.Text("{codigo} - {nome}".format(codigo=dados_disciplinas['codigo'],nome=dados_disciplinas['nome']), font="bold",
+                     justification="center", expand_x=True)],
             [sg.Text("Professor: {professor}".format(professor=dados_disciplinas['professor']))],
             [sg.Text("Recuperação: {professor}".format(professor=dados_disciplinas['professor']))],
             [sg.Text("Média Parcial: ")],
