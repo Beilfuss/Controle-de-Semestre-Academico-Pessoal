@@ -19,7 +19,7 @@ class DisciplinaDAO(AbstractDAO):
 
     def create_table(self):
 
-        query = "CREATE TABLE IF NOT EXISTS disciplina(codigo TEXT UNIQUE)"
+        query = "CREATE TABLE IF NOT EXISTS disciplina(nome TEXT UNIQUE, codigo TEXT UNIQUE)"
         self.executar_query(query)
 
     def persist_disciplina(self, nome, codigo, professor, numAulas, rec, aulas, faltas, atividades, colegas):
