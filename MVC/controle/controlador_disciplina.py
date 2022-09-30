@@ -57,3 +57,5 @@ class ControladorDisciplina:
                 self.__tela_disciplina.mostrar_mensagem(
                     "Atenção", "Dados inválidos. Tente novamente!")
                 continue
+
+    

@@ -35,6 +35,10 @@ class ColegaDAO(AbstractDAO):
 
         return colega
 
+    def obter_por_matricula(self, matricula):
+
+        return self.__cache[matricula]
+
     def persist_colega(self, nome, matricula):
         # Persiste um colega no banco de dados e instancia o objeto correspondente no cache
         query = "INSERT INTO COLEGAS(nome, matricula) VALUES(?, ?)"
@@ -46,9 +50,8 @@ class ColegaDAO(AbstractDAO):
             (id, nome, matricula) = self.obter_por_id(inserted_id) #recebe os dados do objeto inserido no banco
 
             self._cache[matricula] = Colega(id, nome, matricula) #instancia o objeto  com os dados do banco
-            return True
+            return Colega
         except Exception as err:
-            print(err)
             return False
 
     def delete_colega(self, index):

@@ -36,10 +36,16 @@ class ControladorColega:
             if(not nome.isalpha() or len(matricula) != 8 or not matricula.isdecimal()):
                 raise ValueError
 
-            sucesso = self.__dao.persist_colega(nome, matricula)
+            colega = self.__dao.obter_por_matricula(matricula)
 
-            if(not sucesso):
-                self.__tela.mostrar_mensagem("Colega já cadastrado!")
+            if(not colega):
+                colega = self.__dao.persist_colega(nome, matricula)
+
+            return colega.id
+            #self.__controlador_sistema.controlador_disciplina.incluir_colega(disciplina_id, colega_id)
+            
+            #if(not sucesso):
+            #    self.__tela.mostrar_mensagem("Colega já cadastrado!")
         except ValueError:
             self.__tela.mostrar_mensagem("Dados inválidos! Tente novamente.")
         finally:
