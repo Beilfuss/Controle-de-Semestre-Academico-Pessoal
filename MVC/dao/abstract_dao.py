@@ -24,13 +24,17 @@ class AbstractDAO(ABC):
     def executar_query(self, query, query_params=None):
         # executa a query informada, utilizando os parâmetros se existentes
         # Retorna um array com tuples contendo os dados selecionados. Ex: [(nome, matricula)]
+        
         con = self.conectar()
         cur = con.cursor()
 
-        res = cur.execute(query, query_params).fetchall(
-        ) if query_params else cur.execute(query).fetchall()
-
+        res = cur.execute(query, query_params) if query_params else cur.execute(query)
         con.commit()
+
+        inserted_id = res.lastrowid
+        res = res.fetchall()
         con.close()
 
-        return res
+            
+        return inserted_id if inserted_id else res
+           
