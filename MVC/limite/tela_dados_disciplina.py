@@ -10,6 +10,7 @@ class TelaDadosDisciplina():
                                "numAulas": "", "rec": ""})
 
     def inicializar_componentes(self, dados_disciplina):
+
         layout = [
             [sg.Text('Cadastro de Disciplina:')],
             [sg.Text("Nome*", size=(13,1)), sg.InputText(dados_disciplina["nome"], key='nome')],
@@ -19,6 +20,10 @@ class TelaDadosDisciplina():
             [sg.Text("Recuperação*"), sg.Radio('Sim', "RADIO1", default=True, size=(10 ,1)), sg.Radio('Não', "RADIO1")],
             [sg.Cancel(button_text="Cancelar"),sg.Submit(button_text="Cadastrar Disciplina")]
         ]
+
+        if dados_disciplina['rec'] == "Não":
+            layout[5] = [sg.Text("Recuperação*"), sg.Radio('Sim', "RADIO1", size=(10 ,1)), sg.Radio('Não', "RADIO1", default=True)]
+
         self.__janela = sg.Window('Dados da Disciplina').Layout(layout)
 
     def abrir(self, dados_disciplina):

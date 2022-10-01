@@ -12,7 +12,7 @@ class DisciplinaDAO(AbstractDAO):
     def __load(self):
 
         self.create_table()
-        query = "SELECT codigo, nome, professor, numAulas, rec, aulas, faltas, atividades, colegas from DISCIPLINAS"
+        query = "SELECT nome, codigo, professor, numAulas, rec, aulas, faltas, atividades, colegas from DISCIPLINAS"
         res = self.executar_query(query)
         for (nome, codigo, professor, numAulas, rec, aulas, faltas, atividades, colegas) in res:
             self._cache[codigo] = Disciplina(nome, codigo, professor, numAulas, rec, aulas, faltas, atividades, colegas)
@@ -35,11 +35,10 @@ class DisciplinaDAO(AbstractDAO):
             print(err)
             return False
 
-    def delete_disciplina(self, index):
-        disciplina = list(self._cache.values())[index]
+    def delete_disciplina(self, codigo):
 
-        query = "DELETE from disciplina where codigo=(?)"
-        query_params = (disciplina.codigo,)
+        query = "DELETE from DISCIPLINAS where codigo=(?)"
+        query_params = (codigo,)
         self.executar_query(query, query_params)
 
-        self._cache.pop(disciplina.codigo)
+        self._cache.pop(codigo)

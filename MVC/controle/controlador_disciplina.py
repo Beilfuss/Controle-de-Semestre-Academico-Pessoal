@@ -2,6 +2,7 @@ from limite.tela_dados_disciplina import TelaDadosDisciplina
 from limite.tela_disciplina import TelaDisciplina
 from entidade.disciplina import Disciplina
 from dao.disciplina_dao import DisciplinaDAO
+from excecoes.jaExistenteException import JaExistenteException
 
 
 class ControladorDisciplina:
@@ -9,9 +10,9 @@ class ControladorDisciplina:
         self.__controlador_sistema = controlador_sistema
         self.__tela_disciplina = TelaDisciplina(self)
         self.__tela_dados_disciplina = TelaDadosDisciplina(self)
-        self.__dao = DisciplinaDAO()  # ARMAZENAR DISCIPLINAS, TROCAR DEPOIS
+        self.__dao = DisciplinaDAO()
 
-    def obter_dados_disciplinas(self):
+    def listar_disciplinas(self):
         return [disciplina.desempacotar() for disciplina in self.__dao.buscar_todos()]
 
     def abrir_tela_disciplina(self, dados_disciplina):
@@ -21,12 +22,26 @@ class ControladorDisciplina:
         if botao == "Voltar":
             self.__tela_disciplina.fechar()
         elif botao == "Alterar Disciplina":
+            self.__tela_disciplina.fechar()
             self.alterar_disciplina(dados_disciplina)
+        elif botao == "Excluir Disciplina":
+            self.__tela_disciplina.fechar()
+            self.excluir_disciplina(dados_disciplina["codigo"])
 
-    def incluir_disciplina(self, values=None):
+    def incluir_disciplina(self, dados_disciplina=None): 
+        
+        alteracao = False
 
         while True:
-            botao, dados_disciplina = self.__tela_dados_disciplina.abrir(
+
+            if dados_disciplina != None:
+                alteracao = True
+                dados_disciplina_old = dados_disciplina
+                botao, dados_disciplina = self.__tela_dados_disciplina.abrir(dados_disciplina)
+
+
+            else:
+                botao, dados_disciplina = self.__tela_dados_disciplina.abrir(
                 dados_disciplina={"nome": "", "codigo": "", "professor": "",
                                   "numAulas": "", "rec": ""})
 
@@ -36,17 +51,21 @@ class ControladorDisciplina:
                 break
 
             try:
-                int(dados_disciplina["numAulas"])
+                dados_disciplina['numAulas'] = int(dados_disciplina["numAulas"])
+
                 if dados_disciplina == {"nome": "", "codigo": "", "professor": "", "numero_aulas": "", "rec": ""
-                        } or (dados_disciplina["nome"]).isdigit() or (dados_disciplina["professor"]).isdigit() or \
-                        (dados_disciplina["numAulas"]).isalpha():
+                        } or (dados_disciplina["nome"]).isdigit() or (dados_disciplina["professor"]).isdigit():
                     raise ValueError
-                    # VERIFICAR SE A DISCIPLINA JÁ EXISTE
+
+                disciplinas = self.__dao.buscar_todos()
+                for disciplina in disciplinas:
+                    if disciplina.nome == dados_disciplina['nome']:
+                        raise JaExistenteException
 
                 if dados_disciplina[0]:
-                    dados_disciplina["rec"] = 1 # Tem REC
+                    dados_disciplina["rec"] = "Sim" # Tem REC
                 else:
-                    dados_disciplina["rec"] = 0 # Não tem REC
+                    dados_disciplina["rec"] = "Não" # Não tem REC
                 
                 sucesso = self.__dao.persist_disciplina(dados_disciplina["nome"], dados_disciplina["codigo"], dados_disciplina["professor"],
                                         dados_disciplina["numAulas"], dados_disciplina["rec"], None, None, None, None)
@@ -54,50 +73,29 @@ class ControladorDisciplina:
                 if not sucesso:
                     self.__tela_disciplina.mostrar_mensagem("Atenção", "Disciplina já cadastrada!")
 
+                if alteracao == True:
+                    return dados_disciplina
+
                 break
 
             except ValueError:
                 self.__tela_disciplina.mostrar_mensagem(
                     "Atenção", "Dados inválidos. Tente novamente!")
                 continue
+            except JaExistenteException:
+                dados_disciplina = dados_disciplina_old
+                self.__tela_disciplina.mostrar_mensagem('Atenção', 'Disciplina já existente, tente novamente!')
     
     def alterar_disciplina(self, dados_disciplina):
-        print('Dados disciplina: ', dados_disciplina)
-        while True:
-            botao, dados_disciplina = self.__tela_dados_disciplina.abrir(dados_disciplina)
+        dados_disciplina_old = dados_disciplina
+        dados_disciplina = self.incluir_disciplina(dados_disciplina)
+        if dados_disciplina != None:
+            if dados_disciplina['codigo'] != dados_disciplina_old['codigo']:
+                self.excluir_disciplina(dados_disciplina_old['codigo'])
+            
+    def excluir_disciplina(self, codigo):
+        self.__dao.delete_disciplina(codigo)
 
-            self.__tela_dados_disciplina.fechar()
-
-            if botao == "Cancelar":
-                break
-
-            try:
-                int(dados_disciplina["numAulas"])
-                if dados_disciplina == {"nome": "", "codigo": "", "professor": "", "numero_aulas": "", "rec": ""
-                        } or (dados_disciplina["nome"]).isdigit() or (dados_disciplina["professor"]).isdigit() or \
-                        (dados_disciplina["numAulas"]).isalpha():
-                    raise ValueError
-                    # VERIFICAR SE A DISCIPLINA JÁ EXISTE
-
-                if dados_disciplina[0]:
-                    dados_disciplina["rec"] = 1 # Tem REC
-                else:
-                    dados_disciplina["rec"] = 0 # Não tem REC
-                
-                sucesso = self.__dao.persist_disciplina(dados_disciplina["nome"], dados_disciplina["codigo"], dados_disciplina["professor"],
-                                        dados_disciplina["numAulas"], dados_disciplina["rec"], None, None, None, None)
-                
-                if not sucesso:
-                    self.__tela_disciplina.mostrar_mensagem("Atenção", "Disciplina já cadastrada!")
-                
-                break
-
-            except ValueError:
-                self.__tela_disciplina.mostrar_mensagem(
-                    "Atenção", "Dados inválidos. Tente novamente!")
-                continue
-
-    def excluir_disciplina(self):
         '''
         Por enquanto você está usando código como identificador único, que deverá mudar para id posteriormente.
         Os seguintes passos devem funcionar com código e provavelmente quando trocar com id, mas podem ser necessárias adaptações
@@ -107,7 +105,3 @@ class ControladorDisciplina:
         - Passo 4: Corrigir a query conforme o nome da tabela. Utilizar o codigo/id da disciplina com parâmetro
         - Passo 5: Excluir a disciplina do cache, usando o codigo/id como argumento do pop
         '''
-        pass
-
-    def listar_disciplinas(self):
-        pass

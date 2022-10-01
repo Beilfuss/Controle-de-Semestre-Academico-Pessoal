@@ -26,7 +26,7 @@ class ControladorSistema:
                        'Finalizar Sistema': self.encerrar_sistema}
 
         while True:
-            disciplinas = self.__controlador_disciplina.obter_dados_disciplinas()
+            disciplinas = self.__controlador_disciplina.listar_disciplinas()
 
             opcao_escolhida = self.__tela_inicial.abrir(disciplinas)
 

@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+sg.theme('Reddit')
 
 
 class TelaInicial():
@@ -13,7 +14,8 @@ class TelaInicial():
         cartoes = self.gerar_cartoes(dados_disciplinas)
 
         layout = [
-            [sg.Text('Sistema de Gestão Acadêmica')],
+            [sg.Text('Sistema de Gestão Acadêmica', font="bold",
+                     justification="center", expand_x=True)],
             [sg.Text('Olá, [Aluno]! O que vamos fazer hoje?')],
             [sg.Text("Disciplinas")],
             cartoes,
