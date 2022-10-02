@@ -7,30 +7,58 @@ class DisciplinaDAO(AbstractDAO):
     def __init__(self):
         super().__init__()
 
+        self.create_table()
+        self.create_table_colegas_disciplinas()
         self.__load()
 
     def __load(self):
-        self.create_table()
+        
         #Alterei para buscar o id e utilizá-lo como chave em vez do código, conforme conversamos no whatsapp
         query = "SELECT id, nome, codigo, professor, numAulas, rec from DISCIPLINAS"
         res = self.executar_query(query)
         for (id, nome, codigo, professor, numAulas, rec) in res:
-            self._cache[id] = Disciplina(id, nome, codigo, professor, numAulas, rec, [], [], [], [])
+
+            colegas = self.__obter_colegas(id)
+
+            self._cache[id] = Disciplina(id, nome, codigo, professor, numAulas, rec, [], [], [], colegas)
+
+
+    def __obter_colegas(self,id):
+
+        query = "SELECT colega_id from COLEGAS_DISCIPLINAS WHERE disciplina_id=:id"
+        query_params = {"id": id}
+
+        res = self.executar_query(query, query_params)
+
+        colegas = []
+        for (id, ) in res:
+            colegas.append(id)
+
+        return colegas
 
     def create_table(self):
         #aulas, faltas, atividades e colegas não serão colunas da tabela disciplina, conforme documento do sheets. Retirei da query. Adequei nos outros métodos
         query = "CREATE TABLE IF NOT EXISTS DISCIPLINAS(id INTEGER PRIMARY KEY ASC, nome TEXT NOT NULL, codigo TEXT NOT NULL, professor TEXT NOT NULL, numAulas INTEGER NOT NULL, rec INTEGER NOT NULL)"
         self.executar_query(query)
 
+    def create_table_colegas_disciplinas(self):
+
+        query= "CREATE TABLE IF NOT EXISTS COLEGAS_DISCIPLINAS(disciplina_id INTEGER NOT NULL, colega_id INTEGER NOT NULL, FOREIGN KEY(disciplina_id) REFERENCES DISCIPLINAS(id), FOREIGN KEY(colega_id) REFERENCES COLEGAS(id))"
+        self.executar_query(query)
+
+
     def obter_por_id(self, id):
 
-        if(self._cache[id]):
-            return self._cache[id]
+        disciplina_cached = self._cache.get(id)
+        if(disciplina_cached):
+            return disciplina_cached
 
         query = "SELECT * FROM DISCIPLINAS WHERE id=:id"
         query_params = {"id": id}
 
         disciplina_dados = self.executar_query(query, query_params)[0]
+
+        print(disciplina_dados)
 
         return disciplina_dados
 
@@ -50,7 +78,7 @@ class DisciplinaDAO(AbstractDAO):
             self._cache[id] = Disciplina(id, nome, codigo, professor, numAulas, rec, [], [], [], [])
             return True
         except Exception as err:
-            print(err)
+           
             return False
 
     def delete_disciplina(self, id):
@@ -60,3 +88,19 @@ class DisciplinaDAO(AbstractDAO):
         self.executar_query(query, query_params)
 
         self._cache.pop(id)
+
+    
+    def incluir_colega(self, disciplina, colega):
+ 
+        try:
+            query = "INSERT INTO COLEGAS_DISCIPLINAS(disciplina_id, colega_id) VALUES(?, ?)"
+            query_params = (disciplina.id, colega.id)
+
+            self.executar_query(query, query_params)
+
+            disciplina.adicionar_colega(colega.id)
+
+            return True
+        except Exception as err:
+            
+            return False

@@ -18,8 +18,7 @@ class ColegaDAO(AbstractDAO):
         query = "SELECT id, nome, matricula from COLEGAS"
         res = self.executar_query(query)
         for (id, nome, matricula) in res:
-            print(id)
-            self._cache[matricula] = Colega(id, nome, matricula)
+            self._cache[id] = Colega(id, nome, matricula)
 
     def create_table(self):
         # Cria a tabela na primeira execução do programa
@@ -27,6 +26,10 @@ class ColegaDAO(AbstractDAO):
         self.executar_query(query)
 
     def obter_por_id(self, id):
+    
+        cached_colega = self._cache.get(id)
+        if(cached_colega is not None):
+            return cached_colega
 
         query = "SELECT id, nome, matricula FROM COLEGAS WHERE id=:id"
         query_params = {"id": id}
@@ -37,7 +40,8 @@ class ColegaDAO(AbstractDAO):
 
     def obter_por_matricula(self, matricula):
 
-        return self.__cache[matricula]
+
+        return self._cache.get(matricula)
 
     def persist_colega(self, nome, matricula):
         # Persiste um colega no banco de dados e instancia o objeto correspondente no cache
@@ -49,8 +53,11 @@ class ColegaDAO(AbstractDAO):
 
             (id, nome, matricula) = self.obter_por_id(inserted_id) #recebe os dados do objeto inserido no banco
 
-            self._cache[matricula] = Colega(id, nome, matricula) #instancia o objeto  com os dados do banco
-            return Colega
+            colega = Colega(id, nome, matricula) #instancia o objeto  com os dados do banco
+            
+            self._cache[id] = colega
+
+            return colega
         except Exception as err:
             return False
 

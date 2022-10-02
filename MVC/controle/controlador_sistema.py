@@ -18,7 +18,7 @@ class ControladorSistema:
 
 
     def inicializar_colegas(self, nome_disciplina, colegas):
-        self.__controlador_colega.inicializar(nome_disciplina, colegas)
+        return self.__controlador_colega.inicializar(nome_disciplina, colegas)
 
     def cadastrar_disciplina(self):
         self.__controlador_disciplina.incluir_disciplina()

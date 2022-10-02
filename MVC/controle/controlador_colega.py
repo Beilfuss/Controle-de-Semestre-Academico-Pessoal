@@ -16,19 +16,24 @@ class ControladorColega:
 
     def inicializar(self, nome_disciplina, colegas):
 
+        colegas_obj = [self.__dao.obter_por_id(id) for id in colegas]
+        
+
         opcoes = {0: "", 1: self.excluir_colega, 2: self.cadastrar_colega}
 
-        opcao_escolhida, dados = self.listar_colegas(nome_disciplina, colegas)
+        opcao_escolhida, dados = self.listar_colegas(nome_disciplina, colegas_obj)
 
         if(opcao_escolhida != 0):
-            opcoes[opcao_escolhida](dados)
+            return (opcao_escolhida, opcoes[opcao_escolhida](dados))
+        else:
+            return (opcao_escolhida, None)
 
     def listar_colegas(self, nome_disciplina, colegas):
         botao, dados = self.__tela.abrir(nome_disciplina, self.desempacotar_todos(colegas))
 
         return botao, dados
 
-    def cadastrar_colega(self, dados, disciplina_id="placeholder"):
+    def cadastrar_colega(self, dados):
 
         try:
             nome = dados["nome"]
@@ -38,17 +43,14 @@ class ControladorColega:
 
             colega = self.__dao.obter_por_matricula(matricula)
 
-            if(not colega):
+            if(colega is None):
                 colega = self.__dao.persist_colega(nome, matricula)
 
-            self.__controlador_sistema.associar_colega_disciplina(disciplina_id, colega)
-            
-            #if(not sucesso):
-            #    self.__tela.mostrar_mensagem("Colega já cadastrado!")
+            return colega
+
         except ValueError:
             self.__tela.mostrar_mensagem("Dados inválidos! Tente novamente.")
-        finally:
-            self.inicializar()
+            
 
     def excluir_colega(self, dados):
 
@@ -56,7 +58,6 @@ class ControladorColega:
             index = dados["row_index"][0]
             self.__dao.delete_colega(index)
         except Exception as err:
-            print(err)
             self.__tela.mostrar_mensagem(
                 "É necessário selecionar um colega para exclusão")
         finally:

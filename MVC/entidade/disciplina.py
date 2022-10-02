@@ -6,6 +6,7 @@ class Disciplina:
     def __init__(self, id: int, nome: str, codigo: str, professor: str, numAulas: int, rec: str, aulas: list,
                  faltas: list, atividades: list, colegas: list):
         
+        
         if isinstance(id, int):
             self.__id = id        
         if isinstance(nome, str):
@@ -108,8 +109,8 @@ class Disciplina:
         if isinstance(atividades, list):
             self.__atividades = atividades
 
-    def adicionar_colega(self, colega: Colega):
-        if isinstance(colega, Colega):
+    def adicionar_colega(self, colega: int):
+        if isinstance(colega, int):
             self.__colegas.append(colega)
 
     def desempacotar(self):

@@ -41,9 +41,13 @@ class ControladorDisciplina:
             self.__tela_disciplina.fechar()
             self.excluir_disciplina(disciplina.id)
         elif botao == "Colegas":
-            self.__controlador_sistema.inicializar_colegas(disciplina.nome, disciplina.colegas)
+            self.abrir_tela_colegas(disciplina)
 
+    def abrir_tela_colegas(self, disciplina):
 
+        (operacao, colega) = self.__controlador_sistema.inicializar_colegas(disciplina.nome, disciplina.colegas)
+
+        self.incluir_colega(disciplina, colega) if operacao == 2 else self.excluir_colega(disciplina, colega)
 
     def incluir_disciplina(self, dados_disciplina=None): 
         
@@ -147,30 +151,12 @@ class ControladorDisciplina:
         '''
 
                 
-    def incluir_colega(self, disciplina_id, colega):
-        
-        '''
-        sucesso = self.__dao.incluir_colega(disciplina_id, colega)
+    def incluir_colega(self, disciplina, colega):
+                
+        sucesso = self.__dao.incluir_colega(disciplina, colega)
 
         if(not sucesso):
-            self.__tela.mostrar_mensagem("Colega já cadastrado!")
+            self.__tela_disciplina.mostrar_mensagem("Atenção", "Colega já cadastrado!")
 
-
-        no dao:
-        CREATE TABLE IF NOT EXISTS COLEGAS_DISCIPLINAS(disciplina_id INTEGER NOT NULL, colega_id INTEGER NOT NULL, FOREIGN KEY(disciplinas_id) REFERENCES DISCIPLINAS(id), FOREIGN KEY(colega_id) REFERENCES COLEGAS(id))																
-        
-        def incluir_colega(self, disciplina_id, colega):
-
-            try:
-                query = "INSERT INTO COLEGAS_DISCIPLINAS(disciplina_id, colega_id) VALUES(?, ?)"
-                query_params = (disciplina_id, colega_id)
-
-                self.executar_query(query, query_params)
-
-                self._cache[disciplina_id].colegas.push(colega)
-                return True
-            except Exception:
-                return False
-
-        '''
+    def excluir_colega(self, disciplina, colega):
         pass
