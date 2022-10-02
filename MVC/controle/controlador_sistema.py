@@ -19,6 +19,9 @@ class ControladorSistema:
     def cadastrar_disciplina(self):
         self.__controlador_disciplina.incluir_disciplina()
 
+    def associar_colega_disciplina(self, disciplina_id, colega_id):
+        self.__controlador_disciplina.incluir_colega(disciplina_id, colega_id)
+
     def abrir_tela(self):
 
         dict_opcoes = {'Cadastrar Disciplina': self.cadastrar_disciplina,

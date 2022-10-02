@@ -58,4 +58,31 @@ class ControladorDisciplina:
                     "Atenção", "Dados inválidos. Tente novamente!")
                 continue
 
-    
+                
+    def incluir_colega(self, disciplina_id, colega):
+        
+        '''
+        sucesso = self.__dao.incluir_colega(disciplina_id, colega)
+
+        if(not sucesso):
+            self.__tela.mostrar_mensagem("Colega já cadastrado!")
+
+
+        no dao:
+        CREATE TABLE IF NOT EXISTS COLEGAS_DISCIPLINAS(disciplina_id INTEGER NOT NULL, colega_id INTEGER NOT NULL, FOREIGN KEY(disciplinas_id) REFERENCES DISCIPLINAS(id), FOREIGN KEY(colega_id) REFERENCES COLEGAS(id))																
+        
+        def incluir_colega(self, disciplina_id, colega):
+
+            try:
+                query = "INSERT INTO COLEGAS_DISCIPLINAS(disciplina_id, colega_id) VALUES(?, ?)"
+                query_params = (disciplina_id, colega_id)
+
+                self.executar_query(query, query_params)
+
+                self._cache[disciplina_id].colegas.push(colega)
+                return True
+            except Exception:
+                return False
+
+        '''
+        pass

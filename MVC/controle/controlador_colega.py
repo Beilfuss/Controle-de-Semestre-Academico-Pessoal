@@ -28,7 +28,7 @@ class ControladorColega:
 
         return botao, dados
 
-    def cadastrar_colega(self, dados):
+    def cadastrar_colega(self, dados, disciplina_id="placeholder"):
 
         try:
             nome = dados["nome"]
@@ -41,8 +41,7 @@ class ControladorColega:
             if(not colega):
                 colega = self.__dao.persist_colega(nome, matricula)
 
-            return colega.id
-            #self.__controlador_sistema.controlador_disciplina.incluir_colega(disciplina_id, colega_id)
+            self.__controlador_sistema.associar_colega_disciplina(disciplina_id, colega)
             
             #if(not sucesso):
             #    self.__tela.mostrar_mensagem("Colega já cadastrado!")
