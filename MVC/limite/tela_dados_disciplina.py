@@ -10,15 +10,20 @@ class TelaDadosDisciplina():
                                "numAulas": "", "rec": ""})
 
     def inicializar_componentes(self, dados_disciplina):
+
         layout = [
             [sg.Text('Cadastro de Disciplina:')],
-            [sg.Text("Nome*"), sg.InputText(dados_disciplina["nome"], key='nome')],
-            [sg.Text("Código*"), sg.InputText(dados_disciplina["codigo"], key='codigo')],
-            [sg.Text("Professor*"), sg.InputText(dados_disciplina["professor"], key='professor')],
-            [sg.Text("Número de aulas*"), sg.InputText(dados_disciplina["numAulas"], key='numAulas')],
-            [sg.Text("Recuperação*"), sg.Radio('Sim', "true", default=True, size=(10 ,1)), sg.Radio('Não', "false")],
+            [sg.Text("Nome*", size=(13,1)), sg.InputText(dados_disciplina["nome"], key='nome')],
+            [sg.Text("Código*", size=(13,1)), sg.InputText(dados_disciplina["codigo"], key='codigo')],
+            [sg.Text("Professor*", size=(13,1)), sg.InputText(dados_disciplina["professor"], key='professor')],
+            [sg.Text("Número de aulas*", size=(13,1)), sg.InputText(dados_disciplina["numAulas"], key='numAulas')],
+            [sg.Text("Recuperação*"), sg.Radio('Sim', "RADIO1", default=True, size=(10 ,1)), sg.Radio('Não', "RADIO1")],
             [sg.Cancel(button_text="Cancelar"),sg.Submit(button_text="Cadastrar Disciplina")]
         ]
+
+        if dados_disciplina['rec'] == "Não":
+            layout[5] = [sg.Text("Recuperação*"), sg.Radio('Sim', "RADIO1", size=(10 ,1)), sg.Radio('Não', "RADIO1", default=True)]
+
         self.__janela = sg.Window('Dados da Disciplina').Layout(layout)
 
     def abrir(self, dados_disciplina):
