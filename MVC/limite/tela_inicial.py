@@ -19,8 +19,7 @@ class TelaInicial():
             [sg.Text('Olá, [Aluno]! O que vamos fazer hoje?')],
             [sg.Text("Disciplinas")],
             cartoes,
-            [sg.Button('Emitir Relatório'), sg.Button('Cadastrar Disciplina'), sg.Button(
-                'Colegas'),  sg.Button('Finalizar Sistema')]
+            [sg.Button('Emitir Relatório'), sg.Button('Cadastrar Disciplina'),  sg.Button('Finalizar Sistema')]
         ]
 
         self.__janela = sg.Window(

@@ -17,7 +17,7 @@ class ControladorDisciplina:
 
     def abrir_tela_disciplina(self, dados_disciplina):
 
-
+        disciplina = self.__dao.obter_por_id(dados_disciplina["id"])
         #opcoes = {
         #"Voltar": self.__tela_dados_disciplina.fechar,
         #"Alterar Disciplina": self.alterar_disciplina,
@@ -39,7 +39,10 @@ class ControladorDisciplina:
             self.alterar_disciplina(dados_disciplina)
         elif botao == "Excluir Disciplina":
             self.__tela_disciplina.fechar()
-            self.excluir_disciplina(dados_disciplina["id"])
+            self.excluir_disciplina(disciplina.id)
+        elif botao == "Colegas":
+            self.__controlador_sistema.inicializar_colegas(disciplina.nome, disciplina.colegas)
+
 
 
     def incluir_disciplina(self, dados_disciplina=None): 
@@ -81,6 +84,10 @@ class ControladorDisciplina:
 
                 if dados_disciplina == {"nome": "", "codigo": "", "professor": "", "numero_aulas": "", "rec": ""
                         } or (dados_disciplina["nome"]).isdigit() or (dados_disciplina["professor"]).isdigit():
+                    #Nome D1cisplin4 passa na validação de nome ou nome Math3us passa na de professor.
+                    #ver método isalpha na documentação (https://docs.python.org/3/library/stdtypes.html#string-methods)
+                    #Não seria melhor usar algo do tipo  "not dados_disciplina["nome"].isalpha()"?
+                        
                     raise ValueError
 
                 disciplinas = self.__dao.buscar_todos()
@@ -117,7 +124,6 @@ class ControladorDisciplina:
     
     def alterar_disciplina(self, dados_disciplina):
 
-        #usar update para fazer a alteração da disciplina
         dados_disciplina_old = dados_disciplina
         dados_disciplina = self.incluir_disciplina(dados_disciplina)
 
@@ -127,6 +133,7 @@ class ControladorDisciplina:
                 self.excluir_disciplina(dados_disciplina_old['codigo'])
             
     def excluir_disciplina(self, id):
+        #alteração para usar id no lugar de código
         self.__dao.delete_disciplina(id)
 
         '''

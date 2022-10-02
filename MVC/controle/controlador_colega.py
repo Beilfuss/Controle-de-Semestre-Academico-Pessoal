@@ -14,17 +14,17 @@ class ControladorColega:
         self.__tela = TelaColega(self)
         self.__dao = ColegaDAO()
 
-    def inicializar(self):
+    def inicializar(self, nome_disciplina, colegas):
 
         opcoes = {0: "", 1: self.excluir_colega, 2: self.cadastrar_colega}
 
-        opcao_escolhida, dados = self.listar_colegas()
+        opcao_escolhida, dados = self.listar_colegas(nome_disciplina, colegas)
 
         if(opcao_escolhida != 0):
             opcoes[opcao_escolhida](dados)
 
-    def listar_colegas(self):
-        botao, dados = self.__tela.abrir(self.desempacotar_todos())
+    def listar_colegas(self, nome_disciplina, colegas):
+        botao, dados = self.__tela.abrir(nome_disciplina, self.desempacotar_todos(colegas))
 
         return botao, dados
 
@@ -62,5 +62,5 @@ class ControladorColega:
         finally:
             self.inicializar()
 
-    def desempacotar_todos(self):
-        return list(map(lambda colega: colega.desempacotar(), self.__dao.buscar_todos()))
+    def desempacotar_todos(self, colegas):
+        return list(map(lambda colega: colega.desempacotar(), colegas))

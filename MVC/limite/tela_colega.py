@@ -7,7 +7,7 @@ class TelaColega:
         self.__controlador_colega = controlador_colega
         self.__janela = None
 
-    def inicializar_componentes(self, dados_colegas):
+    def inicializar_componentes(self, nome_disciplina, dados_colegas):
 
         dados_display = [(colega["nome"], colega["matricula"])
                          for colega in dados_colegas]
@@ -21,7 +21,7 @@ class TelaColega:
         layout = [
             [sg.Text("Colegas", font="bold",
                      justification="center", expand_x=True)],
-            [sg.Text("Nome da Disciplina", font="bold",
+            [sg.Text(nome_disciplina, font="bold",
                      justification="center", expand_x=True)],
             [sg.Table(dados_display, headings=[
                 "Nome", "Matrícula"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
@@ -32,8 +32,8 @@ class TelaColega:
 
         self.__janela = sg.Window("Colegas").Layout(layout)
 
-    def abrir(self, dados_colegas):
-        self.inicializar_componentes(dados_colegas)
+    def abrir(self, nome_disciplina, dados_colegas):
+        self.inicializar_componentes(nome_disciplina, dados_colegas)
         botao, valores = self.__janela.Read()
         self.fechar()
 

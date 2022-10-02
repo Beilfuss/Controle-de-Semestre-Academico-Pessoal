@@ -10,13 +10,12 @@ class DisciplinaDAO(AbstractDAO):
         self.__load()
 
     def __load(self):
-
         self.create_table()
         #Alterei para buscar o id e utilizá-lo como chave em vez do código, conforme conversamos no whatsapp
         query = "SELECT id, nome, codigo, professor, numAulas, rec from DISCIPLINAS"
         res = self.executar_query(query)
         for (id, nome, codigo, professor, numAulas, rec) in res:
-            self._cache[id] = Disciplina(id, nome, codigo, professor, numAulas, rec, None, None, None, None)
+            self._cache[id] = Disciplina(id, nome, codigo, professor, numAulas, rec, [], [], [], [])
 
     def create_table(self):
         #aulas, faltas, atividades e colegas não serão colunas da tabela disciplina, conforme documento do sheets. Retirei da query. Adequei nos outros métodos
@@ -24,6 +23,9 @@ class DisciplinaDAO(AbstractDAO):
         self.executar_query(query)
 
     def obter_por_id(self, id):
+
+        if(self._cache[id]):
+            return self._cache[id]
 
         query = "SELECT * FROM DISCIPLINAS WHERE id=:id"
         query_params = {"id": id}
@@ -45,7 +47,7 @@ class DisciplinaDAO(AbstractDAO):
             
             (id, nome, codigo, professor, numAulas, rec) = self.obter_por_id(inserted_id) #recebe os dados do objeto inserido no banco
             
-            self._cache[id] = Disciplina(id, nome, codigo, professor, numAulas, rec, None, None, None, None)
+            self._cache[id] = Disciplina(id, nome, codigo, professor, numAulas, rec, [], [], [], [])
             return True
         except Exception as err:
             print(err)

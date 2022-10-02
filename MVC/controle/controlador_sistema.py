@@ -16,6 +16,10 @@ class ControladorSistema:
     def encerrar_sistema(self):
         exit(0)
 
+
+    def inicializar_colegas(self, nome_disciplina, colegas):
+        self.__controlador_colega.inicializar(nome_disciplina, colegas)
+
     def cadastrar_disciplina(self):
         self.__controlador_disciplina.incluir_disciplina()
 
@@ -25,7 +29,6 @@ class ControladorSistema:
     def abrir_tela(self):
 
         dict_opcoes = {'Cadastrar Disciplina': self.cadastrar_disciplina,
-                       'Colegas': self.__controlador_colega.inicializar,
                        'Finalizar Sistema': self.encerrar_sistema}
 
         while True:
