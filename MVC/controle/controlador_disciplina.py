@@ -17,8 +17,21 @@ class ControladorDisciplina:
 
     def abrir_tela_disciplina(self, dados_disciplina):
 
+
+        #opcoes = {
+        #"Voltar": self.__tela_dados_disciplina.fechar,
+        #"Alterar Disciplina": self.alterar_disciplina,
+        #"Excluir Disciplina": self.excluir_disciplina
+        #}
+        
+
         botao, valores = self.__tela_disciplina.abrir(dados_disciplina)
         
+        #self.__tela_dados_disciplina.fechar()
+#
+        #if(botao != "Voltar"):
+        #    opcoes[botao](dados_disciplina)
+
         if botao == "Voltar":
             self.__tela_disciplina.fechar()
         elif botao == "Alterar Disciplina":
