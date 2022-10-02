@@ -39,20 +39,8 @@ class ControladorDisciplina:
             self.alterar_disciplina(dados_disciplina)
         elif botao == "Excluir Disciplina":
             self.__tela_disciplina.fechar()
-            self.excluir_disciplina(dados_disciplina["codigo"])
+            self.excluir_disciplina(dados_disciplina["id"])
 
-    def incluir_disciplina(self, dados_disciplina=None): 
-
-        botao, valores = self.__tela_disciplina.abrir(dados_disciplina)
-        
-        if botao == "Voltar":
-            self.__tela_disciplina.fechar()
-        elif botao == "Alterar Disciplina":
-            self.__tela_disciplina.fechar()
-            self.alterar_disciplina(dados_disciplina)
-        elif botao == "Excluir Disciplina":
-            self.__tela_disciplina.fechar()
-            self.excluir_disciplina(dados_disciplina["codigo"])
 
     def incluir_disciplina(self, dados_disciplina=None): 
         
@@ -60,7 +48,19 @@ class ControladorDisciplina:
 
         while True:
 
-            if dados_disciplina != None:
+            '''
+                Troquei dados_disciplina != None por dados_disciplina is not None, conforme pep8:
+
+                https://peps.python.org/pep-0008/
+
+                Comparisons to singletons like None should always be done with is or is not, never the equality operators.
+
+                Also, beware of writing if x when you really mean if x is not None – e.g. when testing whether a variable or argument that 
+                defaults to None was set to some other value. The other value might have a type (such as a container) that could be false 
+                in a boolean context!
+            
+            '''
+            if dados_disciplina is not None:
                 alteracao = True
                 dados_disciplina_old = dados_disciplina
                 botao, dados_disciplina = self.__tela_dados_disciplina.abrir(dados_disciplina)
@@ -85,6 +85,7 @@ class ControladorDisciplina:
 
                 disciplinas = self.__dao.buscar_todos()
                 for disciplina in disciplinas:
+                    #Nome da disciplina é um bom critério para decidir se a disciplina já existe ou não?
                     if disciplina.nome == dados_disciplina['nome']:
                         raise JaExistenteException
 
@@ -93,8 +94,10 @@ class ControladorDisciplina:
                 else:
                     dados_disciplina["rec"] = "Não" # Não tem REC
                 
+                #retirados os argumentos none em conformidade com a assinatura do método alterado. Os dados aulas, colegas, atividades, etc, nunca serão 
+                #conhecidos ou informados na tela de cadastro/alteração, logo acredito que não precisam estar aqui como argumentos
                 sucesso = self.__dao.persist_disciplina(dados_disciplina["nome"], dados_disciplina["codigo"], dados_disciplina["professor"],
-                                        dados_disciplina["numAulas"], dados_disciplina["rec"], None, None, None, None)
+                                        dados_disciplina["numAulas"], dados_disciplina["rec"])
                 
                 if not sucesso:
                     self.__tela_disciplina.mostrar_mensagem("Atenção", "Disciplina já cadastrada!")
@@ -113,14 +116,18 @@ class ControladorDisciplina:
                 self.__tela_disciplina.mostrar_mensagem('Atenção', 'Disciplina já existente, tente novamente!')
     
     def alterar_disciplina(self, dados_disciplina):
+
+        #usar update para fazer a alteração da disciplina
         dados_disciplina_old = dados_disciplina
         dados_disciplina = self.incluir_disciplina(dados_disciplina)
-        if dados_disciplina != None:
+
+        #alterado != None para is not None conforme comentário anterior
+        if dados_disciplina is not None:
             if dados_disciplina['codigo'] != dados_disciplina_old['codigo']:
                 self.excluir_disciplina(dados_disciplina_old['codigo'])
             
-    def excluir_disciplina(self, codigo):
-        self.__dao.delete_disciplina(codigo)
+    def excluir_disciplina(self, id):
+        self.__dao.delete_disciplina(id)
 
         '''
         Por enquanto você está usando código como identificador único, que deverá mudar para id posteriormente.

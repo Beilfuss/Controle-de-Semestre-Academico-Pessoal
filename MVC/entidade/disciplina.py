@@ -115,6 +115,7 @@ class Disciplina:
     def desempacotar(self):
 
         return {
+            "id": self.id,
             "nome": self.nome,
             "codigo": self.codigo,
             "professor": self.professor,

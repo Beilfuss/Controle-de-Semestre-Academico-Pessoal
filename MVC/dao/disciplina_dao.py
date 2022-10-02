@@ -28,9 +28,9 @@ class DisciplinaDAO(AbstractDAO):
         query = "SELECT * FROM DISCIPLINAS WHERE id=:id"
         query_params = {"id": id}
 
-        disciplina = self.executar_query(query, query_params)[0]
+        disciplina_dados = self.executar_query(query, query_params)[0]
 
-        return disciplina
+        return disciplina_dados
 
 
     def persist_disciplina(self, nome, codigo, professor, numAulas, rec):
