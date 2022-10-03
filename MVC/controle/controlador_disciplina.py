@@ -17,31 +17,33 @@ class ControladorDisciplina:
 
     def abrir_tela_disciplina(self, dados_disciplina):
 
-        disciplina = self.__dao.obter_por_id(dados_disciplina["id"])
-        #opcoes = {
-        #"Voltar": self.__tela_dados_disciplina.fechar,
-        #"Alterar Disciplina": self.alterar_disciplina,
-        #"Excluir Disciplina": self.excluir_disciplina
-        #}
+        while(True):
+            disciplina = self.__dao.obter_por_id(dados_disciplina["id"])
+            #opcoes = {
+            #"Voltar": self.__tela_dados_disciplina.fechar,
+            #"Alterar Disciplina": self.alterar_disciplina,
+            #"Excluir Disciplina": self.excluir_disciplina
+            #}
         
-
-        botao, valores = self.__tela_disciplina.abrir(dados_disciplina)
+            botao, valores = self.__tela_disciplina.abrir(dados_disciplina)
         
-        #self.__tela_dados_disciplina.fechar()
-#
-        #if(botao != "Voltar"):
-        #    opcoes[botao](dados_disciplina)
+            #self.__tela_dados_disciplina.fechar()
+            #if(botao != "Voltar"):
+            #    opcoes[botao](dados_disciplina)
 
-        if botao == "Voltar":
-            self.__tela_disciplina.fechar()
-        elif botao == "Alterar Disciplina":
-            self.__tela_disciplina.fechar()
-            self.alterar_disciplina(dados_disciplina)
-        elif botao == "Excluir Disciplina":
-            self.__tela_disciplina.fechar()
-            self.excluir_disciplina(disciplina.id)
-        elif botao == "Colegas":
-            self.abrir_tela_colegas(disciplina)
+            if botao == "Voltar" or botao is None:
+                self.__tela_disciplina.fechar()
+                break;
+            elif botao == "Alterar Disciplina":
+                self.__tela_disciplina.fechar()
+                self.alterar_disciplina(dados_disciplina)
+            elif botao == "Excluir Disciplina":
+                self.__tela_disciplina.fechar()
+                self.excluir_disciplina(disciplina.id)
+                break;
+            elif botao == "Colegas":
+                self.__tela_disciplina.fechar()
+                self.abrir_tela_colegas(disciplina)
 
     def abrir_tela_colegas(self, disciplina):
 
@@ -49,8 +51,6 @@ class ControladorDisciplina:
         opcoes = {0: "", 1: lambda colega: self.remover_colega(disciplina, colega), 2:lambda colega:self.incluir_colega(disciplina, colega)}
 
         (operacao, colega) = self.__controlador_sistema.inicializar_colegas(disciplina.nome, disciplina.colegas)
-
-        #self.incluir_colega(disciplina, colega) if operacao == 2 else self.excluir_colega(disciplina, colega)
 
         if(operacao != 0):
             opcoes[operacao](colega)

@@ -1,11 +1,6 @@
 from limite.tela_colega import TelaColega
 from dao.colega_dao import ColegaDAO
 
-#
-# Associar Colega a disciplina
-#
-
-
 class ControladorColega:
 
     def __init__(self, controlador_sistema):
@@ -18,7 +13,6 @@ class ControladorColega:
 
         colegas_obj = [self.__dao.obter_por_id(id) for id in colegas]
         
-
         opcoes = {0: "", 1: lambda dados: self.excluir_colega(colegas_obj, dados), 2:self.cadastrar_colega}
 
         opcao_escolhida, dados = self.listar_colegas(nome_disciplina, colegas_obj)
