@@ -1,5 +1,7 @@
 from limite.tela_colega import TelaColega
 from dao.colega_dao import ColegaDAO
+from excecoes.validationException import ValidationException
+from excecoes.matriculaRepetidaException import MatriculaRepetidaException
 
 class ControladorColega:
 
@@ -33,17 +35,22 @@ class ControladorColega:
             nome = dados["nome"]
             matricula = dados["matricula"]
             if(not nome.isalpha() or len(matricula) != 8 or not matricula.isdecimal()):
-                raise ValueError
+                raise ValidationException
 
             colega = self.__dao.obter_por_matricula(matricula)
 
+            if(colega.nome != nome):
+                raise MatriculaRepetidaException("Já há aluno cadastrado com a matrícula informada, mas outro nome. Nome: {}".format(colega.nome))
+
             if(colega is None):
                 colega = self.__dao.persist_colega(nome, matricula)
-
+            
             return colega
 
-        except ValueError:
-            self.__tela.mostrar_mensagem("Dados inválidos! Tente novamente.")
+        except ValidationException as err:
+            self.__tela.mostrar_mensagem(err)
+        except MatriculaRepetidaException as err:
+            self.__tela.mostrar_mensagem(err)
             
 
     def excluir_colega(self, colegas, dados):

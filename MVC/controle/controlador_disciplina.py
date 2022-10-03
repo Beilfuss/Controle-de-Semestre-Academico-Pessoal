@@ -53,7 +53,9 @@ class ControladorDisciplina:
         (operacao, colega) = self.__controlador_sistema.inicializar_colegas(disciplina.nome, disciplina.colegas)
 
         if(operacao != 0):
-            opcoes[operacao](colega)
+            
+            if(colega is not None):
+                opcoes[operacao](colega)
             self.abrir_tela_colegas(disciplina)
 
     def incluir_disciplina(self, dados_disciplina=None): 
@@ -167,7 +169,7 @@ class ControladorDisciplina:
 
                 
     def incluir_colega(self, disciplina, colega):
-                
+        print("im here")
         sucesso = self.__dao.incluir_colega(disciplina, colega)
 
         if(not sucesso):
