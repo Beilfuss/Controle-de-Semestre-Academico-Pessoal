@@ -48,16 +48,9 @@ class ControladorColega:
 
     def excluir_colega(self, colegas, dados):
 
-        #try:
         index = dados["row_index"][0]
         colega = colegas[index]
         return colega
-        #self.__dao.delete_colega(colega)
-        #except Exception as err:
-        #    self.__tela.mostrar_mensagem(
-        #        "É necessário selecionar um colega para exclusão")
-        #finally:
-        #    self.inicializar()
 
     def desempacotar_todos(self, colegas):
         return list(map(lambda colega: colega.desempacotar(), colegas))

@@ -135,6 +135,14 @@ class ControladorDisciplina:
     
     def alterar_disciplina(self, dados_disciplina):
 
+        '''
+            1- Criar método alterar_disciplina no dao
+            2- Usar query: UPDATE DISCIPLINAS SET nome = ?, codigo = ?, numAulas = ?, rec = ?, professor = ? WHERE id = ? 
+            3- Setar os query_params, observando a ordem
+            4- Adaptar a query se necessário
+            5- Após atualizar o banco de dados, atualizar o objeto disciplina correspondente - usar o id para buscar no cache
+        '''
+
         dados_disciplina_old = dados_disciplina
         dados_disciplina = self.incluir_disciplina(dados_disciplina)
 
