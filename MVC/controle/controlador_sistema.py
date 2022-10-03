@@ -36,6 +36,9 @@ class ControladorSistema:
 
             opcao_escolhida = self.__tela_inicial.abrir(disciplinas)
 
+            if(opcao_escolhida is None):
+                exit(0)
+
             if (isinstance(opcao_escolhida, int)):
                 self.__controlador_disciplina.abrir_tela_disciplina(disciplinas[opcao_escolhida])
                 
