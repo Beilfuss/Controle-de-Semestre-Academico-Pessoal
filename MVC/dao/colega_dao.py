@@ -61,13 +61,12 @@ class ColegaDAO(AbstractDAO):
         except Exception as err:
             return False
 
-    def delete_colega(self, index):
+    def delete_colega(self, colega):
         # deleta um colega do banco de dados e remove o objeto instanciado do cash
 
-        colega = list(self._cache.values())[index]
 
-        query = "DELETE from COLEGAS where matricula=(?)"
-        query_params = (colega.matricula,)
+        query = "DELETE from COLEGAS where id=(?)"
+        query_params = (colega.id,)
         res = self.executar_query(query, query_params)
 
-        self._cache.pop(colega.matricula)
+        self._cache.pop(colega.id)

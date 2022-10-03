@@ -113,6 +113,10 @@ class Disciplina:
         if isinstance(colega, int):
             self.__colegas.append(colega)
 
+    def remover_colega(self, colega: int):
+        if isinstance(colega, int):
+            self.__colegas.remove(colega)
+
     def desempacotar(self):
 
         return {
@@ -122,4 +126,5 @@ class Disciplina:
             "professor": self.professor,
             "numAulas": self.numAulas,
             "rec": self.rec,
+            "colegas": self.colegas
         }

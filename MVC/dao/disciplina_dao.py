@@ -58,8 +58,6 @@ class DisciplinaDAO(AbstractDAO):
 
         disciplina_dados = self.executar_query(query, query_params)[0]
 
-        print(disciplina_dados)
-
         return disciplina_dados
 
 
@@ -102,5 +100,18 @@ class DisciplinaDAO(AbstractDAO):
 
             return True
         except Exception as err:
-            
+            return False
+
+    def remover_colega(self, disciplina, colega):
+ 
+        try:
+            query = "DELETE FROM COLEGAS_DISCIPLINAS where disciplina_id=(?) and colega_id=(?)"
+            query_params = (disciplina.id, colega.id)
+
+            self.executar_query(query, query_params)
+
+            disciplina.remover_colega(colega.id)
+
+            return True
+        except Exception as err:
             return False

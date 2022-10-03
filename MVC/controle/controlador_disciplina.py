@@ -49,6 +49,9 @@ class ControladorDisciplina:
 
         self.incluir_colega(disciplina, colega) if operacao == 2 else self.excluir_colega(disciplina, colega)
 
+        if(operacao != 0):
+            self.abrir_tela_colegas(disciplina)
+
     def incluir_disciplina(self, dados_disciplina=None): 
         
         alteracao = False
@@ -159,4 +162,6 @@ class ControladorDisciplina:
             self.__tela_disciplina.mostrar_mensagem("Atenção", "Colega já cadastrado!")
 
     def excluir_colega(self, disciplina, colega):
-        pass
+        
+        sucesso = self.__dao.remover_colega(disciplina, colega)
+        return

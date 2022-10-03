@@ -19,7 +19,7 @@ class ControladorColega:
         colegas_obj = [self.__dao.obter_por_id(id) for id in colegas]
         
 
-        opcoes = {0: "", 1: self.excluir_colega, 2: self.cadastrar_colega}
+        opcoes = {0: "", 1: lambda dados: self.excluir_colega(colegas_obj, dados), 2:self.cadastrar_colega}
 
         opcao_escolhida, dados = self.listar_colegas(nome_disciplina, colegas_obj)
 
@@ -52,16 +52,18 @@ class ControladorColega:
             self.__tela.mostrar_mensagem("Dados inválidos! Tente novamente.")
             
 
-    def excluir_colega(self, dados):
+    def excluir_colega(self, colegas, dados):
 
-        try:
-            index = dados["row_index"][0]
-            self.__dao.delete_colega(index)
-        except Exception as err:
-            self.__tela.mostrar_mensagem(
-                "É necessário selecionar um colega para exclusão")
-        finally:
-            self.inicializar()
+        #try:
+        index = dados["row_index"][0]
+        colega = colegas[index]
+        return colega
+        #self.__dao.delete_colega(colega)
+        #except Exception as err:
+        #    self.__tela.mostrar_mensagem(
+        #        "É necessário selecionar um colega para exclusão")
+        #finally:
+        #    self.inicializar()
 
     def desempacotar_todos(self, colegas):
         return list(map(lambda colega: colega.desempacotar(), colegas))
