@@ -16,7 +16,6 @@ class ControladorSistema:
     def encerrar_sistema(self):
         exit(0)
 
-
     def inicializar_colegas(self, nome_disciplina, colegas):
         return self.__controlador_colega.inicializar(nome_disciplina, colegas)
 

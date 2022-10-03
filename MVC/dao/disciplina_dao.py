@@ -61,11 +61,12 @@ class DisciplinaDAO(AbstractDAO):
         return disciplina_dados
 
 
-    def persist_disciplina(self, nome, codigo, professor, numAulas, rec):
-        #Muitos argumentos, chamada fica estranha. Não seria melhor passar apenas um argumento (ex: discionário contendo todos os dados) e utilizar os atributos do dicionário dentro do método?
+    def persist_disciplina(self, dados_disciplina):
+        #Muitos argumentos, chamada fica estranha. Não seria melhor passar apenas um argumento (ex: dicionário contendo todos os dados) e utilizar os atributos do dicionário dentro do método?
 
         query = "INSERT INTO DISCIPLINAS(nome, codigo, professor, numAulas, rec) VALUES(?, ?, ?, ?, ?)"
-        query_params = (nome, codigo, professor, numAulas, rec)
+        query_params = (dados_disciplina["nome"], dados_disciplina["codigo"], dados_disciplina["professor"],
+                                        dados_disciplina["numAulas"], dados_disciplina["rec"])
 
         try:
             #adequações para utilizar o id como chave e os dados persistidos na instanciação do objeto disciplina. Garante consistência entre a memória e o banco.
@@ -78,6 +79,18 @@ class DisciplinaDAO(AbstractDAO):
         except Exception as err:
            
             return False
+
+    def alterar_disciplina(self, dados_disciplina):
+        query = "UPDATE DISCIPLINAS SET nome = ?, codigo = ?, professor = ?, numAulas = ?, rec = ? WHERE id = ?"
+        query_params = (dados_disciplina["nome"], dados_disciplina["codigo"], dados_disciplina["professor"],
+                                        dados_disciplina["numAulas"], dados_disciplina["rec"], dados_disciplina['id'])
+        self.executar_query(query, query_params)
+
+        self._cache[dados_disciplina['id']].nome = dados_disciplina['nome']
+        self._cache[dados_disciplina['id']].codigo = dados_disciplina['codigo']
+        self._cache[dados_disciplina['id']].professor = dados_disciplina['professor']
+        self._cache[dados_disciplina['id']].numAulas = dados_disciplina['numAulas']
+        self._cache[dados_disciplina['id']].rec = dados_disciplina['rec']
 
     def delete_disciplina(self, id):
         #adequação para usar id no lugar de código

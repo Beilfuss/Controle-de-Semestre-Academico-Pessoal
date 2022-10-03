@@ -18,7 +18,7 @@ class TelaDadosDisciplina():
             [sg.Text("Professor*", size=(13,1)), sg.InputText(dados_disciplina["professor"], key='professor')],
             [sg.Text("Número de aulas*", size=(13,1)), sg.InputText(dados_disciplina["numAulas"], key='numAulas')],
             [sg.Text("Recuperação*"), sg.Radio('Sim', "RADIO1", default=True, size=(10 ,1)), sg.Radio('Não', "RADIO1")],
-            [sg.Cancel(button_text="Cancelar"),sg.Submit(button_text="Cadastrar Disciplina")]
+            [sg.Cancel(button_text="Cancelar"),sg.Submit(button_text="Confirmar")]
         ]
 
         if dados_disciplina['rec'] == "Não":
