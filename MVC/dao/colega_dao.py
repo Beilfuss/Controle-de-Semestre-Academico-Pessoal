@@ -40,8 +40,11 @@ class ColegaDAO(AbstractDAO):
 
     def obter_por_matricula(self, matricula):
 
+        colegas = list(filter(lambda colega:colega.matricula == matricula, self._cache.values()))
 
-        return self._cache.get(matricula)
+        colega = colegas[0] if len(colegas) != 0 else None
+
+        return colega
 
     def persist_colega(self, nome, matricula):
         # Persiste um colega no banco de dados e instancia o objeto correspondente no cache
