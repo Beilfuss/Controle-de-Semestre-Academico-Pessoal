@@ -25,5 +25,10 @@ class Colega:
     def matricula(self):
         return self.__matricula
 
+    @nome.setter
+    def nome(self, nome):
+        if isinstance(nome, str):
+            self.__nome = nome
+
     def desempacotar(self):
         return {"nome": self.nome, "matricula": self.matricula}
