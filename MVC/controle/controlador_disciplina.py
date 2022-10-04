@@ -169,7 +169,6 @@ class ControladorDisciplina:
 
                 
     def incluir_colega(self, disciplina, colega):
-        print("im here")
         sucesso = self.__dao.incluir_colega(disciplina, colega)
 
         if(not sucesso):
