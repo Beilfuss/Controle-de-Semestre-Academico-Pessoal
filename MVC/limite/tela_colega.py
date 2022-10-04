@@ -13,8 +13,9 @@ class TelaColega:
                          for colega in dados_colegas]
 
         frame_adicionar_colega = sg.Frame("Adicionar Colega", [
-            [sg.Text("Nome*",size=(7,1)), sg.InputText("", key="nome")],
-            [sg.Text("Matricula*",size=(7,1)), sg.InputText("", key="matricula")],
+            [sg.Text("Nome*", size=(7, 1)), sg.InputText("", key="nome")],
+            [sg.Text("Matricula*", size=(7, 1)),
+             sg.InputText("", key="matricula")],
             [sg.Button("Adicionar Colega", key=2)]
         ])
 
@@ -25,9 +26,22 @@ class TelaColega:
                      justification="center", expand_x=True)],
             [sg.Table(dados_display, headings=[
                 "Nome", "Matrícula"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
-            [sg.Button("Excluir", key=1)],
+            [sg.Button("Alterar", key=3), sg.Button("Excluir", key=1)],
             [frame_adicionar_colega],
             [sg.Button("Voltar", key=0)]
+        ]
+
+        self.__janela = sg.Window("Colegas").Layout(layout)
+
+    def inicializar_alteracao(self, matricula, nome):
+
+        layout = [
+            [sg.Text("Alterar Colega", font="bold",
+                     justification="center", expand_x=True)],
+            [sg.Text(matricula, justification="center", expand_x=True)],
+            [[sg.Text("Nome*", size=(7, 1)),
+              sg.InputText(nome, key="nome")]],
+            [sg.Button("Confirmar", key=1), sg.Button("Voltar", key=0)]
         ]
 
         self.__janela = sg.Window("Colegas").Layout(layout)
@@ -37,7 +51,18 @@ class TelaColega:
         botao, valores = self.__janela.Read()
         self.fechar()
 
-        if(botao == sg.WIN_CLOSED or botao == 0):
+        if (botao == sg.WIN_CLOSED or botao == 0):
+            self.__janela.Close()
+            return (0, {})
+
+        return botao, valores
+
+    def abrir_alteracao(self, matricula, nome):
+        self.inicializar_alteracao(matricula, nome)
+        botao, valores = self.__janela.Read()
+        self.fechar()
+
+        if (botao == sg.WIN_CLOSED or botao == 0):
             self.__janela.Close()
             return (0, {})
 
