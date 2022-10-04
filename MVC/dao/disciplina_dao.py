@@ -22,7 +22,6 @@ class DisciplinaDAO(AbstractDAO):
 
             self._cache[id] = Disciplina(id, nome, codigo, professor, numAulas, rec, [], [], [], colegas)
 
-
     def __obter_colegas(self,id):
 
         query = "SELECT colega_id from COLEGAS_DISCIPLINAS WHERE disciplina_id=:id"
@@ -76,6 +75,7 @@ class DisciplinaDAO(AbstractDAO):
             
             self._cache[id] = Disciplina(id, nome, codigo, professor, numAulas, rec, [], [], [], [])
             return True
+            
         except Exception as err:
            
             return False
@@ -86,11 +86,13 @@ class DisciplinaDAO(AbstractDAO):
                                         dados_disciplina["numAulas"], dados_disciplina["rec"], dados_disciplina['id'])
         self.executar_query(query, query_params)
 
-        self._cache[dados_disciplina['id']].nome = dados_disciplina['nome']
-        self._cache[dados_disciplina['id']].codigo = dados_disciplina['codigo']
-        self._cache[dados_disciplina['id']].professor = dados_disciplina['professor']
-        self._cache[dados_disciplina['id']].numAulas = dados_disciplina['numAulas']
-        self._cache[dados_disciplina['id']].rec = dados_disciplina['rec']
+        disciplina = self._cache[dados_disciplina['id']]
+
+        disciplina.nome = dados_disciplina['nome']
+        disciplina.codigo = dados_disciplina['codigo']
+        disciplina.professor = dados_disciplina['professor']
+        disciplina.numAulas = dados_disciplina['numAulas']
+        disciplina.rec = dados_disciplina['rec']
 
     def delete_disciplina(self, id):
         #adequação para usar id no lugar de código
@@ -112,6 +114,7 @@ class DisciplinaDAO(AbstractDAO):
             disciplina.adicionar_colega(colega.id)
 
             return True
+
         except Exception as err:
             return False
 
@@ -126,5 +129,6 @@ class DisciplinaDAO(AbstractDAO):
             disciplina.remover_colega(colega.id)
 
             return True
+
         except Exception as err:
             return False

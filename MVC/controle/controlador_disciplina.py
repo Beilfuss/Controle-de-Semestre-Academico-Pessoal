@@ -33,15 +33,15 @@ class ControladorDisciplina:
 
             if botao == "Voltar" or botao is None:
                 self.__tela_disciplina.fechar()
-                break;
+                break
             elif botao == "Alterar Disciplina":
                 self.__tela_disciplina.fechar()
                 self.alterar_disciplina(disciplina, dados_disciplina)
-                break;
+                break
             elif botao == "Excluir Disciplina":
                 self.__tela_disciplina.fechar()
                 self.excluir_disciplina(disciplina.id)
-                break;
+                break
             elif botao == "Colegas":
                 self.__tela_disciplina.fechar()
                 self.abrir_tela_colegas(disciplina)
@@ -182,7 +182,7 @@ class ControladorDisciplina:
                 dados_disciplina["rec"] = "Não" # Não tem REC
 
             if dados_disciplina == {"nome": "", "codigo": "", "professor": "", "numero_aulas": "", "rec": ""
-                    } or (not (dados_disciplina["nome"]).isalpha()) or not ((dados_disciplina["professor"]).isalpha()):
+                    } or (not (dados_disciplina["nome"]).isalpha()) or (not (dados_disciplina["professor"]).isalpha()):
                 #Nome D1cisplin4 passa na validação de nome ou nome Math3us passa na de professor.
                 #ver método isalpha na documentação (https://docs.python.org/3/library/stdtypes.html#string-methods)
                 #Não seria melhor usar algo do tipo  "not dados_disciplina["nome"].isalpha()"?
