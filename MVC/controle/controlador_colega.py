@@ -3,6 +3,7 @@ from dao.colega_dao import ColegaDAO
 from excecoes.validationException import ValidationException
 from excecoes.matriculaRepetidaException import MatriculaRepetidaException
 
+
 class ControladorColega:
 
     def __init__(self, controlador_sistema):
@@ -14,18 +15,21 @@ class ControladorColega:
     def inicializar(self, nome_disciplina, colegas):
 
         colegas_obj = [self.__dao.obter_por_id(id) for id in colegas]
-        
-        opcoes = {0: "", 1: lambda dados: self.excluir_colega(colegas_obj, dados), 2:self.cadastrar_colega}
 
-        opcao_escolhida, dados = self.listar_colegas(nome_disciplina, colegas_obj)
+        opcoes = {0: "", 1: lambda dados: self.excluir_colega(
+            colegas_obj, dados), 2: self.cadastrar_colega, 3: lambda dados: self.alterar_colega(colegas_obj, dados)}
 
-        if(opcao_escolhida != 0):
+        opcao_escolhida, dados = self.listar_colegas(
+            nome_disciplina, colegas_obj)
+
+        if (opcao_escolhida != 0):
             return (opcao_escolhida, opcoes[opcao_escolhida](dados))
         else:
             return (opcao_escolhida, None)
 
     def listar_colegas(self, nome_disciplina, colegas):
-        botao, dados = self.__tela.abrir(nome_disciplina, self.desempacotar_todos(colegas))
+        botao, dados = self.__tela.abrir(
+            nome_disciplina, self.desempacotar_todos(colegas))
 
         return botao, dados
 
@@ -34,30 +38,46 @@ class ControladorColega:
         try:
             nome = dados["nome"]
             matricula = dados["matricula"]
-            if(not nome.isalpha() or len(matricula) != 8 or not matricula.isdecimal()):
+            if (not nome.isalpha() or len(matricula) != 8 or not matricula.isdecimal()):
                 raise ValidationException
 
             colega = self.__dao.obter_por_matricula(matricula)
 
-            if(colega.nome != nome):
-                raise MatriculaRepetidaException("Já há aluno cadastrado com a matrícula informada, mas outro nome. Nome: {}".format(colega.nome))
+            if (colega.nome != nome):
+                raise MatriculaRepetidaException(
+                    "Já há aluno cadastrado com a matrícula informada, mas outro nome. Nome: {}".format(colega.nome))
 
-            if(colega is None):
+            if (colega is None):
                 colega = self.__dao.persist_colega(nome, matricula)
-            
+
             return colega
 
         except ValidationException as err:
             self.__tela.mostrar_mensagem(err)
         except MatriculaRepetidaException as err:
             self.__tela.mostrar_mensagem(err)
-            
+
+    def alterar_colega(self, colegas, dados):
+        try:
+            index = dados["row_index"][0]
+            colega = colegas[index]
+
+            botao, dados = self.__tela.abrir_alteracao(
+                colega.matricula, colega.nome)
+
+            print(botao)
+            print(dados)
+        except IndexError:
+            self.__tela.mostrar_mensagem("É necessário selecionar um colega!")
 
     def excluir_colega(self, colegas, dados):
 
-        index = dados["row_index"][0]
-        colega = colegas[index]
-        return colega
+        try:
+            index = dados["row_index"][0]
+            colega = colegas[index]
+            return colega
+        except IndexError:
+            self.__tela.mostrar_mensagem("É necessário selecionar um colega!")
 
     def desempacotar_todos(self, colegas):
         return list(map(lambda colega: colega.desempacotar(), colegas))

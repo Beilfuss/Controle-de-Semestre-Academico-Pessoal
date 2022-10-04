@@ -63,6 +63,16 @@ class ColegaDAO(AbstractDAO):
             return colega
         except Exception as err:
             return False
+    
+    def alterar_colega(self, id, nome):
+        query = "UPDATE COLEGAS SET nome = ? WHERE id=?"
+        query_params = (nome, id)
+
+        self.executar_query(query, query_params)
+
+        colega = self._cache[id]
+        colega.nome = nome
+
 
     def delete_colega(self, colega):
         # deleta um colega do banco de dados e remove o objeto instanciado do cash
