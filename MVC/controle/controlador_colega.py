@@ -65,8 +65,16 @@ class ControladorColega:
             botao, dados = self.__tela.abrir_alteracao(
                 colega.matricula, colega.nome)
 
-            print(botao)
-            print(dados)
+            if (botao == 1):
+                nome = dados["nome"]
+
+                if (not nome.isalpha()):
+                    raise ValidationException
+                    
+                self.__dao.alterar_colega(colega, nome)
+
+        except ValidationException as err:
+            self.__tela.mostrar_mensagem(err)
         except IndexError:
             self.__tela.mostrar_mensagem("É necessário selecionar um colega!")
 

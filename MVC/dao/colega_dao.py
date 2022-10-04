@@ -26,9 +26,9 @@ class ColegaDAO(AbstractDAO):
         self.executar_query(query)
 
     def obter_por_id(self, id):
-    
+
         cached_colega = self._cache.get(id)
-        if(cached_colega is not None):
+        if (cached_colega is not None):
             return cached_colega
 
         query = "SELECT id, nome, matricula FROM COLEGAS WHERE id=:id"
@@ -40,7 +40,8 @@ class ColegaDAO(AbstractDAO):
 
     def obter_por_matricula(self, matricula):
 
-        colegas = list(filter(lambda colega:colega.matricula == matricula, self._cache.values()))
+        colegas = list(filter(lambda colega: colega.matricula ==
+                       matricula, self._cache.values()))
 
         colega = colegas[0] if len(colegas) != 0 else None
 
@@ -52,31 +53,31 @@ class ColegaDAO(AbstractDAO):
         query_params = (nome, matricula)
 
         try:
-            inserted_id = self.executar_query(query, query_params) #recebe o id do row inserido no banco
+            # recebe o id do row inserido no banco
+            inserted_id = self.executar_query(query, query_params)
 
-            (id, nome, matricula) = self.obter_por_id(inserted_id) #recebe os dados do objeto inserido no banco
+            # recebe os dados do objeto inserido no banco
+            (id, nome, matricula) = self.obter_por_id(inserted_id)
 
-            colega = Colega(id, nome, matricula) #instancia o objeto  com os dados do banco
-            
+            # instancia o objeto  com os dados do banco
+            colega = Colega(id, nome, matricula)
+
             self._cache[id] = colega
 
             return colega
         except Exception as err:
             return False
-    
-    def alterar_colega(self, id, nome):
+
+    def alterar_colega(self, colega, nome):
         query = "UPDATE COLEGAS SET nome = ? WHERE id=?"
-        query_params = (nome, id)
+        query_params = (nome, colega.id)
 
         self.executar_query(query, query_params)
 
-        colega = self._cache[id]
         colega.nome = nome
-
 
     def delete_colega(self, colega):
         # deleta um colega do banco de dados e remove o objeto instanciado do cash
-
 
         query = "DELETE from COLEGAS where id=(?)"
         query_params = (colega.id,)
