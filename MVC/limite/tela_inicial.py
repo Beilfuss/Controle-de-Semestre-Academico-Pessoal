@@ -11,7 +11,7 @@ class TelaInicial():
         layout = [
             [sg.Text('Sistema de Gestão Acadêmica')],
             [sg.Text('Olá, [Aluno]! O que vamos fazer hoje?')],
-            [sg.Button('Cadastrar Disciplina'),  sg.Button('Finalizar Sistema')]
+            [sg.Button('Cadastrar Disciplina'),  sg.Button('Finalizar Sistema'), sg.Button("Cadastrar atividade")]
         ]
 
         self.__janela = sg.Window('TelaInicial', default_element_size=(40, 1)).Layout(layout)

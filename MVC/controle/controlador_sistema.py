@@ -1,3 +1,4 @@
+from controle.controlador_atividade import ControladorAtividade
 from limite.tela_inicial import TelaInicial
 from controle.controlador_disciplina import ControladorDisciplina
 
@@ -6,6 +7,7 @@ class ControladorSistema:
     def __init__(self):
         self.__tela_inicial = TelaInicial(self)
         self.__controlador_disciplina = ControladorDisciplina(self)
+        self.__controlador_atividade = ControladorAtividade(self)
 
     def inicializar_sistema(self):
         self.abrir_tela()
@@ -17,8 +19,11 @@ class ControladorSistema:
         self.__controlador_disciplina.incluir_disciplina()
         self.__tela_inicial.close()
 
+    def cadastrar_atividade(self):
+        self.__controlador_atividade.
+
     def abrir_tela(self):
-        dict_opcoes = {'Cadastrar Disciplina': self.cadastrar_disciplina, 'Finalizar Sistema': self.encerrar_sistema}
+        dict_opcoes = {'Cadastrar Disciplina': self.cadastrar_disciplina, 'Finalizar Sistema': self.encerrar_sistema, "Cadastrar atividade": self.cadastrar_atividade}
 
         while True:
             opcao_escolhida = self.__tela_inicial.abrir()

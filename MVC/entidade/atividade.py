@@ -1,8 +1,9 @@
+from entidade.disciplina import Disciplina
 from nota import Nota
 
 class Atividade:
 
-    def __init__(self, nome: str, tipo: str, data: str, nota: Nota, grupo: bool, priorizar: bool):
+    def __init__(self, nome: str, tipo: str, data: str, nota: Nota, grupo: bool, priorizar: bool, disciplina: Disciplina):
         if isinstance(nome, str):
             self.__nome = nome
         if isinstance(tipo, str):
@@ -15,6 +16,8 @@ class Atividade:
             self.__grupo = grupo
         if isinstance(priorizar, bool):
             self.__priorizar = priorizar
+        if isinstance(disciplina, Disciplina):
+            self.__disciplina = disciplina
 
     @property
     def nome(self):
@@ -39,6 +42,14 @@ class Atividade:
     @property
     def priorizar(self):
         return self.__priorizar
+
+    @property
+    def disciplina(self):
+        return self.__disciplina
+
+    @disciplina.setter
+    def disciplina(self, disciplina):
+        self.__disciplina = disciplina
 
     @nome.setter
     def nome(self, nome: str):
