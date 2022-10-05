@@ -108,7 +108,7 @@ class ControladorDisciplina:
 
             disciplinas = self.__dao.buscar_todos()
             for disciplina in disciplinas:
-                if disciplina.codigo == dados_disciplina['codigo']:
+                if disciplina.codigo == dados_disciplina['codigo'] and disciplina.ativo == "Sim":
                     raise JaExistenteException
                 
             return True
@@ -119,7 +119,6 @@ class ControladorDisciplina:
         except JaExistenteException:
             self.__tela_disciplina.mostrar_mensagem('Atenção', 'Disciplina já existente, tente novamente!')
             return False
-
 
     def incluir_colega(self, disciplina, colega):
         sucesso = self.__dao.incluir_colega(disciplina, colega)
