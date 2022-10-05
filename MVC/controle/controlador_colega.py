@@ -43,7 +43,7 @@ class ControladorColega:
 
             colega = self.__dao.obter_por_matricula(matricula)
 
-            if (colega.nome != nome):
+            if (colega is not None and colega.nome != nome):
                 raise MatriculaRepetidaException(
                     "Já há aluno cadastrado com a matrícula informada, mas outro nome. Nome: {}".format(colega.nome))
 
