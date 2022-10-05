@@ -13,9 +13,10 @@ class TelaColega:
                          for colega in dados_colegas]
 
         frame_adicionar_colega = sg.Frame("Adicionar Colega", [
-            [sg.Text("Nome*", size=(7, 1)), sg.InputText("", key="nome")],
+            [sg.Text("Nome*", size=(7, 1)), sg.InputText("",
+                                                         key="nome", tooltip="Ex.: Matheus")],
             [sg.Text("Matricula*", size=(7, 1)),
-             sg.InputText("", key="matricula")],
+             sg.InputText("", key="matricula", tooltip="Ex.: 12345678")],
             [sg.Button("Adicionar Colega", key=2)]
         ])
 
