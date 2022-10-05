@@ -26,7 +26,8 @@ class TelaColega:
                      justification="center", expand_x=True)],
             [sg.Table(dados_display, headings=[
                 "Nome", "Matrícula"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
-            [sg.Button("Alterar", key=3), sg.Button("Excluir", key=1)],
+            [sg.Button("Alterar", key=3), sg.Button(
+                "Excluir", key=1, button_color="red")],
             [frame_adicionar_colega],
             [sg.Button("Voltar", key=0)]
         ]

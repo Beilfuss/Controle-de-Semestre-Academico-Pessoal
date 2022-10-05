@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 
+
 class TelaDisciplina():
 
     def __init__(self, controlador_disciplina):
@@ -13,26 +14,33 @@ class TelaDisciplina():
                                  0: '', 1: '', 'rec': ''}
 
         layout = [
-            [sg.Text("{codigo} - {nome}".format(codigo=dados_disciplinas['codigo'],nome=dados_disciplinas['nome']), font="bold",
+            [sg.Text("{codigo} - {nome}".format(codigo=dados_disciplinas['codigo'], nome=dados_disciplinas['nome']), font="bold",
                      justification="center", expand_x=True)],
-            [sg.Text("Professor: {professor}".format(professor=dados_disciplinas['professor']))],
-            [sg.Text("Recuperação: {rec}".format(rec=dados_disciplinas['rec']))],
+            [sg.Text("Professor: {professor}".format(
+                professor=dados_disciplinas['professor']))],
+            [sg.Text("Recuperação: {rec}".format(
+                rec=dados_disciplinas['rec']))],
             [sg.Text("Média Parcial: ")],
             [sg.Text("Faltas Remanescentes: ")],
-            [sg.Submit(button_text="Encerrar Disciplina"), sg.Submit(button_text="Colegas"), sg.Submit(button_text="Registrar Falta")],
+            [sg.Submit(button_text="Encerrar Disciplina", button_color="red"), sg.Submit(
+                button_text="Colegas"), sg.Submit(button_text="Registrar Falta")],
             [sg.Text("")],
             [sg.Text("Lista de Atividades")],
-            [sg.Table([['Trabalho de APS', '03/10/2022','Trabalho', '40%', 'Sim', 10],], ['Atividade','Data de Entrega','Tipo','Peso','Grupo','Prioridade'], num_rows=1, justification = 'left')],
-            [sg.Submit(button_text="Ver Atividade"), sg.Submit(button_text="Cadastrar Atividade")],
+            [sg.Table([['Trabalho de APS', '03/10/2022', 'Trabalho', '40%', 'Sim', 10], ], ['Atividade',
+                      'Data de Entrega', 'Tipo', 'Peso', 'Grupo', 'Prioridade'], num_rows=1, justification='left')],
+            [sg.Submit(button_text="Ver Atividade"), sg.Submit(
+                button_text="Cadastrar Atividade")],
             [sg.Text("")],
             [sg.Text("Aulas")],
-            [sg.Table([['Segunda-Feira', '20h20', 'CTC304'], ['Quarta-Feira', '20h20', 'CTC204']], ['Dia','Hora','Sala'], num_rows=2)],
+            [sg.Table([['Segunda-Feira', '20h20', 'CTC304'], ['Quarta-Feira',
+                      '20h20', 'CTC204']], ['Dia', 'Hora', 'Sala'], num_rows=2)],
             [sg.Submit(button_text="Cadastrar Aula")],
-            [sg.Submit(button_text="Excluir Disciplina"), sg.Submit(button_text="Alterar Disciplina"),
+            [sg.Submit(button_text="Excluir Disciplina", button_color="red"), sg.Submit(button_text="Alterar Disciplina"),
              sg.Submit(button_text="Voltar")]
         ]
 
-        self.__janela = sg.Window("TelaDisciplina", default_element_size=(40, 1)).Layout(layout)
+        self.__janela = sg.Window(
+            "TelaDisciplina", default_element_size=(40, 1)).Layout(layout)
 
     def abrir(self, dados_disciplina=[]):
         self.inicializar_componentes(dados_disciplina)

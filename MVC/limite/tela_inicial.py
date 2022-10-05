@@ -1,3 +1,4 @@
+from turtle import bgcolor
 import PySimpleGUI as sg
 sg.theme('Reddit')
 
@@ -19,7 +20,8 @@ class TelaInicial():
             [sg.Text('Olá, [Aluno]! O que vamos fazer hoje?')],
             [sg.Text("Disciplinas")],
             cartoes,
-            [sg.Button('Emitir Relatório'), sg.Button('Cadastrar Disciplina'),  sg.Button('Finalizar Sistema')]
+            [sg.Button('Emitir Relatório'), sg.Button(
+                'Cadastrar Disciplina'),  sg.Button('Finalizar Sistema', button_color="red")]
         ]
 
         self.__janela = sg.Window(
