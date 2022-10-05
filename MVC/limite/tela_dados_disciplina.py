@@ -23,7 +23,7 @@ class TelaDadosDisciplina():
                 dados_disciplina["numAulas"], key='numAulas', tooltip="Ex.: 40")],
             [sg.Text("Recuperação*"), sg.Radio('Sim', "RADIO1",
                                                default=True, size=(10, 1)), sg.Radio('Não', "RADIO1")],
-            [sg.Cancel(button_text="Cancelar"),
+            [sg.Cancel(button_text="Cancelar", button_color="red"),
              sg.Submit(button_text="Confirmar")]
         ]
 
