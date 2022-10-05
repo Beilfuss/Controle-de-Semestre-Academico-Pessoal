@@ -19,7 +19,7 @@ class TelaDisciplina():
             [sg.Text("Recuperação: {rec}".format(rec=dados_disciplinas['rec']))],
             [sg.Text("Média Parcial: ")],
             [sg.Text("Faltas Remanescentes: ")],
-            [sg.Submit(button_text="Colegas"), sg.Submit(button_text="Registrar Falta")],
+            [sg.Submit(button_text="Encerrar Disciplina"), sg.Submit(button_text="Colegas"), sg.Submit(button_text="Registrar Falta")],
             [sg.Text("")],
             [sg.Text("Lista de Atividades")],
             [sg.Table([['Trabalho de APS', '03/10/2022','Trabalho', '40%', 'Sim', 10],], ['Atividade','Data de Entrega','Tipo','Peso','Grupo','Prioridade'], num_rows=1, justification = 'left')],

@@ -4,7 +4,7 @@ from entidade.colega import Colega
 class Disciplina:
 
     def __init__(self, id: int, nome: str, codigo: str, professor: str, numAulas: int, rec: str, aulas: list,
-                 faltas: list, atividades: list, colegas: list):
+                 faltas: list, atividades: list, colegas: list, ativo: str):
         
         
         if isinstance(id, int):
@@ -27,6 +27,8 @@ class Disciplina:
             self.__atividades = atividades
         if isinstance(colegas, list):
             self.__colegas = colegas
+        if isinstance(ativo, str):
+            self.__ativo = ativo
 
     @property
     def id(self):
@@ -68,6 +70,9 @@ class Disciplina:
     def colegas(self):
         return self.__colegas
 
+    @property
+    def ativo(self):
+        return self.__ativo
 
     @nome.setter
     def nome(self, nome: str):
@@ -109,6 +114,11 @@ class Disciplina:
         if isinstance(atividades, list):
             self.__atividades = atividades
 
+    @ativo.setter
+    def ativo(self, ativo: str):
+        if isinstance(ativo, str):
+            self.__ativo = ativo
+
     def adicionar_colega(self, colega: int):
         if isinstance(colega, int):
             self.__colegas.append(colega)
@@ -126,5 +136,6 @@ class Disciplina:
             "professor": self.professor,
             "numAulas": self.numAulas,
             "rec": self.rec,
-            "colegas": self.colegas
+            "colegas": self.colegas,
+            "ativo": self.ativo
         }

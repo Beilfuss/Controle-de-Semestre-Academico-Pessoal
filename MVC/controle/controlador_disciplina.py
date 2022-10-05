@@ -19,7 +19,7 @@ class ControladorDisciplina:
 
         while(True):
             disciplina = self.__dao.obter_por_id(dados_disciplina["id"])
-        
+
             botao, valores = self.__tela_disciplina.abrir(dados_disciplina)
 
             self.__tela_disciplina.fechar()
@@ -27,15 +27,17 @@ class ControladorDisciplina:
             opcoes = {
                 "Alterar Disciplina": lambda disciplina: self.alterar_disciplina(disciplina, dados_disciplina),
                 "Excluir Disciplina": lambda disciplina: self.excluir_disciplina(disciplina.id),
-                "Colegas": lambda disciplina: self.abrir_tela_colegas(disciplina)
+                "Colegas": lambda disciplina: self.abrir_tela_colegas(disciplina),
+                "Encerrar Disciplina": lambda disciplina: self.encerrar_disciplina(disciplina.id)
             }
 
             if botao != "Voltar":
                 opcoes[botao](disciplina)
                 break
 
-    def abrir_tela_colegas(self, disciplina):
+            break
 
+    def abrir_tela_colegas(self, disciplina):
 
         opcoes = {0: "", 1: lambda colega: self.remover_colega(disciplina, colega), 2:lambda colega:self.incluir_colega(disciplina, colega)}
 
@@ -64,55 +66,6 @@ class ControladorDisciplina:
             if validacao == True:
                 self.__dao.persist_disciplina(dados_disciplina)
                 break
-        
-        '''alteracao = False
-
-        while True:
-
-                #Troquei dados_disciplina != None por dados_disciplina is not None, conforme pep8:
-
-                #https://peps.python.org/pep-0008/
-
-                #Comparisons to singletons like None should always be done with is or is not, never the equality operators.
-
-                #Also, beware of writing if x when you really mean if x is not None – e.g. when testing whether a variable or argument that 
-                #defaults to None was set to some other value. The other value might have a type (such as a container) that could be false 
-                #in a boolean context!
-
-            if dados_disciplina is not None:
-                alteracao = True
-                dados_disciplina_old = dados_disciplina
-                botao, dados_disciplina = self.__tela_dados_disciplina.abrir(dados_disciplina)
-
-
-            else:
-                botao, dados_disciplina = self.__tela_dados_disciplina.abrir(
-                dados_disciplina={"nome": "", "codigo": "", "professor": "",
-                                  "numAulas": "", "rec": ""})
-
-            self.__tela_dados_disciplina.fechar()
-
-            if botao == "Cancelar":
-                break
-
-            
-
-                
-                
-                #retirados os argumentos none em conformidade com a assinatura do método alterado. Os dados aulas, colegas, atividades, etc, nunca serão 
-                #conhecidos ou informados na tela de cadastro/alteração, logo acredito que não precisam estar aqui como argumentos
-                
-                #Troquei para enviar o próprio dicionário recebido pela tela
-
-                sucesso = self.__dao.persist_disciplina(dados_disciplina)
-                
-                if not sucesso:
-                    self.__tela_disciplina.mostrar_mensagem("Atenção", "Disciplina já cadastrada!")
-
-                if alteracao == True:
-                    return dados_disciplina
-
-                break'''
 
     def alterar_disciplina(self, disciplina, dados_disciplina):
 
@@ -131,36 +84,12 @@ class ControladorDisciplina:
                 dados_disciplina['id'] = disciplina.id
                 self.__dao.alterar_disciplina(dados_disciplina)
                 break
-
-
-        '''
-            #1- Criar método alterar_disciplina no dao
-            #2- Usar query: UPDATE DISCIPLINAS SET nome = ?, codigo = ?, numAulas = ?, rec = ?, professor = ? WHERE id = ? 
-            #3- Setar os query_params, observando a ordem
-            #4- Adaptar a query se necessário
-            #5- Após atualizar o banco de dados, atualizar o objeto disciplina correspondente - usar o id para buscar no cache
-
-        dados_disciplina_old = dados_disciplina
-        dados_disciplina = self.incluir_disciplina(dados_disciplina)
-
-        #alterado != None para is not None conforme comentário anterior
-        if dados_disciplina is not None:
-            if dados_disciplina['codigo'] != dados_disciplina_old['codigo']:
-                self.excluir_disciplina(dados_disciplina_old['codigo'])'''
             
     def excluir_disciplina(self, id):
-        #alteração para usar id no lugar de código
         self.__dao.delete_disciplina(id)
 
-        '''
-        Por enquanto você está usando código como identificador único, que deverá mudar para id posteriormente.
-        Os seguintes passos devem funcionar com código e provavelmente quando trocar com id, mas podem ser necessárias adaptações
-        - Passo 1: método excluir_disciplina deverá receber o código/id da disciplina como argumento. Fácil de fazer, pois o método abrir tela recebe os dados da disciplina, que incluem o código e incluirão o id
-        - Passo 2: chamar o método delete disciplina do DAO, passando o código da disciplina como argumento em vez de um index. Trocar o nome do argumento para representar corretamente
-        - Passo 3: excluir a linha disciplina = list(... etc, não será necessária
-        - Passo 4: Corrigir a query conforme o nome da tabela. Utilizar o codigo/id da disciplina com parâmetro
-        - Passo 5: Excluir a disciplina do cache, usando o codigo/id como argumento do pop
-        '''
+    def encerrar_disciplina(self, id):
+        self.__dao.encerrar_disciplina(id)
 
     def verificar_validade(self, dados_disciplina):
         try:
@@ -171,21 +100,14 @@ class ControladorDisciplina:
             else:
                 dados_disciplina["rec"] = "Não" # Não tem REC
 
-            if dados_disciplina == {"nome": "", "codigo": "", "professor": "", "numero_aulas": "", "rec": ""
-                    } or (not (dados_disciplina["nome"]).isalpha()) or (not (dados_disciplina["professor"]).isalpha()):
-                #Nome D1cisplin4 passa na validação de nome ou nome Math3us passa na de professor.
-                #ver método isalpha na documentação (https://docs.python.org/3/library/stdtypes.html#string-methods)
-                #Não seria melhor usar algo do tipo  "not dados_disciplina["nome"].isalpha()"?
-
-                #Corrigido. Pode ser assim?
-                    
+            if dados_disciplina == {"nome": "", "codigo": "", "professor": "", "numero_aulas": "", "rec": ""} \
+                    or (not (all(char.isalpha() or char.isspace() for char in dados_disciplina['nome']))) \
+                    or (not (all(char.isalpha() or char.isspace() for char in dados_disciplina['professor']))) \
+                    or (dados_disciplina['codigo'].isalpha()) or (dados_disciplina['codigo'].isdigit()):
                 raise ValueError
 
             disciplinas = self.__dao.buscar_todos()
             for disciplina in disciplinas:
-                #Nome da disciplina é um bom critério para decidir se a disciplina já existe ou não?
-                #Troquei por código. Será que "nome" e "código" ficariam melhor?
-                # Id não dá para usar porque só é criado quando vai para o BD, certo?
                 if disciplina.codigo == dados_disciplina['codigo']:
                     raise JaExistenteException
                 

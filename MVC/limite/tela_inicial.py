@@ -42,17 +42,17 @@ class TelaInicial():
 
         for index, disciplina in enumerate(dados_disciplinas):
 
-            
-            frame_rows.append(sg.Frame(disciplina["nome"], [
-                [sg.Text("")],
-                [sg.Text("Média Parcial: -")],
-                [sg.Text("Faltas Remanescentes: -")],
-                [sg.Text("Risco de Reprovação: -")],
-                [sg.Text("Próxima Entrega: -")],
-                [sg.Button("Ver mais", key=index)]],
-                size=(200, 200),
-                relief="raised",  # raised, ridge, solid
-                element_justification="center",
-                vertical_alignment="center"))
+            if disciplina['ativo'] == "Sim":
+                frame_rows.append(sg.Frame(disciplina["nome"], [
+                    [sg.Text("")],
+                    [sg.Text("Média Parcial: -")],
+                    [sg.Text("Faltas Remanescentes: -")],
+                    [sg.Text("Risco de Reprovação: -")],
+                    [sg.Text("Próxima Entrega: -")],
+                    [sg.Button("Ver mais", key=index)]],
+                    size=(200, 200),
+                    relief="raised",  # raised, ridge, solid
+                    element_justification="center",
+                    vertical_alignment="center"))
 
         return frame_rows

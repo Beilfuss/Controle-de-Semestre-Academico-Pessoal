@@ -13,15 +13,14 @@ class DisciplinaDAO(AbstractDAO):
 
     def __load(self):
 
-        # Alterei para buscar o id e utilizá-lo como chave em vez do código, conforme conversamos no whatsapp
-        query = "SELECT id, nome, codigo, professor, numAulas, rec from DISCIPLINAS"
+        query = "SELECT id, nome, codigo, professor, numAulas, rec, ativo from DISCIPLINAS"
         res = self.executar_query(query)
-        for (id, nome, codigo, professor, numAulas, rec) in res:
+        for (id, nome, codigo, professor, numAulas, rec, ativo) in res:
 
             colegas = self.__obter_colegas(id)
 
             self._cache[id] = Disciplina(
-                id, nome, codigo, professor, numAulas, rec, [], [], [], colegas)
+                id, nome, codigo, professor, numAulas, rec, [], [], [], colegas, ativo)
 
     def __obter_colegas(self, id):
 
@@ -37,8 +36,8 @@ class DisciplinaDAO(AbstractDAO):
         return colegas
 
     def create_table(self):
-        # aulas, faltas, atividades e colegas não serão colunas da tabela disciplina, conforme documento do sheets. Retirei da query. Adequei nos outros métodos
-        query = "CREATE TABLE IF NOT EXISTS DISCIPLINAS(id INTEGER PRIMARY KEY ASC, nome TEXT NOT NULL, codigo TEXT NOT NULL, professor TEXT NOT NULL, numAulas INTEGER NOT NULL, rec INTEGER NOT NULL)"
+        # aulas, faltas, atividades e colegas não serão colunas da tabela disciplina
+        query = "CREATE TABLE IF NOT EXISTS DISCIPLINAS(id INTEGER PRIMARY KEY ASC, nome TEXT NOT NULL, codigo TEXT NOT NULL, professor TEXT NOT NULL, numAulas INTEGER NOT NULL, rec INTEGER NOT NULL, ativo TEXT NOT NULL)"
         self.executar_query(query)
 
     def create_table_colegas_disciplinas(self):
@@ -60,22 +59,21 @@ class DisciplinaDAO(AbstractDAO):
         return disciplina_dados
 
     def persist_disciplina(self, dados_disciplina):
-        # Muitos argumentos, chamada fica estranha. Não seria melhor passar apenas um argumento (ex: dicionário contendo todos os dados) e utilizar os atributos do dicionário dentro do método?
 
-        query = "INSERT INTO DISCIPLINAS(nome, codigo, professor, numAulas, rec) VALUES(?, ?, ?, ?, ?)"
+        query = "INSERT INTO DISCIPLINAS(nome, codigo, professor, numAulas, rec, ativo) VALUES(?, ?, ?, ?, ?, ?)"
         query_params = (dados_disciplina["nome"], dados_disciplina["codigo"], dados_disciplina["professor"],
-                        dados_disciplina["numAulas"], dados_disciplina["rec"])
+                        dados_disciplina["numAulas"], dados_disciplina["rec"], "Sim")
 
         try:
             # adequações para utilizar o id como chave e os dados persistidos na instanciação do objeto disciplina. Garante consistência entre a memória e o banco.
             # recebe o id do row inserido no banco
             inserted_id = self.executar_query(query, query_params)
 
-            (id, nome, codigo, professor, numAulas, rec) = self.obter_por_id(
+            (id, nome, codigo, professor, numAulas, rec, ativo) = self.obter_por_id(
                 inserted_id)  # recebe os dados do objeto inserido no banco
 
             self._cache[id] = Disciplina(
-                id, nome, codigo, professor, numAulas, rec, [], [], [], [])
+                id, nome, codigo, professor, numAulas, rec, [], [], [], [], ativo)
             return True
             
         except Exception as err:
@@ -97,7 +95,6 @@ class DisciplinaDAO(AbstractDAO):
         disciplina.rec = dados_disciplina['rec']
 
     def delete_disciplina(self, id):
-        # adequação para usar id no lugar de código
         query = "DELETE from DISCIPLINAS where id=(?)"
         query_params = (id,)
         self.executar_query(query, query_params)
@@ -105,6 +102,14 @@ class DisciplinaDAO(AbstractDAO):
         self._cache.pop(id)
 
         self.remover_colegas(id)
+
+    def encerrar_disciplina(self, id):
+        query = "UPDATE DISCIPLINAS SET ativo = ? WHERE id = ?"
+        query_params = ("Não", id)
+        self.executar_query(query, query_params)
+
+        disciplina = self._cache[id]
+        disciplina.ativo = "Não"
 
     def incluir_colega(self, disciplina, colega):
 
