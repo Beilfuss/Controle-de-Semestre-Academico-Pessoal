@@ -31,7 +31,7 @@ class ControladorDisciplina:
                 "Encerrar Disciplina": lambda disciplina: self.encerrar_disciplina(disciplina.id)
             }
 
-            if botao != "Voltar":
+            if botao != "Voltar" and botao is not None:
                 opcoes[botao](disciplina)
                 break
 
