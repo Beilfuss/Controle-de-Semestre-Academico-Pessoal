@@ -19,32 +19,20 @@ class ControladorDisciplina:
 
         while(True):
             disciplina = self.__dao.obter_por_id(dados_disciplina["id"])
-            #opcoes = {
-            #"Voltar": self.__tela_dados_disciplina.fechar,
-            #"Alterar Disciplina": self.alterar_disciplina,
-            #"Excluir Disciplina": self.excluir_disciplina
-            #}
         
             botao, valores = self.__tela_disciplina.abrir(dados_disciplina)
-        
-            #self.__tela_dados_disciplina.fechar()
-            #if(botao != "Voltar"):
-            #    opcoes[botao](dados_disciplina)
 
-            if botao == "Voltar" or botao is None:
-                self.__tela_disciplina.fechar()
+            self.__tela_disciplina.fechar()
+
+            opcoes = {
+                "Alterar Disciplina": lambda disciplina: self.alterar_disciplina(disciplina, dados_disciplina),
+                "Excluir Disciplina": lambda disciplina: self.excluir_disciplina(disciplina.id),
+                "Colegas": lambda disciplina: self.abrir_tela_colegas(disciplina)
+            }
+
+            if botao != "Voltar":
+                opcoes[botao](disciplina)
                 break
-            elif botao == "Alterar Disciplina":
-                self.__tela_disciplina.fechar()
-                self.alterar_disciplina(disciplina, dados_disciplina)
-                break
-            elif botao == "Excluir Disciplina":
-                self.__tela_disciplina.fechar()
-                self.excluir_disciplina(disciplina.id)
-                break
-            elif botao == "Colegas":
-                self.__tela_disciplina.fechar()
-                self.abrir_tela_colegas(disciplina)
 
     def abrir_tela_colegas(self, disciplina):
 
