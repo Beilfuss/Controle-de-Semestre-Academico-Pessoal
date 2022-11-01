@@ -25,6 +25,9 @@ class ControladorSistema:
     def associar_colega_disciplina(self, disciplina_id, colega_id):
         self.__controlador_disciplina.incluir_colega(disciplina_id, colega_id)
 
+    def cadastrar_grupo(self, atividade_id=1):
+        self.__controlador_grupo.cadastrar_grupo(atividade_id)
+
     def abrir_tela(self):
 
         dict_opcoes = {'Cadastrar Disciplina': self.cadastrar_disciplina,
@@ -35,14 +38,15 @@ class ControladorSistema:
 
             opcao_escolhida = self.__tela_inicial.abrir(disciplinas)
 
-            if(opcao_escolhida is None):
+            if (opcao_escolhida is None):
                 exit(0)
 
             if (isinstance(opcao_escolhida, int)):
-                self.__controlador_disciplina.abrir_tela_disciplina(disciplinas[opcao_escolhida])
-                
+                self.__controlador_disciplina.abrir_tela_disciplina(
+                    disciplinas[opcao_escolhida])
+
             else:
                 funcao_escolhida = dict_opcoes[opcao_escolhida]
                 funcao_escolhida()
-            
+
             self.__tela_inicial.close()
