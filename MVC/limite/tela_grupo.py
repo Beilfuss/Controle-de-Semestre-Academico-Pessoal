@@ -21,13 +21,13 @@ class TelaGrupo:
             [sg.Text("Colegas da Disciplina", font="bold",
                      justification="center", expand_x=True)],
             [sg.OptionMenu(colegas, key="novo_colega")],
-            [sg.Button("Adicionar Colega", key=2)],
+            [sg.Button("Adicionar Colega", key=1)],
             [sg.Text("Membros do Grupo", font="bold",
                      justification="center", expand_x=True)],
             [sg.Table(colegas_cadastrados, headings=[
                 "Nome"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
-            [sg.Button("Excluir Colega", key=3)],
-            [sg.Button("Cancelar", key=0), sg.Button("Confirmar", key=4)]
+            [sg.Button("Excluir Colega", key=2)],
+            [sg.Button("Cancelar", key=0), sg.Button("Confirmar", key=3)]
         ]
 
         self.__janela = sg.Window("Cadastro de Grupo").Layout(layout)
@@ -42,3 +42,6 @@ class TelaGrupo:
             return (0, {})
 
         return botao, valores
+
+    def fechar(self):
+        self.__janela.Close()
