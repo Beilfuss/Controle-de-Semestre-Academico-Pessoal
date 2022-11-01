@@ -3,7 +3,9 @@ from entidade.nota import Nota
 
 class Atividade:
 
-    def __init__(self, nome: str, tipo: str, data: str, nota: Nota, grupo: bool, priorizar: bool):
+    def __init__(self, id: int, nome: str, tipo: str, data: str, nota: Nota, grupo: bool, priorizar: bool):
+        if isinstance(id, int):
+            self.__id = id
         if isinstance(nome, str):
             self.__nome = nome
         if isinstance(tipo, str):
@@ -16,6 +18,10 @@ class Atividade:
             self.__grupo = grupo
         if isinstance(priorizar, bool):
             self.__priorizar = priorizar
+
+    @property
+    def id(self):
+        return self.__id
 
     @property
     def nome(self):

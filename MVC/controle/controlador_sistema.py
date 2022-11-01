@@ -2,6 +2,7 @@ from limite.tela_inicial import TelaInicial
 from controle.controlador_disciplina import ControladorDisciplina
 from controle.controlador_colega import ControladorColega
 from controle.controlador_grupo import ControladorGrupo
+from temp.temp_atividade import ControladorAtividadeTemp
 
 
 class ControladorSistema:
@@ -11,6 +12,7 @@ class ControladorSistema:
         self.__controlador_disciplina = ControladorDisciplina(self)
         self.__controlador_colega = ControladorColega(self)
         self.__controlador_grupo = ControladorGrupo(self)
+        self.__controlador_temp = ControladorAtividadeTemp(self)
 
     def inicializar_sistema(self):
         self.abrir_tela()
@@ -30,13 +32,13 @@ class ControladorSistema:
     def abrir_tela_grupo(self):
         self.__controlador_grupo.inicializar()
 
-    def cadastrar_grupo(self, atividade_id=1):
-        self.__controlador_grupo.cadastrar_grupo(atividade_id)
+    def cadastrar_grupo(self, disciplina, atividade_id):
+        self.__controlador_grupo.cadastrar_grupo(disciplina, atividade_id)
 
     def abrir_tela(self):
 
         dict_opcoes = {'Cadastrar Disciplina': self.cadastrar_disciplina,
-                       'Cadastrar Grupo': self.abrir_tela_grupo,
+                       'UseCase Grupo': self.__controlador_temp.inicializar,
                        'Finalizar Sistema': self.encerrar_sistema}
 
         while True:

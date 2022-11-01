@@ -10,14 +10,14 @@ class ControladorGrupo:
         self.__tela = TelaGrupo(self)
         self.__dao = GrupoDAO()
 
-    def inicializar(self, id_disciplina=1, nome_disciplina="Placeholder", id_atividade=1):
+    def cadastrar_grupo(self, disciplina, atividade_id):
 
         # obter colegas - id - atividade
         # obter dados do grupo id - disciplina
 
         opcoes = {0: ""}
 
-        opcao_escolhida, dados = self.__tela.abrir(nome_disciplina)
+        opcao_escolhida, dados = self.__tela.abrir( disciplina.nome)
 
         if (opcao_escolhida != 0):
             return (opcao_escolhida, opcoes[opcao_escolhida](dados))
