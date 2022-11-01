@@ -1,5 +1,4 @@
 
-# from readline import insert_text
 from dao.abstract_dao import AbstractDAO
 from entidade.colega import Colega
 

@@ -12,7 +12,7 @@ class Grupo:
     def colegas(self):
         return self.__colegas
 
-    @numAlunos.setter:
+    @numAlunos.setter
     def numAlunos(self, num):
         if (isinstance(num, int)):
             self.__numAlunos = num

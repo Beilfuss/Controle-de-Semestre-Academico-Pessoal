@@ -21,7 +21,8 @@ class TelaInicial():
             [sg.Text("Disciplinas")],
             cartoes,
             [sg.Button('Emitir Relatório'), sg.Button(
-                'Cadastrar Disciplina'),  sg.Button('Finalizar Sistema', button_color="red")]
+                'Cadastrar Disciplina'),  sg.Button('Finalizar Sistema', button_color="red")],
+            [sg.Button("Cadastrar Grupo")]
         ]
 
         self.__janela = sg.Window(
