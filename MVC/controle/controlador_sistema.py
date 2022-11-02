@@ -26,6 +26,9 @@ class ControladorSistema:
     def cadastrar_disciplina(self):
         self.__controlador_disciplina.incluir_disciplina()
 
+    def popular_colegas(self, colegas_ids):
+        return self.__controlador_colega.obter_colegas(colegas_ids)
+
     def obter_colegas_por_disc(self, disciplina_id):
         return self.__controlador_colega.obter_colega_por_disc(disciplina_id)
 
@@ -38,6 +41,12 @@ class ControladorSistema:
     def cadastrar_grupo(self, disciplina_id, disciplina_nome, atividade_id):
         self.__controlador_grupo.cadastrar_grupo(
             disciplina_id, disciplina_nome, atividade_id)
+
+    def obter_colegas_do_grupo(self, atividade_id):
+        grupo = self.__controlador_grupo.obter_grupo_por_atividade(
+            atividade_id)
+
+        return self.popular_colegas(grupo.colegas)
 
     def abrir_tela(self):
 

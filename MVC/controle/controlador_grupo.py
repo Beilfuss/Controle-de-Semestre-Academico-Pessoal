@@ -4,9 +4,9 @@ from dao.grupo_dao import GrupoDAO
 
 '''
     Falta:
+
         Lógica para marcar colegas de outros grupos
         Excluir colega da disciplina implica na exclusão de colega do grupo
-        Renomear propriedades - numColegas x numAlunos
 '''
 
 
@@ -43,6 +43,9 @@ class ControladorGrupo:
                 opcao_escolhida, opcoes[opcao_escolhida](dados)
             else:
                 return (opcao_escolhida, None)
+
+    def obter_grupo_por_atividade(self, atividade_id):
+        return self.__dao.obter_por_id(atividade_id)
 
     def obter_colegas_por_disc(self, disciplina_id):
         # obter colegas - id - atividade

@@ -27,6 +27,13 @@ class ControladorColega:
         else:
             return (opcao_escolhida, None)
 
+    def obter_colegas(self, colegas_ids):
+
+        colegas = []
+        for colega_id in colegas_ids:
+            colegas.append(self.__dao.obter_por_id(colega_id))
+        return colegas
+
     def obter_colega_por_disc(self, disciplina_id):
         return self.__dao.obter_por_disc(disciplina_id)
 
