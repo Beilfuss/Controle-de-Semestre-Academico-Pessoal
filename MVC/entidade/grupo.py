@@ -28,6 +28,12 @@ class Grupo:
         if (isinstance(num, int)):
             self.__numAlunos = num
 
+    def is_num_valido(self, num):
+        return num > 1 and num >= len(self.colegas)
+
+    def is_cheio(self):
+        return len(self.colegas) >= self.numAlunos
+
     def is_membro(self, colega_id):
         return colega_id in self.colegas
 
@@ -38,6 +44,3 @@ class Grupo:
     def remover_colega(self, colega_id):
         if colega_id in self.colegas:
             self.__colegas.remove(colega_id)
-        
-        print(colega_id)
-        print(self.__colegas)

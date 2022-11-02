@@ -52,8 +52,8 @@ class ControladorGrupo:
         colega = colegas[index]
 
         # Verifica se o colega já está no grupo
-        if (grupo.is_membro(colega.id)):
-            print("Colega já está no grupo")
+        if (grupo.is_membro(colega.id) or grupo.is_cheio()):
+            print("Colega já está no grupo ou grupo já está cheio")
         else:
             # Inclui o colega no grupo
             self.__dao.adiciona_membro(grupo, colega.id)
@@ -69,7 +69,7 @@ class ControladorGrupo:
 
         numColegas = int(dados["numColegas"])
 
-        if (numColegas < 2):
+        if (not grupo.is_num_valido(numColegas)):
             return print("Número inválido")
 
         self.__dao.alterar_numero_colegas(grupo, numColegas)
