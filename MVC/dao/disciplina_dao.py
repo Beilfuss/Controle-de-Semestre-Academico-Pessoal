@@ -131,8 +131,9 @@ class DisciplinaDAO(AbstractDAO):
         try:
             query = "DELETE FROM COLEGAS_DISCIPLINAS where disciplina_id=(?) and colega_id=(?)"
             query_params = (disciplina.id, colega.id)
-
             self.executar_query(query, query_params)
+
+            
 
             disciplina.remover_colega(colega.id)
 

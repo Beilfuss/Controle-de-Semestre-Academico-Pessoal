@@ -33,9 +33,6 @@ class GrupoDAO(AbstractDAO):
         query = "CREATE TABLE IF NOT EXISTS MEMBROS_GRUPO(grupo_id INTEGER NOT NULL, colega_id INTEGER NOT NULL, FOREIGN KEY(grupo_id) REFERENCES GRUPOS(id), FOREIGN KEY(colega_id) REFERENCES COLEGAS(id))"
         self.executar_query(query)
 
-        query = "CREATE TABLE IF NOT EXISTS GRUPO_ATIVIDADE(grupo_id INTEGER NOT NULL, atividade_id INTEGER NOT NULL, FOREIGN KEY(grupo_id) REFERENCES GRUPOS(id))"
-        self.executar_query(query)
-
     def criar_grupo(self, atividade_id):
         query = "INSERT INTO GRUPOS(id, numAlunos) VALUES(?, 2)"
         query_params = (atividade_id,)
@@ -84,4 +81,14 @@ class GrupoDAO(AbstractDAO):
         query_params = (numAlunos, grupo.id)
 
         self.executar_query(query, query_params)
-        grupo.numAlunos= numAlunos
+        grupo.numAlunos = numAlunos
+
+    def exists_grupo_anterior(self, colega_id, grupo_id):
+
+        query = "SELECT EXISTS(SELECT * FROM MEMBROS_GRUPO WHERE grupo_id!=:grupo_id AND colega_id=:colega_id)"
+        query_params = {"grupo_id": grupo_id,
+                        "colega_id": colega_id}
+
+        res = self.executar_query(query, query_params)
+        exists = res[0][0]
+        return exists == 1

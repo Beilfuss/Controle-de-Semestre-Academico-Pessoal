@@ -46,7 +46,11 @@ class ControladorSistema:
         grupo = self.__controlador_grupo.obter_grupo_por_atividade(
             atividade_id)
 
-        return self.popular_colegas(grupo.colegas)
+        if (grupo):
+            return self.popular_colegas(grupo.colegas)
+        else:
+            return []
+        
 
     def abrir_tela(self):
 

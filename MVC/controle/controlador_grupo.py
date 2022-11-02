@@ -21,11 +21,27 @@ class ControladorGrupo:
     def cadastrar_grupo(self, disciplina_id, disciplina_nome, atividade_id):
 
         colegas = self.obter_colegas_por_disc(disciplina_id)
-        colegas_dados = [(colega.nome, colega.matricula) for colega in colegas]
-
+    
         grupo = self.__dao.obter_por_id(atividade_id)
         if (grupo is None):
             grupo = self.__dao.criar_grupo(atividade_id)
+
+        '''
+            Para cada colega, verificar junto ao banco de relações se há uma entrada com o mesmo id de colega, mas outro id de grupo.
+            Retornar lista dos colegas que atendam a essa condição.
+            Marcar esses colegas como recomendados
+
+        '''
+        colegas_recomendados = self.obter_colegas_recomendados(
+            colegas, grupo.id)
+
+        colegas_dados = []
+        for colega in colegas:
+            if colega in colegas_recomendados:
+                colegas_dados.append(("{} (Recomendado)".format(
+                    colega.nome), colega.matricula))
+            else:
+                colegas_dados.append((colega.nome, colega.matricula))
 
         # extrair parte de baixo em uma função
         opcoes = {0: "", 1: lambda dados: self.adicionar_colega(grupo, colegas, dados),
@@ -50,6 +66,17 @@ class ControladorGrupo:
     def obter_colegas_por_disc(self, disciplina_id):
         # obter colegas - id - atividade
         return self.__controlador_sistema.obter_colegas_por_disc(disciplina_id)
+
+    def obter_colegas_recomendados(self, colegas, grupo_id):
+
+        colegas_recomendados = []
+
+        for colega in colegas:
+            recomendado = self.__dao.exists_grupo_anterior(colega.id, grupo_id)
+            if (recomendado):
+                colegas_recomendados.append(colega)
+
+        return colegas_recomendados
 
     def obter_colegas_do_grupo(self, colegas, colegas_grupo):
 
