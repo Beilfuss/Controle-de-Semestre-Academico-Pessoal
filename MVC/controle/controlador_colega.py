@@ -27,6 +27,9 @@ class ControladorColega:
         else:
             return (opcao_escolhida, None)
 
+    def obter_colega_por_disc(self, disciplina_id):
+        return self.__dao.obter_por_disc(disciplina_id)
+
     def listar_colegas(self, nome_disciplina, colegas):
         botao, dados = self.__tela.abrir(
             nome_disciplina, self.desempacotar_todos(colegas))
@@ -70,7 +73,7 @@ class ControladorColega:
 
                 if (not nome.isalpha()):
                     raise ValidationException
-                    
+
                 self.__dao.alterar_colega(colega, nome)
 
         except ValidationException as err:

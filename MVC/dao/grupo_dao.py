@@ -7,5 +7,5 @@ class GrupoDAO(AbstractDAO):
     def __init__(self):
         super().__init__()
 
-    #self.create_table()
-    #self.__load()
+        self.create_table()
+        self.__load()

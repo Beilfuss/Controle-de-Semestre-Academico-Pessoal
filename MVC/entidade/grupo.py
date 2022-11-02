@@ -18,7 +18,7 @@ class Grupo:
             self.__numAlunos = num
 
     def adicionar_colega(self, colega_id):
-        if(isintance(colega_id, int)):
+        if(isinstance(colega_id, int)):
             self.__colegas.append(colega_id)
     
     def remover_colega(self, colega_id):

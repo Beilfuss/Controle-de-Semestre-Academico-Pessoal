@@ -22,27 +22,6 @@ class ControladorAtividadeTemp:
         self.__tela_disciplina = TelaDisciplina(self)
         # self.__dao = AtividadeDAO()
 
-    def inicializar(self, disciplina_id, disciplina_nome):
-
-        opcoes = {
-            "Alterar Disciplina": lambda disciplina: print("placeholder"),
-            "Excluir Disciplina": lambda disciplina: print("placeholder"),
-            "Colegas": lambda disciplina: print("placeholder"),
-            "Encerrar Disciplina": lambda disciplina: print("placeholder"),
-            "Ver Atividade": lambda disciplina: self.ver_atividade(disciplina)
-        }
-        dados_disciplina = self.disciplina.desempacotar()
-
-        while (True):
-            botao, valores = self.__tela_disciplina.abrir(dados_disciplina)
-            self.__tela_disciplina.fechar()
-
-            if botao != "Voltar" and botao is not None:
-                opcoes[botao](self.disciplina)
-                break
-
-            break
-
     def ver_atividade(self, disciplina_id, disciplina_nome):
 
         opcoes = {1: lambda atividade: self.cadastrar_grupo(
