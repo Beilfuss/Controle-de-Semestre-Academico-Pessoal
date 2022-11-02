@@ -31,8 +31,8 @@ class TelaGrupo:
 
         self.__janela = sg.Window("Cadastro de Grupo").Layout(layout)
 
-    def abrir(self, nome_disciplina, colegas_dados):
-        self.inicializar_componentes(nome_disciplina, colegas_dados)
+    def abrir(self, nome_disciplina, colegas_dados, membros_dados):
+        self.inicializar_componentes(nome_disciplina, colegas_dados, membros_dados)
         botao, valores = self.__janela.Read()
         self.fechar()
 
