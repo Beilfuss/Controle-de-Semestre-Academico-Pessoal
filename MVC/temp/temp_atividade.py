@@ -22,7 +22,7 @@ class ControladorAtividadeTemp:
         self.__tela_disciplina = TelaDisciplina(self)
         # self.__dao = AtividadeDAO()
 
-    def inicializar(self):
+    def inicializar(self, disciplina_id, disciplina_nome):
 
         opcoes = {
             "Alterar Disciplina": lambda disciplina: print("placeholder"),
@@ -43,21 +43,21 @@ class ControladorAtividadeTemp:
 
             break
 
-    def ver_atividade(self, disciplina):
+    def ver_atividade(self, disciplina_id, disciplina_nome):
 
         opcoes = {1: lambda atividade: self.cadastrar_grupo(
-            disciplina, atividade.id)}
+            disciplina_id, disciplina_nome, atividade.id)}
 
         while (True):
-            botao, valores = self.__tela_atividade.abrir(disciplina.nome)
+            botao, valores = self.__tela_atividade.abrir(disciplina_nome)
             self.__tela_disciplina.fechar()
 
             if botao != "0" and botao is not None:
-                print(botao)
                 opcoes[botao](self.atividade)
                 break
 
             break
 
-    def cadastrar_grupo(self, disciplina, atividade_id):
-        self.__controlador_sistema.cadastrar_grupo(disciplina, atividade_id)
+    def cadastrar_grupo(self, disciplina_id, disciplina_nome, atividade_id):
+        self.__controlador_sistema.cadastrar_grupo(
+            disciplina_id, disciplina_nome, atividade_id)

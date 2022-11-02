@@ -30,6 +30,7 @@ class TelaDisciplina():
                       'Data de Entrega', 'Tipo', 'Peso', 'Grupo', 'Prioridade'], num_rows=1, justification='left')],
             [sg.Submit(button_text="Ver Atividade"), sg.Submit(
                 button_text="Cadastrar Atividade")],
+            [sg.Button("UseCase Grupo")],
             [sg.Text("")],
             [sg.Text("Aulas")],
             [sg.Table([['Segunda-Feira', '20h20', 'CTC304'], ['Quarta-Feira',

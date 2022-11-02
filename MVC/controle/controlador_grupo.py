@@ -1,5 +1,6 @@
 from limite.tela_grupo import TelaGrupo
 from dao.grupo_dao import GrupoDAO
+from entidade.grupo import Grupo
 
 
 class ControladorGrupo:
@@ -9,8 +10,9 @@ class ControladorGrupo:
         self.__controlador_sistema = controlador_sistema
         self.__tela = TelaGrupo(self)
         self.__dao = GrupoDAO()
+        self.__grupos = []
 
-    def cadastrar_grupo(self, disciplina, atividade_id):
+    def cadastrar_grupo(self, disciplina_id, disciplina_nome, atividade_id):
 
         # obter colegas - id - atividade
         # obter dados do grupo id - disciplina
@@ -18,8 +20,8 @@ class ControladorGrupo:
         opcoes = {0: "", 1: lambda dados: self.adicionar_colega(),
                   2: lambda dados: self.excluir_colega(), 3: lambda dados: self.confirmar_cadastro()}
 
-        while(True):
-            opcao_escolhida, dados = self.__tela.abrir(disciplina.nome)
+        while (True):
+            opcao_escolhida, dados = self.__tela.abrir(disciplina_nome)
 
             if (opcao_escolhida != 0):
                 opcao_escolhida, opcoes[opcao_escolhida](dados)

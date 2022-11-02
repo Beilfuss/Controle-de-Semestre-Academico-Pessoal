@@ -29,16 +29,15 @@ class ControladorSistema:
     def associar_colega_disciplina(self, disciplina_id, colega_id):
         self.__controlador_disciplina.incluir_colega(disciplina_id, colega_id)
 
-    def abrir_tela_grupo(self):
-        self.__controlador_grupo.inicializar()
+    def abrir_tela_temp(self, disciplina_id, disciplina_nome):
+        self.__controlador_temp.ver_atividade(disciplina_id, disciplina_nome)
 
-    def cadastrar_grupo(self, disciplina, atividade_id):
-        self.__controlador_grupo.cadastrar_grupo(disciplina, atividade_id)
+    def cadastrar_grupo(self, disciplina_id, disciplina_nome, atividade_id):
+        self.__controlador_grupo.cadastrar_grupo(disciplina_id, disciplina_nome, atividade_id)
 
     def abrir_tela(self):
 
         dict_opcoes = {'Cadastrar Disciplina': self.cadastrar_disciplina,
-                       'UseCase Grupo': self.__controlador_temp.inicializar,
                        'Finalizar Sistema': self.encerrar_sistema}
 
         while True:
