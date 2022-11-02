@@ -4,9 +4,7 @@ from dao.grupo_dao import GrupoDAO
 
 '''
     Falta:
-        COnsertar exclusão - indexes
         Lógica para marcar colegas de outros grupos
-        Melhorar validação
         Excluir colega da disciplina implica na exclusão de colega do grupo
         Renomear propriedades - numColegas x numAlunos
 '''
@@ -31,7 +29,7 @@ class ControladorGrupo:
 
         # extrair parte de baixo em uma função
         opcoes = {0: "", 1: lambda dados: self.adicionar_colega(grupo, colegas, dados),
-                  2: lambda dados: self.excluir_colega(grupo, colegas, dados), 3: lambda dados: self.alterar_numero_colegas(grupo, dados)}
+                  2: lambda dados: self.excluir_colega(grupo, colegas, dados), 3: lambda dados: self.alterar_numero_alunos(grupo, dados)}
 
         while (True):
 
@@ -77,11 +75,11 @@ class ControladorGrupo:
 
         self.__dao.remover_membro(grupo, colega.id)
 
-    def alterar_numero_colegas(self, grupo, dados):
+    def alterar_numero_alunos(self, grupo, dados):
 
-        numColegas = int(dados["numColegas"])
+        numAlunos = int(dados["numAlunos"])
 
-        if (not grupo.is_num_valido(numColegas)):
+        if (not grupo.is_num_valido(numAlunos)):
             return print("Número inválido")
 
-        self.__dao.alterar_numero_colegas(grupo, numColegas)
+        self.__dao.alterar_numero_colegas(grupo, numAlunos)

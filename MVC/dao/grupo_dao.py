@@ -78,11 +78,10 @@ class GrupoDAO(AbstractDAO):
 
         grupo.remover_colega(colega_id)
 
-    def alterar_numero_colegas(self, grupo, numColegas):
+    def alterar_numero_colegas(self, grupo, numAlunos):
 
-        print(numColegas)
         query = "UPDATE GRUPOS SET numAlunos=(?) WHERE id=(?)"
-        query_params = (numColegas, grupo.id)
+        query_params = (numAlunos, grupo.id)
 
         self.executar_query(query, query_params)
-        grupo.numAlunos= numColegas
+        grupo.numAlunos= numAlunos

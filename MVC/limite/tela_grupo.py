@@ -7,15 +7,15 @@ class TelaGrupo:
         self.__controlador_grupo = controlador_grupo
         self.__janela = None
 
-    def inicializar_componentes(self, nome_disciplina, numColegas, colegas_dados=[], membros_dados=[]):
+    def inicializar_componentes(self, nome_disciplina, numAlunos, colegas_dados=[], membros_dados=[]):
 
         layout = [
             [sg.Text("Cadastro de Grupo", font="bold",
                      justification="center", expand_x=True)],
             [sg.Text(nome_disciplina, font="bold",
                      justification="center", expand_x=True)],
-            [sg.Text("Número de Membros*", size=(13, 1)), sg.InputText(numColegas,
-                                                                       key='numColegas', tooltip="Ex.: 3"), sg.Button("Alterar", key=3)],
+            [sg.Text("Número de Membros*", size=(13, 1)), sg.InputText(numAlunos,
+                                                                       key='numAlunos', tooltip="Ex.: 3"), sg.Button("Alterar", key=3)],
             [sg.Text("Colegas da Disciplina", font="bold",
                      justification="center", expand_x=True)],
             [sg.Table(colegas_dados, headings=[
