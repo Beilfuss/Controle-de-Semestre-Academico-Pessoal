@@ -24,7 +24,7 @@ class TelaGrupo:
             [sg.Text("Membros do Grupo", font="bold",
                      justification="center", expand_x=True)],
             [sg.Table(membros_dados, headings=[
-                "Nome"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
+                "Nome", "Matricula"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
             [sg.Button("Excluir Colega", key=2)],
             [sg.Button("Confirmar", key=0)]
         ]

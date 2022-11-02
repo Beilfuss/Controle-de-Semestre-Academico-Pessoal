@@ -1,6 +1,15 @@
 from limite.tela_grupo import TelaGrupo
 from dao.grupo_dao import GrupoDAO
-from entidade.grupo import Grupo
+
+
+'''
+    Falta:
+        COnsertar exclusão - indexes
+        Lógica para marcar colegas de outros grupos
+        Melhorar validação
+        Excluir colega da disciplina implica na exclusão de colega do grupo
+        Renomear propriedades - numColegas x numAlunos
+'''
 
 
 class ControladorGrupo:
@@ -10,7 +19,6 @@ class ControladorGrupo:
         self.__controlador_sistema = controlador_sistema
         self.__tela = TelaGrupo(self)
         self.__dao = GrupoDAO()
-        self.__grupos = []
 
     def cadastrar_grupo(self, disciplina_id, disciplina_nome, atividade_id):
 
@@ -28,8 +36,10 @@ class ControladorGrupo:
         while (True):
 
             membros_grupo = self.obter_colegas_do_grupo(colegas, grupo.colegas)
+            membros_grupo_dados = [(colega.nome, colega.matricula)
+                                   for colega in membros_grupo]
             opcao_escolhida, dados = self.__tela.abrir(
-                disciplina_nome, grupo.numAlunos, colegas_dados, membros_grupo)
+                disciplina_nome, grupo.numAlunos, colegas_dados, membros_grupo_dados)
 
             if (opcao_escolhida != 0):
                 opcao_escolhida, opcoes[opcao_escolhida](dados)
@@ -45,7 +55,7 @@ class ControladorGrupo:
         colegas_grupo_obj = list(
             filter(lambda colega: colega.id in colegas_grupo, colegas))
 
-        return [(colega.nome, colega.matricula) for colega in colegas_grupo_obj]
+        return colegas_grupo_obj
 
     def adicionar_colega(self, grupo, colegas, dados):
         index = dados["novo_colega_index"][0]
@@ -61,7 +71,9 @@ class ControladorGrupo:
     def excluir_colega(self, grupo, colegas, dados):
 
         index = dados["row_index"][0]
-        colega = colegas[index]
+        membros = self.obter_colegas_do_grupo(colegas, grupo.colegas)
+
+        colega = membros[index]
 
         self.__dao.remover_membro(grupo, colega.id)
 
