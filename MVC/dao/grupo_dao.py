@@ -20,9 +20,9 @@ class GrupoDAO(AbstractDAO):
             query = "SELECT colega_id FROM MEMBROS_GRUPO WHERE grupo_id=(?)"
             query_params = (group_id, )
             colegas = self.executar_query(query, query_params)
-            
+
             colegas_ids = [colega_id for colega_id, in colegas]
-            
+
             self._cache[group_id] = Grupo(group_id, numAlunos, colegas_ids)
 
     def create_table(self):
@@ -65,6 +65,24 @@ class GrupoDAO(AbstractDAO):
         query = "INSERT INTO MEMBROS_GRUPO(grupo_id, colega_id) VALUES(?,?)"
         query_params = (grupo.id, colega_id)
 
-        res = self.executar_query(query, query_params)
+        self.executar_query(query, query_params)
 
         grupo.adicionar_colega(colega_id)
+
+    def remover_membro(self, grupo, colega_id):
+
+        query = "DELETE FROM MEMBROS_GRUPO WHERE colega_id=(?)"
+        query_params = (colega_id,)
+
+        self.executar_query(query, query_params)
+
+        grupo.remover_colega(colega_id)
+
+    def alterar_numero_colegas(self, grupo, numColegas):
+
+        print(numColegas)
+        query = "UPDATE GRUPOS SET numAlunos=(?) WHERE id=(?)"
+        query_params = (numColegas, grupo.id)
+
+        self.executar_query(query, query_params)
+        grupo.numAlunos= numColegas

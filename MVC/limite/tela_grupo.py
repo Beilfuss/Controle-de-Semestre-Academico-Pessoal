@@ -7,15 +7,15 @@ class TelaGrupo:
         self.__controlador_grupo = controlador_grupo
         self.__janela = None
 
-    def inicializar_componentes(self, nome_disciplina, colegas_dados=[], membros_dados=[]):
+    def inicializar_componentes(self, nome_disciplina, numColegas, colegas_dados=[], membros_dados=[]):
 
         layout = [
             [sg.Text("Cadastro de Grupo", font="bold",
                      justification="center", expand_x=True)],
             [sg.Text(nome_disciplina, font="bold",
                      justification="center", expand_x=True)],
-            [sg.Text("Número de Membros*", size=(13, 1)), sg.InputText(2,
-                                                                       key='numColegas', tooltip="Ex.: 3")],
+            [sg.Text("Número de Membros*", size=(13, 1)), sg.InputText(numColegas,
+                                                                       key='numColegas', tooltip="Ex.: 3"), sg.Button("Alterar", key=3)],
             [sg.Text("Colegas da Disciplina", font="bold",
                      justification="center", expand_x=True)],
             [sg.Table(colegas_dados, headings=[
@@ -26,13 +26,14 @@ class TelaGrupo:
             [sg.Table(membros_dados, headings=[
                 "Nome"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
             [sg.Button("Excluir Colega", key=2)],
-            [sg.Button("Cancelar", key=0), sg.Button("Confirmar", key=3)]
+            [sg.Button("Confirmar", key=0)]
         ]
 
         self.__janela = sg.Window("Cadastro de Grupo").Layout(layout)
 
-    def abrir(self, nome_disciplina, colegas_dados, membros_dados):
-        self.inicializar_componentes(nome_disciplina, colegas_dados, membros_dados)
+    def abrir(self, nome_disciplina, numColegas, colegas_dados, membros_dados):
+        self.inicializar_componentes(
+            nome_disciplina, numColegas, colegas_dados, membros_dados)
         botao, valores = self.__janela.Read()
         self.fechar()
 

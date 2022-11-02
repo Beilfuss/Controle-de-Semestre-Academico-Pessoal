@@ -20,16 +20,16 @@ class ControladorGrupo:
         grupo = self.__dao.obter_por_id(atividade_id)
         if (grupo is None):
             grupo = self.__dao.criar_grupo(atividade_id)
-   
+
         # extrair parte de baixo em uma função
         opcoes = {0: "", 1: lambda dados: self.adicionar_colega(grupo, colegas, dados),
-                  2: lambda dados: self.excluir_colega(), 3: lambda dados: self.confirmar_cadastro()}
+                  2: lambda dados: self.excluir_colega(grupo, colegas, dados), 3: lambda dados: self.alterar_numero_colegas(grupo, dados)}
 
         while (True):
 
             membros_grupo = self.obter_colegas_do_grupo(colegas, grupo.colegas)
             opcao_escolhida, dados = self.__tela.abrir(
-                disciplina_nome, colegas_dados, membros_grupo)
+                disciplina_nome, grupo.numAlunos, colegas_dados, membros_grupo)
 
             if (opcao_escolhida != 0):
                 opcao_escolhida, opcoes[opcao_escolhida](dados)
@@ -42,11 +42,9 @@ class ControladorGrupo:
 
     def obter_colegas_do_grupo(self, colegas, colegas_grupo):
 
-      
         colegas_grupo_obj = list(
             filter(lambda colega: colega.id in colegas_grupo, colegas))
 
-        
         return [(colega.nome, colega.matricula) for colega in colegas_grupo_obj]
 
     def adicionar_colega(self, grupo, colegas, dados):
@@ -60,10 +58,18 @@ class ControladorGrupo:
             # Inclui o colega no grupo
             self.__dao.adiciona_membro(grupo, colega.id)
 
-    def excluir_colega(self):
+    def excluir_colega(self, grupo, colegas, dados):
 
-        print("A implementar")
+        index = dados["row_index"][0]
+        colega = colegas[index]
 
-    def confirmar_cadastro(self):
+        self.__dao.remover_membro(grupo, colega.id)
 
-        print("A implementar")
+    def alterar_numero_colegas(self, grupo, dados):
+
+        numColegas = int(dados["numColegas"])
+
+        if (numColegas < 2):
+            return print("Número inválido")
+
+        self.__dao.alterar_numero_colegas(grupo, numColegas)

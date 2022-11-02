@@ -37,4 +37,7 @@ class Grupo:
 
     def remover_colega(self, colega_id):
         if colega_id in self.colegas:
-            self.__colegas.pop(colega_id)
+            self.__colegas.remove(colega_id)
+        
+        print(colega_id)
+        print(self.__colegas)
