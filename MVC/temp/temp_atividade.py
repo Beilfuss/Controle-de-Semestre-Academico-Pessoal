@@ -20,24 +20,27 @@ class ControladorAtividadeTemp:
 
     def ver_atividade(self, disciplina_id, disciplina_nome):
 
-        colegas = self.obter_colegas_do_grupo(self.atividade.id)
-        colegas_dados = [(colega.nome, colega.matricula)
-                         for colega in colegas]
+
 
         
         opcoes = {1: lambda atividade: self.cadastrar_grupo(
             disciplina_id, disciplina_nome, atividade.id)}
 
         while (True):
+
+            colegas = self.obter_colegas_do_grupo(self.atividade.id)
+            colegas_dados = [(colega.nome, colega.matricula)
+                         for colega in colegas]
+
             botao, valores = self.__tela_atividade.abrir(
                 disciplina_nome, colegas_dados)
             self.__tela_disciplina.fechar()
 
-            if botao != 0 and botao is not None:
+            if(botao == 0):
+                return (botao, None)
+            else: 
                 opcoes[botao](self.atividade)
-                break
-
-            break
+                
 
     def cadastrar_grupo(self, disciplina_id, disciplina_nome, atividade_id):
         self.__controlador_sistema.cadastrar_grupo(
