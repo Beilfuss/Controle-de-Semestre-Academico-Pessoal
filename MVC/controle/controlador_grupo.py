@@ -27,23 +27,9 @@ class ControladorGrupo:
             colegas, grupo.id)
         colegas_dados = self.destacar_colegas_recomendados(
             colegas, colegas_recomendados)
-        
-        # extrair parte de baixo em uma função
-        opcoes = {0: "", 1: lambda dados: self.adicionar_colega(grupo, colegas, dados),
-                  2: lambda dados: self.excluir_colega(grupo, colegas, dados), 3: lambda dados: self.alterar_numero_alunos(grupo, dados)}
 
-        while (True):
-
-            membros_grupo = self.obter_colegas_do_grupo(colegas, grupo.colegas)
-            membros_grupo_dados = [(colega.nome, colega.matricula)
-                                   for colega in membros_grupo]
-            opcao_escolhida, dados = self.__tela.abrir(
-                disciplina_nome, grupo.numAlunos, colegas_dados, membros_grupo_dados)
-
-            if (opcao_escolhida != 0):
-                opcao_escolhida, opcoes[opcao_escolhida](dados)
-            else:
-                return (opcao_escolhida, None)
+        self.exibir_tela_cadastro(
+            disciplina_nome, grupo, colegas, colegas_dados)
 
     def obter_grupo_por_atividade(self, atividade_id):
         return self.__dao.obter_por_id(atividade_id)
@@ -71,7 +57,7 @@ class ControladorGrupo:
                     colega.nome), colega.matricula))
             else:
                 colegas_dados.append((colega.nome, colega.matricula))
-        
+
         return colegas_dados
 
     def obter_colegas_do_grupo(self, colegas, colegas_grupo):
@@ -80,6 +66,23 @@ class ControladorGrupo:
             filter(lambda colega: colega.id in colegas_grupo, colegas))
 
         return colegas_grupo_obj
+
+    def exibir_tela_cadastro(self, disciplina_nome, grupo, colegas, colegas_dados):
+        opcoes = {0: "", 1: lambda dados: self.adicionar_colega(grupo, colegas, dados),
+                  2: lambda dados: self.excluir_colega(grupo, colegas, dados), 3: lambda dados: self.alterar_numero_alunos(grupo, dados)}
+
+        while (True):
+
+            membros_grupo = self.obter_colegas_do_grupo(colegas, grupo.colegas)
+            membros_grupo_dados = [(colega.nome, colega.matricula)
+                                   for colega in membros_grupo]
+            opcao_escolhida, dados = self.__tela.abrir(
+                disciplina_nome, grupo.numAlunos, colegas_dados, membros_grupo_dados)
+
+            if (opcao_escolhida != 0):
+                opcao_escolhida, opcoes[opcao_escolhida](dados)
+            else:
+                return (opcao_escolhida, None)
 
     def adicionar_colega(self, grupo, colegas, dados):
         index = dados["novo_colega_index"][0]
