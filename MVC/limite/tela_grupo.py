@@ -26,7 +26,7 @@ class TelaGrupo:
             [sg.Table(membros_dados, headings=[
                 "Nome", "Matricula"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
             [sg.Button("Excluir Colega", key=2)],
-            [sg.Button("Confirmar", key=0)]
+            [sg.Button("Voltar", key=0)]
         ]
 
         self.__janela = sg.Window("Cadastro de Grupo").Layout(layout)

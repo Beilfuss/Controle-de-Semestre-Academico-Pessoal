@@ -33,7 +33,7 @@ class ControladorAtividadeTemp:
                 disciplina_nome, colegas_dados)
             self.__tela_disciplina.fechar()
 
-            if botao != "0" and botao is not None:
+            if botao != 0 and botao is not None:
                 opcoes[botao](self.atividade)
                 break
 

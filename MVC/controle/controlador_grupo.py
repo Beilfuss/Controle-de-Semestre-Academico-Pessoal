@@ -76,6 +76,7 @@ class ControladorGrupo:
             membros_grupo = self.obter_colegas_do_grupo(colegas, grupo.colegas)
             membros_grupo_dados = [(colega.nome, colega.matricula)
                                    for colega in membros_grupo]
+
             opcao_escolhida, dados = self.__tela.abrir(
                 disciplina_nome, grupo.numAlunos, colegas_dados, membros_grupo_dados)
 
