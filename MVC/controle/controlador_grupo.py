@@ -4,9 +4,7 @@ from dao.grupo_dao import GrupoDAO
 
 '''
     Falta:
-
-        Lógica para marcar colegas de outros grupos
-        Excluir colega da disciplina implica na exclusão de colega do grupo
+        Excluir colega da disciplina implica na exclusão de colega do grupo - Não dá para fazer
 '''
 
 
@@ -21,28 +19,15 @@ class ControladorGrupo:
     def cadastrar_grupo(self, disciplina_id, disciplina_nome, atividade_id):
 
         colegas = self.obter_colegas_por_disc(disciplina_id)
-    
         grupo = self.__dao.obter_por_id(atividade_id)
         if (grupo is None):
             grupo = self.__dao.criar_grupo(atividade_id)
 
-        '''
-            Para cada colega, verificar junto ao banco de relações se há uma entrada com o mesmo id de colega, mas outro id de grupo.
-            Retornar lista dos colegas que atendam a essa condição.
-            Marcar esses colegas como recomendados
-
-        '''
         colegas_recomendados = self.obter_colegas_recomendados(
             colegas, grupo.id)
-
-        colegas_dados = []
-        for colega in colegas:
-            if colega in colegas_recomendados:
-                colegas_dados.append(("{} (Recomendado)".format(
-                    colega.nome), colega.matricula))
-            else:
-                colegas_dados.append((colega.nome, colega.matricula))
-
+        colegas_dados = self.destacar_colegas_recomendados(
+            colegas, colegas_recomendados)
+        
         # extrair parte de baixo em uma função
         opcoes = {0: "", 1: lambda dados: self.adicionar_colega(grupo, colegas, dados),
                   2: lambda dados: self.excluir_colega(grupo, colegas, dados), 3: lambda dados: self.alterar_numero_alunos(grupo, dados)}
@@ -77,6 +62,17 @@ class ControladorGrupo:
                 colegas_recomendados.append(colega)
 
         return colegas_recomendados
+
+    def destacar_colegas_recomendados(self, colegas, colegas_recomendados):
+        colegas_dados = []
+        for colega in colegas:
+            if colega in colegas_recomendados:
+                colegas_dados.append(("{} (Recomendado)".format(
+                    colega.nome), colega.matricula))
+            else:
+                colegas_dados.append((colega.nome, colega.matricula))
+        
+        return colegas_dados
 
     def obter_colegas_do_grupo(self, colegas, colegas_grupo):
 
