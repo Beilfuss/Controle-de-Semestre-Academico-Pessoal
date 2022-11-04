@@ -27,6 +27,9 @@ class ControladorDisciplina:
             opcoes = {
                 "Alterar Disciplina": lambda disciplina: self.alterar_disciplina(disciplina, dados_disciplina),
                 "Excluir Disciplina": lambda disciplina: self.excluir_disciplina(disciplina.id),
+                "Cadastrar Aula": lambda disciplina: self.gerir_aulas(disciplina, "Cadastrar Aula"),
+                "Alterar Aula": lambda disciplina: self.gerir_aulas(disciplina, "Alterar Aula"),
+                "Excluir Aula": lambda disciplina: self.gerir_aulas(disciplina, "Excluir Aula"),
                 "Colegas": lambda disciplina: self.abrir_tela_colegas(disciplina),
                 "Encerrar Disciplina": lambda disciplina: self.encerrar_disciplina(disciplina.id)
             }
@@ -61,7 +64,7 @@ class ControladorDisciplina:
             if botao == "Cancelar":
                 break
             
-            validacao = self.verificar_validade(dados_disciplina)
+            validacao = self.verificar_validade_disciplina(dados_disciplina)
             
             if validacao == True:
                 self.__dao.persist_disciplina(dados_disciplina)
@@ -78,7 +81,7 @@ class ControladorDisciplina:
             if botao == "Cancelar":
                 break
             
-            validacao = self.verificar_validade(dados_disciplina)
+            validacao = self.verificar_validade_disciplina(dados_disciplina)
             
             if validacao == True:
                 dados_disciplina['id'] = disciplina.id
@@ -91,7 +94,7 @@ class ControladorDisciplina:
     def encerrar_disciplina(self, id):
         self.__dao.encerrar_disciplina(id)
 
-    def verificar_validade(self, dados_disciplina):
+    def verificar_validade_disciplina(self, dados_disciplina):
         try:
             dados_disciplina['numAulas'] = int(dados_disciplina["numAulas"])
 
@@ -130,3 +133,6 @@ class ControladorDisciplina:
         
         sucesso = self.__dao.remover_colega(disciplina, colega)
         return
+    
+    def gerir_aulas(self, disciplina, opcao):
+        self.__controlador_sistema.gerir_aulas(disciplina, opcao)

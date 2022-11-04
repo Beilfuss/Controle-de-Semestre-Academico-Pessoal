@@ -1,6 +1,7 @@
 from limite.tela_inicial import TelaInicial
 from controle.controlador_disciplina import ControladorDisciplina
 from controle.controlador_colega import ControladorColega
+from controle.controlador_aula import ControladorAula
 
 
 class ControladorSistema:
@@ -9,6 +10,7 @@ class ControladorSistema:
         self.__tela_inicial = TelaInicial(self)
         self.__controlador_disciplina = ControladorDisciplina(self)
         self.__controlador_colega = ControladorColega(self)
+        self.__controlador_aula = ControladorAula(self)
 
     def inicializar_sistema(self):
         self.abrir_tela()
@@ -24,6 +26,12 @@ class ControladorSistema:
 
     def associar_colega_disciplina(self, disciplina_id, colega_id):
         self.__controlador_disciplina.incluir_colega(disciplina_id, colega_id)
+
+    def gerir_aulas(self, disciplina, opcao):
+        opcoes = {'Cadastrar Aula': self.__controlador_aula.cadastrar_aula(disciplina),
+                  #'Alterar Aula': self.__controlador_aula.alterar_aula(disciplina),
+                  #'Excluir Aula': self.__controlador_aula.excluir_aula(disciplina)
+                  }
 
     def abrir_tela(self):
 
