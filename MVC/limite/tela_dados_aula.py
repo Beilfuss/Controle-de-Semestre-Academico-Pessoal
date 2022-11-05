@@ -15,8 +15,6 @@ class TelaDadosAula():
         for horario in horarios:
             dados_tabela.append([dados_aula['dia'], horario])
 
-        print('dados_tabela: ', dados_tabela)
-
         layout = [
             [sg.Text('Cadastro de Aula', font="bold", justification="center", expand_x=True)],
             [sg.Text("Sala*", size=(10, 1)), sg.InputText(dados_aula["sala"],
@@ -39,17 +37,23 @@ class TelaDadosAula():
         ]
 
         if dados_aula['dia'] == 'Segunda-feira':
-            layout[3] = [sg.Text("Dia*"), sg.Radio('Segunda-feira', "RADIO1", size=(10, 1), key='Segunda-feira', default = True), sg.Radio('Quarta-feira', "RADIO1", key='Quarta-feira'), sg.Radio('Sexta-feira', "RADIO1", key='Sexta-feira'), sg.Radio('Terça-feira', "RADIO1", key='Terça-feira', size=(10, 1)), sg.Radio('Quinta-feira', "RADIO1", key='Quinta-feira'), sg.Radio('Sábado', "RADIO1", key='Sábado')]
+            layout[1] = [sg.Text("Sala*", size=(10, 1)), sg.InputText(dados_aula["sala"], key='sala', tooltip="Ex.: CTC304", disabled=True)]
+            layout[3] = [sg.Text("Dia*"), sg.Radio('Segunda-feira', "RADIO1", key='Segunda-feira', default = True, disabled=True), sg.Radio('Quarta-feira', "RADIO1", key='Quarta-feira', disabled=True), sg.Radio('Sexta-feira', "RADIO1", key='Sexta-feira', disabled=True), sg.Radio('Terça-feira', "RADIO1", key='Terça-feira', disabled=True), sg.Radio('Quinta-feira', "RADIO1", key='Quinta-feira', disabled=True), sg.Radio('Sábado', "RADIO1", key='Sábado', disabled=True)]
         elif dados_aula['dia'] == 'Quarta-feira':
-            layout[3] = [sg.Text("Dia*"), sg.Radio('Segunda-feira', "RADIO1", size=(10, 1), key='Segunda-feira'), sg.Radio('Quarta-feira', "RADIO1", key='Quarta-feira', default = True), sg.Radio('Sexta-feira', "RADIO1", key='Sexta-feira'), sg.Radio('Terça-feira', "RADIO1", key='Terça-feira', size=(10, 1)), sg.Radio('Quinta-feira', "RADIO1", key='Quinta-feira'), sg.Radio('Sábado', "RADIO1", key='Sábado')]
+            layout[1] = [sg.Text("Sala*", size=(10, 1)), sg.InputText(dados_aula["sala"], key='sala', tooltip="Ex.: CTC304", disabled=True)]
+            layout[3] = [sg.Text("Dia*"), sg.Radio('Segunda-feira', "RADIO1", key='Segunda-feira', disabled=True), sg.Radio('Quarta-feira', "RADIO1", key='Quarta-feira', default = True, disabled=True), sg.Radio('Sexta-feira', "RADIO1", key='Sexta-feira', disabled=True), sg.Radio('Terça-feira', "RADIO1", key='Terça-feira', disabled=True), sg.Radio('Quinta-feira', "RADIO1", key='Quinta-feira', disabled=True), sg.Radio('Sábado', "RADIO1", key='Sábado', disabled=True)]
         elif dados_aula['dia'] == 'Sexta-feira':
-            layout[3] = [sg.Text("Dia*"), sg.Radio('Segunda-feira', "RADIO1", size=(10, 1), key='Segunda-feira'), sg.Radio('Quarta-feira', "RADIO1", key='Quarta-feira'), sg.Radio('Sexta-feira', "RADIO1", key='Sexta-feira', default = True), sg.Radio('Terça-feira', "RADIO1", key='Terça-feira', size=(10, 1)), sg.Radio('Quinta-feira', "RADIO1", key='Quinta-feira'), sg.Radio('Sábado', "RADIO1", key='Sábado')]
+            layout[1] = [sg.Text("Sala*", size=(10, 1)), sg.InputText(dados_aula["sala"], key='sala', tooltip="Ex.: CTC304", disabled=True)]
+            layout[3] = [sg.Text("Dia*"), sg.Radio('Segunda-feira', "RADIO1", key='Segunda-feira', disabled=True), sg.Radio('Quarta-feira', "RADIO1", key='Quarta-feira', disabled=True), sg.Radio('Sexta-feira', "RADIO1", key='Sexta-feira', default = True, disabled=True), sg.Radio('Terça-feira', "RADIO1", key='Terça-feira', disabled=True), sg.Radio('Quinta-feira', "RADIO1", key='Quinta-feira', disabled=True), sg.Radio('Sábado', "RADIO1", key='Sábado', disabled=True)]
         elif dados_aula['dia'] == 'Terça-feira':
-            layout[3] = [sg.Text("Dia*"), sg.Radio('Segunda-feira', "RADIO1", size=(10, 1), key='Segunda-feira'), sg.Radio('Quarta-feira', "RADIO1", key='Quarta-feira'), sg.Radio('Sexta-feira', "RADIO1", key='Sexta-feira'), sg.Radio('Terça-feira', "RADIO1", key='Terça-feira', size=(10, 1), default = True), sg.Radio('Quinta-feira', "RADIO1", key='Quinta-feira'), sg.Radio('Sábado', "RADIO1", key='Sábado')]
+            layout[1] = [sg.Text("Sala*", size=(10, 1)), sg.InputText(dados_aula["sala"], key='sala', tooltip="Ex.: CTC304", disabled=True)]
+            layout[3] = [sg.Text("Dia*"), sg.Radio('Segunda-feira', "RADIO1", key='Segunda-feira', disabled=True), sg.Radio('Quarta-feira', "RADIO1", key='Quarta-feira', disabled=True), sg.Radio('Sexta-feira', "RADIO1", key='Sexta-feira', disabled=True), sg.Radio('Terça-feira', "RADIO1", key='Terça-feira', default = True, disabled=True), sg.Radio('Quinta-feira', "RADIO1", key='Quinta-feira', disabled=True), sg.Radio('Sábado', "RADIO1", key='Sábado', disabled=True)]
         elif dados_aula['dia'] == 'Quinta-feira':
-            layout[3] = [sg.Text("Dia*"), sg.Radio('Segunda-feira', "RADIO1", size=(10, 1), key='Segunda-feira'), sg.Radio('Quarta-feira', "RADIO1", key='Quarta-feira'), sg.Radio('Sexta-feira', "RADIO1", key='Sexta-feira'), sg.Radio('Terça-feira', "RADIO1", key='Terça-feira', size=(10, 1)), sg.Radio('Quinta-feira', "RADIO1", key='Quinta-feira', default = True), sg.Radio('Sábado', "RADIO1", key='Sábado')]
+            layout[1] = [sg.Text("Sala*", size=(10, 1)), sg.InputText(dados_aula["sala"], key='sala', tooltip="Ex.: CTC304", disabled=True)]
+            layout[3] = [sg.Text("Dia*"), sg.Radio('Segunda-feira', "RADIO1", key='Segunda-feira', disabled=True), sg.Radio('Quarta-feira', "RADIO1", key='Quarta-feira', disabled=True), sg.Radio('Sexta-feira', "RADIO1", key='Sexta-feira', disabled=True), sg.Radio('Terça-feira', "RADIO1", key='Terça-feira', disabled=True), sg.Radio('Quinta-feira', "RADIO1", key='Quinta-feira', default = True, disabled=True), sg.Radio('Sábado', "RADIO1", key='Sábado', disabled=True)]
         elif dados_aula['dia'] == 'Sábado':
-            layout[3] = [sg.Text("Dia*"), sg.Radio('Segunda-feira', "RADIO1", size=(10, 1), key='Segunda-feira'), sg.Radio('Quarta-feira', "RADIO1", key='Quarta-feira'), sg.Radio('Sexta-feira', "RADIO1", key='Sexta-feira'), sg.Radio('Sábado', "RADIO1", key='Terça-feira', size=(10, 1)), sg.Radio('Quinta-feira', "RADIO1", key='Quinta-feira'), sg.Radio('Sábado', "RADIO1", key='Sábado', default = True)]
+            layout[1] = [sg.Text("Sala*", size=(10, 1)), sg.InputText(dados_aula["sala"], key='sala', tooltip="Ex.: CTC304", disabled=True)]
+            layout[3] = [sg.Text("Dia*"), sg.Radio('Segunda-feira', "RADIO1", key='Segunda-feira', disabled=True), sg.Radio('Quarta-feira', "RADIO1", key='Quarta-feira', disabled=True), sg.Radio('Sexta-feira', "RADIO1", key='Sexta-feira', disabled=True), sg.Radio('Sábado', "RADIO1", key='Terça-feira', disabled=True), sg.Radio('Quinta-feira', "RADIO1", key='Quinta-feira', disabled=True), sg.Radio('Sábado', "RADIO1", key='Sábado', default = True, disabled=True)]
             
         self.__janela = sg.Window('Dados da Aula').Layout(layout)
 

@@ -127,6 +127,14 @@ class Disciplina:
         if isinstance(colega, int):
             self.__colegas.remove(colega)
 
+    def adicionar_aula(self, aula: int):
+        if isinstance(aula, int):
+            self.__aulas.append(aula)
+
+    def remover_aula(self, aula: int):
+        if isinstance(aula, int):
+            self.__aulas.remove(aula)     
+    
     def desempacotar(self):
 
         return {
@@ -136,6 +144,7 @@ class Disciplina:
             "professor": self.professor,
             "numAulas": self.numAulas,
             "rec": self.rec,
+            "aulas": self.aulas,
             "colegas": self.colegas,
             "ativo": self.ativo
         }

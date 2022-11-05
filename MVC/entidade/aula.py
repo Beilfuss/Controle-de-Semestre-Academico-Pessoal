@@ -44,6 +44,14 @@ class Aula:
         if isinstance(horario, list):
             self.__horario = horario
 
+    def adicionar_horario(self, horario: str):
+        if isinstance(horario, str):
+            self.__horario.append(horario)
+
+    def remover_horario(self, horario: str):
+        if isinstance(horario, str):
+            self.__horario.remove(horario)
+
     def desempacotar(self):
 
         return {

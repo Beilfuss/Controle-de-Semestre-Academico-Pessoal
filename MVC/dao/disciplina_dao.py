@@ -9,6 +9,7 @@ class DisciplinaDAO(AbstractDAO):
 
         self.create_table()
         self.create_table_colegas_disciplinas()
+        self.create_table_aulas_disciplinas()
         self.__load()
 
     def __load(self):
@@ -19,8 +20,10 @@ class DisciplinaDAO(AbstractDAO):
 
             colegas = self.__obter_colegas(id)
 
+            aulas = self.__obter_aulas(id)
+
             self._cache[id] = Disciplina(
-                id, nome, codigo, professor, numAulas, rec, [], [], [], colegas, ativo)
+                id, nome, codigo, professor, numAulas, rec, aulas, [], [], colegas, ativo)
 
     def __obter_colegas(self, id):
 
@@ -35,6 +38,20 @@ class DisciplinaDAO(AbstractDAO):
 
         return colegas
 
+    def __obter_aulas(self, id):
+        
+        # MODIFICAR
+        query = "SELECT aula_id FROM AULAS_DISCIPLINAS WHERE disciplina_id=:id"
+        query_params = {"id": id}
+
+        res = self.executar_query(query, query_params)
+
+        aulas = []
+        for (id, ) in res:
+            aulas.append(id)
+
+        return aulas
+
     def create_table(self):
         # aulas, faltas, atividades e colegas não serão colunas da tabela disciplina
         query = "CREATE TABLE IF NOT EXISTS DISCIPLINAS(id INTEGER PRIMARY KEY ASC, nome TEXT NOT NULL, codigo TEXT NOT NULL, professor TEXT NOT NULL, numAulas INTEGER NOT NULL, rec INTEGER NOT NULL, ativo TEXT NOT NULL)"
@@ -45,6 +62,11 @@ class DisciplinaDAO(AbstractDAO):
         query = "CREATE TABLE IF NOT EXISTS COLEGAS_DISCIPLINAS(disciplina_id INTEGER NOT NULL, colega_id INTEGER NOT NULL, FOREIGN KEY(disciplina_id) REFERENCES DISCIPLINAS(id), FOREIGN KEY(colega_id) REFERENCES COLEGAS(id))"
         self.executar_query(query)
 
+    def create_table_aulas_disciplinas(self):
+
+        query = "CREATE TABLE IF NOT EXISTS AULAS_DISCIPLINAS(disciplina_id INTEGER NOT NULL, aula_id INTEGER NOT NULL, FOREIGN KEY(disciplina_id) REFERENCES DISCIPLINAS(id), FOREIGN KEY(aula_id) REFERENCES AULAS(id))"
+        self.executar_query(query)
+    
     def obter_por_id(self, id):
 
         disciplina_cached = self._cache.get(id)

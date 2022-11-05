@@ -20,6 +20,9 @@ class ControladorDisciplina:
         while(True):
             disciplina = self.__dao.obter_por_id(dados_disciplina["id"])
 
+            dicts_aulas_de_disciplina = self.gerir_aulas(disciplina, "Obter Aulas")
+            dados_disciplina['aulas'] = dicts_aulas_de_disciplina
+
             botao, valores = self.__tela_disciplina.abrir(dados_disciplina)
 
             self.__tela_disciplina.fechar()
@@ -36,9 +39,9 @@ class ControladorDisciplina:
 
             if botao != "Voltar" and botao is not None:
                 opcoes[botao](disciplina)
-                break
 
-            break
+            if botao == "Voltar":
+                break
 
     def abrir_tela_colegas(self, disciplina):
 
@@ -103,7 +106,9 @@ class ControladorDisciplina:
             else:
                 dados_disciplina["rec"] = "Não" # Não tem REC
 
-            if dados_disciplina == {"nome": "", "codigo": "", "professor": "", "numero_aulas": "", "rec": ""} \
+            # REVISAR VERIFICAÇÕES
+            if dados_disciplina["nome"] == "" or dados_disciplina["codigo"] == "" or dados_disciplina["professor"] == "" \
+                    or dados_disciplina["numero_aulas"] == "" or dados_disciplina["rec"] == "" \
                     or (not (all(char.isalpha() or char.isspace() for char in dados_disciplina['nome']))) \
                     or (not (all(char.isalpha() or char.isspace() for char in dados_disciplina['professor']))) \
                     or (dados_disciplina['codigo'].isalpha()) or (dados_disciplina['codigo'].isdigit()):
@@ -135,4 +140,7 @@ class ControladorDisciplina:
         return
     
     def gerir_aulas(self, disciplina, opcao):
-        self.__controlador_sistema.gerir_aulas(disciplina, opcao)
+        if opcao == "Obter Aulas":
+            return self.__controlador_sistema.gerir_aulas(disciplina, opcao)
+        else:
+            self.__controlador_sistema.gerir_aulas(disciplina, opcao)

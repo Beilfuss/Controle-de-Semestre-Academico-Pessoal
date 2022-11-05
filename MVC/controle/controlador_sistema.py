@@ -25,13 +25,19 @@ class ControladorSistema:
         self.__controlador_disciplina.incluir_disciplina()
 
     def associar_colega_disciplina(self, disciplina_id, colega_id):
-        self.__controlador_disciplina.incluir_colega(disciplina_id, colega_id)
-
+        self.__controlador_disciplina.incluir_aula(disciplina_id, colega_id)
+   
     def gerir_aulas(self, disciplina, opcao):
-        opcoes = {'Cadastrar Aula': self.__controlador_aula.cadastrar_aula(disciplina),
-                  #'Alterar Aula': self.__controlador_aula.alterar_aula(disciplina),
-                  #'Excluir Aula': self.__controlador_aula.excluir_aula(disciplina)
+        opcoes = {'Cadastrar Aula': self.__controlador_aula.cadastrar_aula,
+                  #'Alterar Aula': self.__controlador_aula.alterar_aula,
+                  #'Excluir Aula': lambda disciplina: self.__controlador_aula.excluir_aula,
+                  'Obter Aulas': self.__controlador_aula.obter_aulas_de_disciplina
                   }
+        
+        if opcao == 'Obter Aulas':
+            return opcoes[opcao](disciplina)
+        else:
+            opcoes[opcao](disciplina)
 
     def abrir_tela(self):
 
@@ -40,6 +46,8 @@ class ControladorSistema:
 
         while True:
             disciplinas = self.__controlador_disciplina.listar_disciplinas()
+
+            print('disciplinas: ', disciplinas)
 
             opcao_escolhida = self.__tela_inicial.abrir(disciplinas)
 

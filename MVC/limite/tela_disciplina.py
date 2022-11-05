@@ -11,7 +11,13 @@ class TelaDisciplina():
     def inicializar_componentes(self, dados_disciplinas=None):
         if dados_disciplinas is None:
             dados_disciplinas = {'nome': '', 'codigo': '', 'professor': '', 'numAulas': '',
-                                 0: '', 1: '', 'rec': ''}
+                                 0: '', 1: '', 'rec': '', 'aulas': ''}
+            
+        aulas = dados_disciplinas['aulas']
+        dados_tabela = []
+        for aula in aulas:
+            for horario in aula['horario']:
+                dados_tabela.append([aula['dia'], horario[0], aula['sala']])
 
         layout = [
             [sg.Text("{codigo} - {nome}".format(codigo=dados_disciplinas['codigo'], nome=dados_disciplinas['nome']), font="bold",
@@ -32,8 +38,10 @@ class TelaDisciplina():
                 button_text="Cadastrar Atividade")],
             [sg.Text("")],
             [sg.Text("Aulas")],
-            [sg.Table([['Segunda-Feira', '20h20', 'CTC304'], ['Quarta-Feira',
-                      '20h20', 'CTC204']], ['Dia', 'Hora', 'Sala'], num_rows=2)],
+
+            [sg.Table(dados_tabela, headings=[
+                "Dia", "Horário", "Sala"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
+                      
             [sg.Submit(button_text="Cadastrar Aula")],
             [sg.Submit(button_text="Excluir Disciplina", button_color="red"), sg.Submit(button_text="Alterar Disciplina"),
              sg.Submit(button_text="Voltar")]

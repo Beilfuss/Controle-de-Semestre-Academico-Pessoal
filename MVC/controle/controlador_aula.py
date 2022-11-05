@@ -1,7 +1,7 @@
 from limite.tela_dados_aula import TelaDadosAula
 from entidade.aula import Aula
-# from dao.aula_dao import AulaDAO
-from random import randrange
+from dao.aula_dao import AulaDAO
+from excecoes.jaExistenteException import JaExistenteException
 
 class ControladorAula:
 
@@ -9,11 +9,7 @@ class ControladorAula:
 
         self.__controlador_sistema = controlador_sistema
         self.__tela_dados_aula = TelaDadosAula(self)
-        # self.__dao = AulaDAO()
-        '''self.__horarios_possiveis = ['07:30 - 08:20', '08:20 - 09:10', '09:10 - 10:10', '10:10 - 11:00', '11:00 - 11:50',
-                                     '13:30 - 14:20', '14:20 - 15:10', '15:10 - 16:20', '16:20 - 17:10', '17:10 - 18:00',
-                                     '18:30 - 19:20', '19:20 - 20:20', '20:20 - 21:10', '21:10 - 22:00']'''
-
+        self.__dao = AulaDAO()
 
     def cadastrar_aula(self, disciplina):
 
@@ -23,8 +19,6 @@ class ControladorAula:
         while True:
 
             botao, dados_tela = self.__tela_dados_aula.abrir(dados_aula)
-            
-            print('botao: ', botao, 'dados_aula: ', dados_tela)
 
             self.__tela_dados_aula.fechar()
 
@@ -36,6 +30,9 @@ class ControladorAula:
 
                     # Adicionar mais verificações
                     if (dados_tela['Segunda-feira'] == False and dados_tela['Segunda-feira'] == False and dados_tela['Terça-feira'] == False and dados_tela['Quarta-feira'] == False and dados_tela['Quinta-feira'] == False and dados_tela['Sexta-feira'] == False and dados_tela['Sábado'] == False) or dados_tela['horario'] == "":
+                        raise ValueError
+                    
+                    if dados_tela['sala'] == "" or dados_tela['sala'].isalpha() or dados_tela['sala'].isdigit():
                         raise ValueError
                     
                     condicoes = [dados_tela['Segunda-feira'], dados_tela['Segunda-feira'], dados_tela['Terça-feira'], dados_tela['Quarta-feira'], dados_tela['Quinta-feira'], dados_tela['Sexta-feira'], dados_tela['Sábado']]
@@ -55,4 +52,36 @@ class ControladorAula:
                     self.__tela_dados_aula.mostrar_mensagem("Atenção", "Dados inválidos. Tente novamente!")
 
             elif botao == 'Cadastrar Aula':
-                pass
+
+                try:
+                    aula = self.__dao.obter_por_dia_sala_horario(dados_aula["dia"], dados_aula["sala"], dados_aula["horarios"])
+
+                    if aula is not None:
+                        raise JaExistenteException("Já há aula cadastrada com os dados informados!")
+                    
+                    if aula is None:
+                        aula = self.__dao.persist_aulas(dados_aula)
+                        self.__dao.incluir_aula(disciplina, aula)
+                        # horários ocupados
+
+                    return aula
+                
+                except JaExistenteException as err:
+                    self.__tela_dados_aula.mostrar_mensagem(err)
+
+    def obter_aulas_de_disciplina(self, disciplina):
+
+        dict_aulas = self.__dao._cache
+        
+        aulas_de_disciplina = []
+
+        for i in range(len(dict_aulas)):
+            if dict_aulas[i+1].id in disciplina.aulas:
+                aulas_de_disciplina.append(dict_aulas[i+1])
+
+        dicts_aulas_de_disciplina = []
+                
+        for aula in aulas_de_disciplina:
+            dicts_aulas_de_disciplina.append(aula.desempacotar())
+
+        return dicts_aulas_de_disciplina
