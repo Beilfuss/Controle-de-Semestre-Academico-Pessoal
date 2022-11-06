@@ -68,13 +68,27 @@ class AulaDAO(AbstractDAO):
 
         return todos_horarios
 
-    def obter_por_dia_sala_horario(self, dia, sala, horario):
+    def verificar_dia_horario(self, dia, horario):
 
-        aulas = list(filter(lambda aula: aula.dia == dia and aula.sala == sala and aula.horario == horario, self._cache.values()))
+        aulas = self._cache
+        aula_dia_horario_igual = None
+        aulas_no_dia = []
 
-        aula = aulas[0] if len(aulas) != 0 else None
+        for i in range(len(aulas)):
+            if aulas[i+1].dia == dia:
+                aulas_no_dia.append(aulas[i+1])
 
-        return aula
+        horarios_no_dia = []
+
+        for j in range(len(aulas_no_dia)):
+            for k in range(len(aulas_no_dia[j].horario)):
+                horarios_no_dia.append(aulas_no_dia[j].horario[k][0])
+
+        for hora in horarios_no_dia:
+            if hora in horario:
+                aula_dia_horario_igual = True
+
+        return aula_dia_horario_igual
 
     def persist_aulas(self, dados_aula):
 

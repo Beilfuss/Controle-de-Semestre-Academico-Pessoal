@@ -30,12 +30,14 @@ class ControladorSistema:
     def gerir_aulas(self, disciplina, opcao):
         opcoes = {'Cadastrar Aula': self.__controlador_aula.cadastrar_aula,
                   #'Alterar Aula': self.__controlador_aula.alterar_aula,
-                  #'Excluir Aula': lambda disciplina: self.__controlador_aula.excluir_aula,
+                  'Excluir Aula': self.__controlador_aula.excluir_aula,
                   'Obter Aulas': self.__controlador_aula.obter_aulas_de_disciplina
                   }
         
         if opcao == 'Obter Aulas':
             return opcoes[opcao](disciplina)
+        elif opcao == 'Excluir Aula' or opcao == 'Alterar Aula':
+            opcoes[opcao](disciplina, )
         else:
             opcoes[opcao](disciplina)
 

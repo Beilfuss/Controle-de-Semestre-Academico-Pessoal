@@ -74,24 +74,28 @@ class ControladorAula:
                 try:
 
                     if dados_aula['sala'] == "" or dados_aula['dia'] == "" or dados_aula['horarios'] == []:
-                        raise ValueError("Algum campo ficou vazio ou nenhum horário foi adicionado!")
+                        raise ValueError
 
-                    aula = self.__dao.obter_por_dia_sala_horario(dados_aula["dia"], dados_aula["sala"], dados_aula["horarios"])
+                    aula = self.__dao.verificar_dia_horario(dados_aula["dia"], dados_aula["horarios"])
 
                     if aula is not None:
-                        raise JaExistenteException("Já há aula cadastrada com os dados informados!")
+                        dados_aula['horarios'] = []
+                        horarios = []
+                        raise JaExistenteException
                     
                     if aula is None:
                         aula = self.__dao.persist_aulas(dados_aula)
                         self.__dao.incluir_aula(disciplina, aula)
-                        # horários ocupados
 
                     return aula
                 
-                except JaExistenteException as err:
-                    self.__tela_dados_aula.mostrar_mensagem("Atenção!", err)
-                except ValueError as err:
-                    self.__tela_dados_aula.mostrar_mensagem("Atenção!", err)
+                except JaExistenteException:
+                    self.__tela_dados_aula.mostrar_mensagem("Atenção!", "Já há aula cadastrada nesse dia e horário!")
+                except ValueError:
+                    self.__tela_dados_aula.mostrar_mensagem("Atenção!", "Algum campo ficou vazio ou nenhum horário foi adicionado!")
+
+    def excluir_aula(self):
+        pass        
 
     def obter_aulas_de_disciplina(self, disciplina):
 

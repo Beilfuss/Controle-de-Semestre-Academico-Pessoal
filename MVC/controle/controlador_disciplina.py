@@ -25,6 +25,8 @@ class ControladorDisciplina:
 
             botao, valores = self.__tela_disciplina.abrir(dados_disciplina)
 
+            print('botao: ', botao, '\nvalores: ', valores)
+
             self.__tela_disciplina.fechar()
 
             opcoes = {

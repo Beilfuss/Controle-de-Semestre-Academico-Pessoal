@@ -33,7 +33,7 @@ class TelaDisciplina():
             [sg.Text("")],
             [sg.Text("Lista de Atividades")],
             [sg.Table([['Trabalho de APS', '03/10/2022', 'Trabalho', '40%', 'Sim', 10], ], ['Atividade',
-                      'Data de Entrega', 'Tipo', 'Peso', 'Grupo', 'Prioridade'], num_rows=1, justification='left')],
+                      'Data de Entrega', 'Tipo', 'Peso', 'Grupo', 'Prioridade'], num_rows=2, justification='left')],
             [sg.Submit(button_text="Ver Atividade"), sg.Submit(
                 button_text="Cadastrar Atividade")],
             [sg.Text("")],
