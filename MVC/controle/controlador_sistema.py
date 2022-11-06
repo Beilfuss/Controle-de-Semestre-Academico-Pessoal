@@ -47,8 +47,6 @@ class ControladorSistema:
         while True:
             disciplinas = self.__controlador_disciplina.listar_disciplinas()
 
-            print('disciplinas: ', disciplinas)
-
             opcao_escolhida = self.__tela_inicial.abrir(disciplinas)
 
             if(opcao_escolhida is None):

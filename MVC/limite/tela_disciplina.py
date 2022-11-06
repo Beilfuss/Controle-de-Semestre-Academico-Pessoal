@@ -42,7 +42,8 @@ class TelaDisciplina():
             [sg.Table(dados_tabela, headings=[
                 "Dia", "Horário", "Sala"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
                       
-            [sg.Submit(button_text="Cadastrar Aula")],
+            [sg.Submit(button_text="Excluir Aula", button_color="red"), sg.Submit(button_text="Alterar Aula"), sg.Submit(button_text="Cadastrar Aula")],
+            [sg.Text("")],
             [sg.Submit(button_text="Excluir Disciplina", button_color="red"), sg.Submit(button_text="Alterar Disciplina"),
              sg.Submit(button_text="Voltar")]
         ]

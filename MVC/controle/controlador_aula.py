@@ -35,6 +35,10 @@ class ControladorAula:
                     if dados_tela['sala'] == "" or dados_tela['sala'].isalpha() or dados_tela['sala'].isdigit():
                         raise ValueError
                     
+                    for horario in dados_aula['horarios']:
+                        if horario == dados_tela['horario']:
+                            raise JaExistenteException
+                    
                     condicoes = [dados_tela['Segunda-feira'], dados_tela['Segunda-feira'], dados_tela['Terça-feira'], dados_tela['Quarta-feira'], dados_tela['Quinta-feira'], dados_tela['Sexta-feira'], dados_tela['Sábado']]
                     dias = ['Segunda-feira', 'Segunda-feira', 'Terça-feira','Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado']
                     dia_semana = None
@@ -50,10 +54,28 @@ class ControladorAula:
                     
                 except ValueError:
                     self.__tela_dados_aula.mostrar_mensagem("Atenção", "Dados inválidos. Tente novamente!")
+                except JaExistenteException:
+                    self.__tela_dados_aula.mostrar_mensagem("Atenção", "Este horário já foi adicionado!")
+
+            elif botao == 'Excluir Horário':
+
+                try:
+                    
+                    if dados_tela['row_index'] == []:
+                        raise ValueError
+
+                    del dados_aula['horarios'][dados_tela['row_index'][0]]
+
+                except ValueError:
+                    self.__tela_dados_aula.mostrar_mensagem("Atenção", "Nenhum horário selecionado para ser excluído ou não há horários a serem selecionados!")
 
             elif botao == 'Cadastrar Aula':
 
                 try:
+
+                    if dados_aula['sala'] == "" or dados_aula['dia'] == "" or dados_aula['horarios'] == []:
+                        raise ValueError("Algum campo ficou vazio ou nenhum horário foi adicionado!")
+
                     aula = self.__dao.obter_por_dia_sala_horario(dados_aula["dia"], dados_aula["sala"], dados_aula["horarios"])
 
                     if aula is not None:
@@ -67,7 +89,9 @@ class ControladorAula:
                     return aula
                 
                 except JaExistenteException as err:
-                    self.__tela_dados_aula.mostrar_mensagem(err)
+                    self.__tela_dados_aula.mostrar_mensagem("Atenção!", err)
+                except ValueError as err:
+                    self.__tela_dados_aula.mostrar_mensagem("Atenção!", err)
 
     def obter_aulas_de_disciplina(self, disciplina):
 
