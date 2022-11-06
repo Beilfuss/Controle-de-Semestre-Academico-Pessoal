@@ -27,20 +27,15 @@ class ControladorSistema:
     def associar_colega_disciplina(self, disciplina_id, colega_id):
         self.__controlador_disciplina.incluir_aula(disciplina_id, colega_id)
    
-    def gerir_aulas(self, disciplina, opcao):
-        opcoes = {'Cadastrar Aula': self.__controlador_aula.cadastrar_aula,
-                  #'Alterar Aula': self.__controlador_aula.alterar_aula,
-                  'Excluir Aula': self.__controlador_aula.excluir_aula,
-                  'Obter Aulas': self.__controlador_aula.obter_aulas_de_disciplina
-                  }
-        
-        if opcao == 'Obter Aulas':
-            return opcoes[opcao](disciplina)
-        elif opcao == 'Excluir Aula' or opcao == 'Alterar Aula':
-            opcoes[opcao](disciplina, )
+    def gerir_aulas(self, disciplina, aula_selecionada, opcao):
+        if opcao == "Obter Aulas":
+            return self.__controlador_aula.gerir_aulas(disciplina, aula_selecionada, opcao)
         else:
-            opcoes[opcao](disciplina)
+            self.__controlador_aula.gerir_aulas(disciplina, aula_selecionada, opcao)
 
+    def remover_aulas_cache(self, id_aulas_para_excluir):
+        self.__controlador_aula.remover_aulas_cache(id_aulas_para_excluir)   
+    
     def abrir_tela(self):
 
         dict_opcoes = {'Cadastrar Disciplina': self.cadastrar_disciplina,

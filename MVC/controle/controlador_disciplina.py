@@ -18,32 +18,50 @@ class ControladorDisciplina:
     def abrir_tela_disciplina(self, dados_disciplina):
 
         while(True):
-            disciplina = self.__dao.obter_por_id(dados_disciplina["id"])
+            try:
 
-            dicts_aulas_de_disciplina = self.gerir_aulas(disciplina, "Obter Aulas")
-            dados_disciplina['aulas'] = dicts_aulas_de_disciplina
+                disciplina = self.__dao.obter_por_id(dados_disciplina["id"])
 
-            botao, valores = self.__tela_disciplina.abrir(dados_disciplina)
+                dicts_aulas_de_disciplina = self.gerir_aulas(disciplina, None, "Obter Aulas")
+                dados_disciplina['aulas'] = dicts_aulas_de_disciplina
 
-            print('botao: ', botao, '\nvalores: ', valores)
+                aulas = dados_disciplina['aulas']
+                dados_tabela = []
+                for aula in aulas:
+                    for horario in aula['horario']:
+                        dados_tabela.append([aula['dia'], horario[0], aula['sala']])
+                dados_disciplina['aulas'] = dados_tabela
 
-            self.__tela_disciplina.fechar()
+                botao, valores = self.__tela_disciplina.abrir(dados_disciplina)
 
-            opcoes = {
-                "Alterar Disciplina": lambda disciplina: self.alterar_disciplina(disciplina, dados_disciplina),
-                "Excluir Disciplina": lambda disciplina: self.excluir_disciplina(disciplina.id),
-                "Cadastrar Aula": lambda disciplina: self.gerir_aulas(disciplina, "Cadastrar Aula"),
-                "Alterar Aula": lambda disciplina: self.gerir_aulas(disciplina, "Alterar Aula"),
-                "Excluir Aula": lambda disciplina: self.gerir_aulas(disciplina, "Excluir Aula"),
-                "Colegas": lambda disciplina: self.abrir_tela_colegas(disciplina),
-                "Encerrar Disciplina": lambda disciplina: self.encerrar_disciplina(disciplina.id)
-            }
+                if valores['row_aula_index'] != []:
+                    aula_selecionada = dados_disciplina['aulas'][valores['row_aula_index'][0]]
 
-            if botao != "Voltar" and botao is not None:
-                opcoes[botao](disciplina)
+                self.__tela_disciplina.fechar()
 
-            if botao == "Voltar":
-                break
+                if (botao == 'Alterar Aula' or botao == 'Excluir Aula') and valores['row_aula_index'] == []:
+                    raise ValueError
+
+                opcoes = {
+                    "Alterar Disciplina": lambda disciplina: self.alterar_disciplina(disciplina, dados_disciplina),
+                    "Excluir Disciplina": lambda disciplina: self.excluir_disciplina(disciplina.id),
+                    "Cadastrar Aula": lambda disciplina: self.gerir_aulas(disciplina, None, "Cadastrar Aula"),
+                    "Alterar Aula": lambda disciplina: self.gerir_aulas(disciplina, aula_selecionada, "Alterar Aula"),
+                    "Excluir Aula": lambda disciplina: self.gerir_aulas(disciplina, aula_selecionada, "Excluir Aula"),
+                    "Colegas": lambda disciplina: self.abrir_tela_colegas(disciplina),
+                    "Encerrar Disciplina": lambda disciplina: self.encerrar_disciplina(disciplina.id)
+                }
+
+                if botao != "Voltar" and botao is not None:
+                    opcoes[botao](disciplina)
+                    if botao == "Excluir Disciplina":
+                        break
+
+                if botao == "Voltar":
+                    break
+            
+            except ValueError:
+                self.__tela_disciplina.mostrar_mensagem("Atenção", "Nenhuma aula selecionada!")
 
     def abrir_tela_colegas(self, disciplina):
 
@@ -94,7 +112,9 @@ class ControladorDisciplina:
                 break
             
     def excluir_disciplina(self, id):
-        self.__dao.delete_disciplina(id)
+        id_aulas_para_excluir = self.__dao.delete_disciplina(id)
+        if id_aulas_para_excluir is not None:
+            self.__controlador_sistema.remover_aulas_cache(id_aulas_para_excluir)
 
     def encerrar_disciplina(self, id):
         self.__dao.encerrar_disciplina(id)
@@ -110,7 +130,7 @@ class ControladorDisciplina:
 
             # REVISAR VERIFICAÇÕES
             if dados_disciplina["nome"] == "" or dados_disciplina["codigo"] == "" or dados_disciplina["professor"] == "" \
-                    or dados_disciplina["numero_aulas"] == "" or dados_disciplina["rec"] == "" \
+                    or dados_disciplina["numAulas"] == "" or dados_disciplina["rec"] == "" \
                     or (not (all(char.isalpha() or char.isspace() for char in dados_disciplina['nome']))) \
                     or (not (all(char.isalpha() or char.isspace() for char in dados_disciplina['professor']))) \
                     or (dados_disciplina['codigo'].isalpha()) or (dados_disciplina['codigo'].isdigit()):
@@ -140,9 +160,9 @@ class ControladorDisciplina:
         
         sucesso = self.__dao.remover_colega(disciplina, colega)
         return
-    
-    def gerir_aulas(self, disciplina, opcao):
+
+    def gerir_aulas(self, disciplina, aula_selecionada, opcao):
         if opcao == "Obter Aulas":
-            return self.__controlador_sistema.gerir_aulas(disciplina, opcao)
+            return self.__controlador_sistema.gerir_aulas(disciplina, aula_selecionada, opcao)
         else:
-            self.__controlador_sistema.gerir_aulas(disciplina, opcao)
+            self.__controlador_sistema.gerir_aulas(disciplina, aula_selecionada, opcao)

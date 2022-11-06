@@ -117,6 +117,9 @@ class DisciplinaDAO(AbstractDAO):
         disciplina.rec = dados_disciplina['rec']
 
     def delete_disciplina(self, id):
+
+        disciplina = self.obter_por_id(id)
+
         query = "DELETE from DISCIPLINAS where id=(?)"
         query_params = (id,)
         self.executar_query(query, query_params)
@@ -124,6 +127,11 @@ class DisciplinaDAO(AbstractDAO):
         self._cache.pop(id)
 
         self.remover_colegas(id)
+
+        if disciplina.aulas != []:
+            id_aulas_para_excluir = self.remover_aulas(id)
+
+            return id_aulas_para_excluir
 
     def encerrar_disciplina(self, id):
         query = "UPDATE DISCIPLINAS SET ativo = ? WHERE id = ?"
@@ -169,3 +177,24 @@ class DisciplinaDAO(AbstractDAO):
         query_params = (disciplina_id, )
 
         self.executar_query(query, query_params)
+
+    def remover_aulas(self, disciplina_id):
+
+        query = "SELECT aula_id FROM AULAS_DISCIPLINAS where disciplina_id=(?)"
+        query_params = (disciplina_id, )
+        id_aulas_para_excluir = self.executar_query(query, query_params)[0]
+
+        for aula in id_aulas_para_excluir:
+            query = "DELETE FROM HORARIOS where id=(?)"
+            query_params = (aula, )
+            self.executar_query(query, query_params)
+
+            query = "DELETE FROM AULAS where id=(?)"
+            query_params = (aula, )
+            self.executar_query(query, query_params)
+
+        query = "DELETE FROM AULAS_DISCIPLINAS where disciplina_id=(?)"
+        query_params = (disciplina_id, )
+        self.executar_query(query, query_params)
+
+        return id_aulas_para_excluir

@@ -50,7 +50,9 @@ class Aula:
 
     def remover_horario(self, horario: str):
         if isinstance(horario, str):
-            self.__horario.remove(horario)
+            for hora in self.__horario:
+                if hora[0] == horario:
+                    self.__horario.remove(hora)
 
     def desempacotar(self):
 

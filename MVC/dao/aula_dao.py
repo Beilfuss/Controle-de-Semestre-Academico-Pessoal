@@ -74,9 +74,9 @@ class AulaDAO(AbstractDAO):
         aula_dia_horario_igual = None
         aulas_no_dia = []
 
-        for i in range(len(aulas)):
-            if aulas[i+1].dia == dia:
-                aulas_no_dia.append(aulas[i+1])
+        for aula in aulas:
+            if aulas[aula].dia == dia:
+                aulas_no_dia.append(aulas[aula])
 
         horarios_no_dia = []
 
@@ -132,7 +132,31 @@ class AulaDAO(AbstractDAO):
 
         return todos_horarios
     
-    # alterar, deletar
+    def delete_aula(self, disciplina, aula_selecionada):
+        
+        aulas = self._cache
+
+        for aula in aulas:
+            if aulas[aula].dia == aula_selecionada[0]:
+                if aulas[aula].sala == aula_selecionada[2]:
+                    for tupla_horario in aulas[aula].horario:
+                        if tupla_horario[0] == aula_selecionada[1]:
+                            aula_obj = aulas[aula]
+                            
+        self.remover_horario(aula_obj, aula_selecionada[1])
+
+        if aula_obj.horario == []:
+
+            self.remover_aula(disciplina, aula_obj)
+
+            query = "DELETE FROM AULAS WHERE id=(?)"
+            query_params = (aula_obj.id,)
+
+            self.executar_query(query, query_params)
+
+            self._cache.pop(aula_obj.id)                        
+    
+    # alterar
         
     def remover_horario(self, aula, horario):
 

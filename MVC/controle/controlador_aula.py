@@ -11,6 +11,20 @@ class ControladorAula:
         self.__tela_dados_aula = TelaDadosAula(self)
         self.__dao = AulaDAO()
 
+    def gerir_aulas(self, disciplina, aula_selecionada, opcao):
+        opcoes = {'Cadastrar Aula': self.cadastrar_aula,
+                  #'Alterar Aula': self.__controlador_aula.alterar_aula,
+                  'Excluir Aula': self.excluir_aula,
+                  'Obter Aulas': self.obter_aulas_de_disciplina
+                  }
+        
+        if opcao == 'Obter Aulas':
+            return opcoes[opcao](disciplina)
+        elif opcao == 'Excluir Aula' or opcao == 'Alterar Aula':
+            opcoes[opcao](disciplina, aula_selecionada)
+        else:
+            opcoes[opcao](disciplina)
+
     def cadastrar_aula(self, disciplina):
 
         horarios = []
@@ -94,18 +108,18 @@ class ControladorAula:
                 except ValueError:
                     self.__tela_dados_aula.mostrar_mensagem("Atenção!", "Algum campo ficou vazio ou nenhum horário foi adicionado!")
 
-    def excluir_aula(self):
-        pass        
+    def excluir_aula(self, disciplina, aula_selecionada):
+        self.__dao.delete_aula(disciplina, aula_selecionada)
 
     def obter_aulas_de_disciplina(self, disciplina):
 
         dict_aulas = self.__dao._cache
-        
+
         aulas_de_disciplina = []
 
-        for i in range(len(dict_aulas)):
-            if dict_aulas[i+1].id in disciplina.aulas:
-                aulas_de_disciplina.append(dict_aulas[i+1])
+        for aula in dict_aulas:
+            if dict_aulas[aula].id in disciplina.aulas:
+                aulas_de_disciplina.append(dict_aulas[aula])
 
         dicts_aulas_de_disciplina = []
                 
@@ -113,3 +127,7 @@ class ControladorAula:
             dicts_aulas_de_disciplina.append(aula.desempacotar())
 
         return dicts_aulas_de_disciplina
+    
+    def remover_aulas_cache(self, id_aulas_para_excluir):
+        for id in id_aulas_para_excluir:
+            self.__dao._cache.pop(id)
