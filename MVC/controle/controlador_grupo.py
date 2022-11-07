@@ -2,7 +2,7 @@ from limite.tela_grupo import TelaGrupo
 from dao.grupo_dao import GrupoDAO
 from excecoes.membroRepetidoException import MembroRepetidoException
 from excecoes.grupoCheioException import GrupoCheioException
-
+from excecoes.numeroMembrosException import NumeroMembrosException
 
 '''
     Falta:
@@ -112,13 +112,19 @@ class ControladorGrupo:
 
         numAlunos = int(dados["numAlunos"])
 
-        if (not grupo.is_num_valido(numAlunos)):
-            return print("Número inválido")
+        try:
+            self.validar_num_membros(grupo, numAlunos)
+            self.__dao.alterar_numero_colegas(grupo, numAlunos)
 
-        self.__dao.alterar_numero_colegas(grupo, numAlunos)
+        except Exception as err:
+            self.__tela.mostrar_mensagem(err)
 
     def validar_adicao(self, grupo, colega_id):
         if (grupo.is_membro(colega_id)):
             raise MembroRepetidoException
         if grupo.is_cheio():
             raise GrupoCheioException
+
+    def validar_num_membros(self, grupo, numAlunos):
+        if (not grupo.is_num_valido(numAlunos)):
+            raise NumeroMembrosException
