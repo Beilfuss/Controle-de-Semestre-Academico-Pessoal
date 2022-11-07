@@ -20,9 +20,6 @@ class ControladorAtividadeTemp:
 
     def ver_atividade(self, disciplina_id, disciplina_nome):
 
-
-
-        
         opcoes = {1: lambda atividade: self.cadastrar_grupo(
             disciplina_id, disciplina_nome, atividade.id)}
 
