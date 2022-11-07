@@ -1,5 +1,7 @@
 from limite.tela_grupo import TelaGrupo
 from dao.grupo_dao import GrupoDAO
+from excecoes.membroRepetidoException import MembroRepetidoException
+from excecoes.grupoCheioException import GrupoCheioException
 
 
 '''
@@ -89,12 +91,13 @@ class ControladorGrupo:
         index = dados["novo_colega_index"][0]
         colega = colegas[index]
 
-        # Verifica se o colega já está no grupo
-        if (grupo.is_membro(colega.id) or grupo.is_cheio()):
-            print("Colega já está no grupo ou grupo já está cheio")
-        else:
+        try:
+            # Valida adição de colega
+            self.validar_adicao(grupo, colega.id)
             # Inclui o colega no grupo
             self.__dao.adiciona_membro(grupo, colega.id)
+        except Exception as err:
+            self.__tela.mostrar_mensagem(err)
 
     def excluir_colega(self, grupo, colegas, dados):
 
@@ -113,3 +116,9 @@ class ControladorGrupo:
             return print("Número inválido")
 
         self.__dao.alterar_numero_colegas(grupo, numAlunos)
+
+    def validar_adicao(self, grupo, colega_id):
+        if (grupo.is_membro(colega_id)):
+            raise MembroRepetidoException
+        if grupo.is_cheio():
+            raise GrupoCheioException
