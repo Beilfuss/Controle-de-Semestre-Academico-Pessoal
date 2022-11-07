@@ -156,7 +156,26 @@ class AulaDAO(AbstractDAO):
 
             self._cache.pop(aula_obj.id)                        
     
-    # alterar
+    def update_aula(self, aula_antiga, dados_aula):
+
+        horarios = self.obter_horarios_de_uma_aula(aula_antiga.id)
+
+        query = "UPDATE AULAS SET sala = ?, dia = ? where id = ?"
+        query_params = (dados_aula['sala'], dados_aula['dia'], aula_antiga.id)
+        self.executar_query(query, query_params)
+
+        for i in range(len(dados_aula['horarios'])):
+            query = "UPDATE HORARIOS SET horario = ? where id = ? and horario = ?"
+            query_params = (dados_aula['horarios'][i], aula_antiga.id, horarios[i][0])
+            self.executar_query(query, query_params)
+
+        horarios = self.obter_horarios_de_uma_aula(aula_antiga.id)
+        
+        aula_antiga.sala = dados_aula['sala']
+        aula_antiga.dia = dados_aula['dia']
+        print('aula_antiga.horarios ANTES: ', aula_antiga.horario)
+        aula_antiga.horario = horarios
+        print('aula_antiga.horarios DEPOIS: ', aula_antiga.horario)
         
     def remover_horario(self, aula, horario):
 

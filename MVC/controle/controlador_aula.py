@@ -13,7 +13,7 @@ class ControladorAula:
 
     def gerir_aulas(self, disciplina, aula_selecionada, opcao):
         opcoes = {'Cadastrar Aula': self.cadastrar_aula,
-                  #'Alterar Aula': self.__controlador_aula.alterar_aula,
+                  'Alterar Aula': self.alterar_aula,
                   'Excluir Aula': self.excluir_aula,
                   'Obter Aulas': self.obter_aulas_de_disciplina
                   }
@@ -28,7 +28,7 @@ class ControladorAula:
     def cadastrar_aula(self, disciplina):
 
         horarios = []
-        dados_aula = {"sala": "", "dia": "", "horarios": ""}
+        dados_aula = {"sala": "", "dia": "", "horarios": "", "alteracao": False}
         
         while True:
 
@@ -40,77 +40,146 @@ class ControladorAula:
                 break
 
             elif botao == 'Adicionar Horário':
-                try:
-
-                    # Adicionar mais verificações
-                    if (dados_tela['Segunda-feira'] == False and dados_tela['Segunda-feira'] == False and dados_tela['Terça-feira'] == False and dados_tela['Quarta-feira'] == False and dados_tela['Quinta-feira'] == False and dados_tela['Sexta-feira'] == False and dados_tela['Sábado'] == False) or dados_tela['horario'] == "":
-                        raise ValueError
-                    
-                    if dados_tela['sala'] == "" or dados_tela['sala'].isalpha() or dados_tela['sala'].isdigit():
-                        raise ValueError
-                    
-                    for horario in dados_aula['horarios']:
-                        if horario == dados_tela['horario']:
-                            raise JaExistenteException
-                    
-                    condicoes = [dados_tela['Segunda-feira'], dados_tela['Segunda-feira'], dados_tela['Terça-feira'], dados_tela['Quarta-feira'], dados_tela['Quinta-feira'], dados_tela['Sexta-feira'], dados_tela['Sábado']]
-                    dias = ['Segunda-feira', 'Segunda-feira', 'Terça-feira','Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado']
-                    dia_semana = None
-                    i = 0
-                    for condicao in condicoes:
-                        if condicao == True:
-                            dia_semana = dias[i]
-                        i += 1
-
-                    horarios.append(dados_tela['horario'])
-                        
-                    dados_aula = {"sala": dados_tela["sala"], "dia": dia_semana, "horarios": horarios}
-                    
-                except ValueError:
-                    self.__tela_dados_aula.mostrar_mensagem("Atenção", "Dados inválidos. Tente novamente!")
-                except JaExistenteException:
-                    self.__tela_dados_aula.mostrar_mensagem("Atenção", "Este horário já foi adicionado!")
+                dados_aula, horarios = self.adicionar_horario(dados_tela, dados_aula, horarios)
 
             elif botao == 'Excluir Horário':
-
-                try:
-                    
-                    if dados_tela['row_index'] == []:
-                        raise ValueError
-
-                    del dados_aula['horarios'][dados_tela['row_index'][0]]
-
-                except ValueError:
-                    self.__tela_dados_aula.mostrar_mensagem("Atenção", "Nenhum horário selecionado para ser excluído ou não há horários a serem selecionados!")
+                dados_aula, dados_tela = self.excluir_horario(dados_aula, dados_tela)
 
             elif botao == 'Cadastrar Aula':
-
-                try:
-
-                    if dados_aula['sala'] == "" or dados_aula['dia'] == "" or dados_aula['horarios'] == []:
-                        raise ValueError
-
-                    aula = self.__dao.verificar_dia_horario(dados_aula["dia"], dados_aula["horarios"])
-
-                    if aula is not None:
-                        dados_aula['horarios'] = []
-                        horarios = []
-                        raise JaExistenteException
-                    
-                    if aula is None:
-                        aula = self.__dao.persist_aulas(dados_aula)
-                        self.__dao.incluir_aula(disciplina, aula)
-
-                    return aula
+                aula, horarios = self.validar_aula(dados_aula, horarios)
                 
-                except JaExistenteException:
-                    self.__tela_dados_aula.mostrar_mensagem("Atenção!", "Já há aula cadastrada nesse dia e horário!")
-                except ValueError:
-                    self.__tela_dados_aula.mostrar_mensagem("Atenção!", "Algum campo ficou vazio ou nenhum horário foi adicionado!")
+                if aula != None and horarios != None:
+                    aula = self.__dao.persist_aulas(dados_aula)
+                    self.__dao.incluir_aula(disciplina, aula)
 
+                    return aula            
+
+    def adicionar_horario(self, dados_tela, dados_aula, horarios):
+        try:
+
+            # Adicionar mais verificações
+            if (dados_tela['Segunda-feira'] == False and dados_tela['Segunda-feira'] == False and dados_tela['Terça-feira'] == False and dados_tela['Quarta-feira'] == False and dados_tela['Quinta-feira'] == False and dados_tela['Sexta-feira'] == False and dados_tela['Sábado'] == False) or dados_tela['horario'] == "":
+                raise ValueError
+            
+            if dados_tela['sala'] == "" or dados_tela['sala'].isalpha() or dados_tela['sala'].isdigit():
+                raise ValueError
+            
+            for horario in dados_aula['horarios']:
+                if horario == dados_tela['horario']:
+                    raise JaExistenteException
+            
+            condicoes = [dados_tela['Segunda-feira'], dados_tela['Segunda-feira'], dados_tela['Terça-feira'], dados_tela['Quarta-feira'], dados_tela['Quinta-feira'], dados_tela['Sexta-feira'], dados_tela['Sábado']]
+            dias = ['Segunda-feira', 'Segunda-feira', 'Terça-feira','Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado']
+            dia_semana = None
+            i = 0
+            for condicao in condicoes:
+                if condicao == True:
+                    dia_semana = dias[i]
+                i += 1
+
+            horarios.append(dados_tela['horario'])
+                
+            dados_aula = {"sala": dados_tela["sala"], "dia": dia_semana, "horarios": horarios, "alteracao": False}
+            
+            return dados_aula, horarios
+
+        except ValueError:
+            self.__tela_dados_aula.mostrar_mensagem("Atenção", "Dados inválidos. Tente novamente!")
+            return dados_aula, horarios
+
+        except JaExistenteException:
+            self.__tela_dados_aula.mostrar_mensagem("Atenção", "Este horário já foi adicionado!")
+            return dados_aula, horarios
+
+    def excluir_horario(self, dados_aula, dados_tela):
+        try:
+            
+            if dados_tela['row_index'] == []:
+                raise ValueError
+
+            del dados_aula['horarios'][dados_tela['row_index'][0]]
+
+            return dados_aula, dados_aula
+
+        except ValueError:
+            self.__tela_dados_aula.mostrar_mensagem("Atenção", "Nenhum horário selecionado para ser excluído ou não há horários a serem selecionados!")
+            return dados_aula, dados_aula
+    
+    def validar_aula(self, dados_aula, horarios):
+
+        try:
+             
+            if dados_aula['sala'] == "" or dados_aula['dia'] == "" or dados_aula['horarios'] == []:
+                raise ValueError
+
+            aula = self.__dao.verificar_dia_horario(dados_aula["dia"], dados_aula["horarios"])
+
+            if aula is not None:
+                dados_aula['horarios'] = []
+                horarios = []
+                raise JaExistenteException
+            
+            if aula is None:
+                return aula, horarios
+            
+        except JaExistenteException:
+            self.__tela_dados_aula.mostrar_mensagem("Atenção!", "Já há aula cadastrada nesse dia e horário!")
+            aula = None
+            horarios = None
+            return aula, horarios
+        except ValueError:
+            self.__tela_dados_aula.mostrar_mensagem("Atenção!", "Algum campo ficou vazio ou nenhum horário foi adicionado!")
+            aula = None
+            horarios = None
+            return aula, horarios
+    
     def excluir_aula(self, disciplina, aula_selecionada):
         self.__dao.delete_aula(disciplina, aula_selecionada)
 
+    def alterar_aula(self, disciplina, aula_selecionada):
+
+        aulas = self.__dao._cache
+
+        for aula in aulas:
+            if aulas[aula].dia == aula_selecionada[0]:
+                if aulas[aula].sala == aula_selecionada[2]:
+                    for tupla_horario in aulas[aula].horario:
+                        if tupla_horario[0] == aula_selecionada[1]:
+                            aula_obj = aulas[aula]
+
+        horarios = []
+
+        for horario in aula_obj.horario:
+            horarios.append(horario[0])
+
+        dados_aula = {"sala": aula_obj.sala, "dia": aula_obj.dia, "horarios": horarios, "alteracao": True}
+
+        dados_aula_antiga = dados_aula
+
+        while True:
+
+            botao, dados_tela = self.__tela_dados_aula.abrir(dados_aula)
+
+            self.__tela_dados_aula.fechar()
+            
+            if botao == "Cancelar":
+                break
+
+            elif botao == 'Adicionar Horário':
+                dados_aula, horarios = self.adicionar_horario(dados_tela, dados_aula, horarios)
+
+            elif botao == 'Excluir Horário':
+                dados_aula, dados_tela = self.excluir_horario(dados_aula, dados_tela)
+
+            elif botao == 'Cadastrar Aula':
+                aula, horarios = self.validar_aula(dados_aula, horarios)
+
+                if dados_aula['horarios'] != [] and horarios != []:
+
+                    self.__dao.update_aula(aula_obj, dados_aula)
+
+                    return aula
+    
     def obter_aulas_de_disciplina(self, disciplina):
 
         dict_aulas = self.__dao._cache
