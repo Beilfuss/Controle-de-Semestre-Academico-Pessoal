@@ -20,7 +20,7 @@ class TelaDadosAula():
             [sg.Text("Sala*", size=(10, 1)), sg.InputText(dados_aula["sala"],
                                                           key='sala', tooltip="Ex.: CTC304")],
             [sg.Text('Horários:', font="bold", justification="center", expand_x=True)],
-            [sg.Text("Dia*"), sg.Radio('Segunda-feira', "RADIO1", size=(10, 1), key='Segunda-feira'), sg.Radio('Terça-feira', "RADIO1", key='Terça-feira', size=(10, 1)), sg.Radio('Quarta-feira', "RADIO1", key='Quarta-feira'), sg.Radio('Quinta-feira', "RADIO1", key='Quinta-feira'), sg.Radio('Sexta-feira', "RADIO1", key='Sexta-feira'), sg.Radio('Sábado', "RADIO1", key='Sábado')],
+            [sg.Text("Dia*"), sg.Radio('Segunda-feira', "RADIO1", key='Segunda-feira'), sg.Radio('Terça-feira', "RADIO1", key='Terça-feira'), sg.Radio('Quarta-feira', "RADIO1", key='Quarta-feira'), sg.Radio('Quinta-feira', "RADIO1", key='Quinta-feira'), sg.Radio('Sexta-feira', "RADIO1", key='Sexta-feira'), sg.Radio('Sábado', "RADIO1", key='Sábado')],
 
             [sg.Text('Horário*'), sg.Combo(['07:30 - 08:20', '08:20 - 09:10', '09:10 - 10:10', '10:10 - 11:00', '11:00 - 11:50',
                                             '13:30 - 14:20', '14:20 - 15:10', '15:10 - 16:20', '16:20 - 17:10', '17:10 - 18:00',

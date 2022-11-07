@@ -48,7 +48,7 @@ class ControladorAula:
             elif botao == 'Cadastrar Aula':
                 aula, horarios = self.validar_aula(dados_aula, horarios)
                 
-                if aula != None and horarios != None:
+                if aula == None and horarios != None:
                     aula = self.__dao.persist_aulas(dados_aula)
                     self.__dao.incluir_aula(disciplina, aula)
 
