@@ -88,25 +88,29 @@ class ControladorGrupo:
                 return (opcao_escolhida, None)
 
     def adicionar_colega(self, grupo, colegas, dados):
-        index = dados["novo_colega_index"][0]
-        colega = colegas[index]
-
+       
         try:
+            index = dados["novo_colega_index"][0]
+            colega = colegas[index]
             # Valida adição de colega
             self.validar_adicao(grupo, colega.id)
             # Inclui o colega no grupo
             self.__dao.adiciona_membro(grupo, colega.id)
+        except IndexError:
+            self.__tela.mostrar_mensagem("É necessário selecionar um colega para adição!")
         except Exception as err:
             self.__tela.mostrar_mensagem(err)
 
     def excluir_colega(self, grupo, colegas, dados):
+        try:
+            index = dados["row_index"][0]
+            membros = self.obter_colegas_do_grupo(colegas, grupo.colegas)
 
-        index = dados["row_index"][0]
-        membros = self.obter_colegas_do_grupo(colegas, grupo.colegas)
+            colega = membros[index]
 
-        colega = membros[index]
-
-        self.__dao.remover_membro(grupo, colega.id)
+            self.__dao.remover_membro(grupo, colega.id)
+        except IndexError:
+            self.__tela.mostrar_mensagem("É necessário selecionar um membro do grupo para exclusão!")
 
     def alterar_numero_alunos(self, grupo, dados):
 
