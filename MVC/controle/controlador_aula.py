@@ -46,6 +46,7 @@ class ControladorAula:
                 dados_aula, dados_tela = self.excluir_horario(dados_aula, dados_tela)
 
             elif botao == 'Cadastrar Aula':
+                dados_aula['sala'] = dados_tela['sala']
                 aula, horarios = self.validar_aula(dados_aula, horarios)
                 
                 if aula == None and horarios != None:
@@ -111,12 +112,18 @@ class ControladorAula:
              
             if dados_aula['sala'] == "" or dados_aula['dia'] == "" or dados_aula['horarios'] == []:
                 raise ValueError
+            
+            if dados_aula['sala'] == "" or dados_aula['sala'].isalpha() or dados_aula['sala'].isdigit():
+                raise ValueError
 
             aula = self.__dao.verificar_dia_horario(dados_aula["dia"], dados_aula["horarios"])
 
             if aula is not None:
-                dados_aula['horarios'] = []
-                horarios = []
+                if dados_aula['alteracao'] == False:
+                    dados_aula['dia'] = ""
+                    dados_aula['sala'] = ""
+                    dados_aula['horarios'] = []
+                    horarios = []
                 raise JaExistenteException
             
             if aula is None:
@@ -124,13 +131,17 @@ class ControladorAula:
             
         except JaExistenteException:
             self.__tela_dados_aula.mostrar_mensagem("Atenção!", "Já há aula cadastrada nesse dia e horário!")
-            aula = None
-            horarios = None
+            if dados_aula['alteracao'] == False:
+                aula = None
+                horarios = None
             return aula, horarios
         except ValueError:
-            self.__tela_dados_aula.mostrar_mensagem("Atenção!", "Algum campo ficou vazio ou nenhum horário foi adicionado!")
-            aula = None
-            horarios = None
+            self.__tela_dados_aula.mostrar_mensagem("Atenção!", "Dados inválidos. Tente novamente!")
+            if dados_aula['alteracao'] == True:
+                aula = False
+            elif dados_aula['alteracao'] == False:
+                aula = None
+                horarios = None
             return aula, horarios
     
     def excluir_aula(self, disciplina, aula_selecionada):
@@ -172,9 +183,14 @@ class ControladorAula:
                 dados_aula, dados_tela = self.excluir_horario(dados_aula, dados_tela)
 
             elif botao == 'Cadastrar Aula':
+                nome_sala_antigo = dados_aula['sala']
+                dados_aula['sala'] = dados_tela['sala']
                 aula, horarios = self.validar_aula(dados_aula, horarios)
 
-                if dados_aula['horarios'] != [] and horarios != []:
+                if aula == False:
+                    dados_aula['sala'] = nome_sala_antigo
+
+                if dados_aula['horarios'] != [] and horarios != [] and aula == None:
 
                     self.__dao.update_aula(aula_obj, dados_aula)
 

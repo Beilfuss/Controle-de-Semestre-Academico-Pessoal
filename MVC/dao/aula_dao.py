@@ -173,9 +173,7 @@ class AulaDAO(AbstractDAO):
         
         aula_antiga.sala = dados_aula['sala']
         aula_antiga.dia = dados_aula['dia']
-        print('aula_antiga.horarios ANTES: ', aula_antiga.horario)
         aula_antiga.horario = horarios
-        print('aula_antiga.horarios DEPOIS: ', aula_antiga.horario)
         
     def remover_horario(self, aula, horario):
 
