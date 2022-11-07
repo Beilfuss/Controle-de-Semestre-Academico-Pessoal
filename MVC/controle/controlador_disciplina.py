@@ -121,12 +121,13 @@ class ControladorDisciplina:
 
     def verificar_validade_disciplina(self, dados_disciplina):
         try:
-            dados_disciplina['numAulas'] = int(dados_disciplina["numAulas"])
-
+            
             if dados_disciplina[0]:
                 dados_disciplina["rec"] = "Sim" # Tem REC
             else:
                 dados_disciplina["rec"] = "Não" # Não tem REC
+
+            dados_disciplina['numAulas'] = int(dados_disciplina["numAulas"])
 
             # REVISAR VERIFICAÇÕES
             if dados_disciplina["nome"] == "" or dados_disciplina["codigo"] == "" or dados_disciplina["professor"] == "" \
