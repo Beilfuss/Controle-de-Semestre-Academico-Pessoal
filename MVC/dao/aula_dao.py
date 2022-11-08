@@ -21,21 +21,6 @@ class AulaDAO(AbstractDAO):
 
             self._cache[id] = Aula(id, dia, sala, horarios)
 
-    '''
-    def __obter_horarios(self, id):
-        
-        query = "SELECT horario from HORARIOS WHERE id=:id"
-        query_params = {"id": id}
-
-        res = self.executar_query(query, query_params)
-
-        horarios = []
-        for (id, ) in res:
-            horarios.append(id)
-
-        return horarios
-    '''
-
     def create_table(self):
 
         query = "CREATE TABLE IF NOT EXISTS AULAS(id INTEGER PRIMARY KEY ASC, dia TEXT NOT NULL, sala TEXT NOT NULL)"

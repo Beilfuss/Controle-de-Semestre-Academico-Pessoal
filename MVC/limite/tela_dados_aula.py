@@ -13,7 +13,7 @@ class TelaDadosAula():
         horarios = dados_aula['horarios']
         dados_tabela = []
         for horario in horarios:
-            dados_tabela.append([dados_aula['dia'], horario])
+            dados_tabela.append([dados_aula['dia'], horario, dados_aula['sala']])
 
         layout = [
             [sg.Text('Cadastro de Aula', font="bold", justification="center", expand_x=True)],
