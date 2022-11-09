@@ -49,7 +49,7 @@ class ControladorAula:
                 dados_aula['sala'] = dados_tela['sala']
                 aula, horarios = self.validar_aula(dados_aula, horarios)
                 
-                if aula == None and horarios != None:
+                if aula == None and horarios != []:
                     aula = self.__dao.persist_aulas(dados_aula)
                     self.__dao.incluir_aula(disciplina, aula)
 
@@ -110,7 +110,7 @@ class ControladorAula:
 
         try:
              
-            if dados_aula['sala'] == "" or dados_aula['dia'] == "" or dados_aula['horarios'] == []:
+            if dados_aula['sala'] == "" or dados_aula['dia'] == "" or dados_aula['horarios'] == "":
                 raise ValueError
             
             if dados_aula['sala'] == "" or dados_aula['sala'].isalpha() or dados_aula['sala'].isdigit():
@@ -133,7 +133,7 @@ class ControladorAula:
             self.__tela_dados_aula.mostrar_mensagem("Atenção!", "Já há aula cadastrada nesse dia e horário!")
             if dados_aula['alteracao'] == False:
                 aula = None
-                horarios = None
+                # horarios = None
             return aula, horarios
         except ValueError:
             self.__tela_dados_aula.mostrar_mensagem("Atenção!", "Dados inválidos. Tente novamente!")
@@ -141,7 +141,7 @@ class ControladorAula:
                 aula = False
             elif dados_aula['alteracao'] == False:
                 aula = None
-                horarios = None
+                horarios = []
             return aula, horarios
     
     def excluir_aula(self, disciplina, aula_selecionada):
@@ -165,8 +165,6 @@ class ControladorAula:
 
         dados_aula = {"sala": aula_obj.sala, "dia": aula_obj.dia, "horarios": horarios, "alteracao": True}
 
-        dados_aula_antiga = dados_aula
-
         while True:
 
             botao, dados_tela = self.__tela_dados_aula.abrir(dados_aula)
@@ -183,8 +181,27 @@ class ControladorAula:
                 dados_aula, dados_tela = self.excluir_horario(dados_aula, dados_tela)
 
             elif botao == 'Cadastrar Aula':
+                
+                condicoes = [dados_tela['Segunda-feira'], dados_tela['Segunda-feira'], dados_tela['Terça-feira'], dados_tela['Quarta-feira'], dados_tela['Quinta-feira'], dados_tela['Sexta-feira'], dados_tela['Sábado']]
+                dias = ['Segunda-feira', 'Segunda-feira', 'Terça-feira','Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado']
+                dia_semana = None
+                i = 0
+                for condicao in condicoes:
+                    if condicao == True:
+                        dia_semana = dias[i]
+                    i += 1
+
+                if dados_aula['sala'] != dados_tela['sala'] and dados_tela['horario'] == '' and dados_aula['dia'] == dia_semana:
+                    dados_aula['sala'] = dados_tela['sala']
+                    self.__dao.update_aula(aula_obj, dados_aula)
+
+                    return aula
+
                 nome_sala_antigo = dados_aula['sala']
                 dados_aula['sala'] = dados_tela['sala']
+                    
+                dados_aula['dia'] = dia_semana
+
                 aula, horarios = self.validar_aula(dados_aula, horarios)
 
                 if aula == False:
@@ -215,4 +232,4 @@ class ControladorAula:
     
     def remover_aulas_cache(self, id_aulas_para_excluir):
         for id in id_aulas_para_excluir:
-            self.__dao._cache.pop(id)
+            self.__dao._cache.pop(id[0])

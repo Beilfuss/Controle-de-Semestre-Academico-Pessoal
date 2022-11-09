@@ -182,15 +182,15 @@ class DisciplinaDAO(AbstractDAO):
 
         query = "SELECT aula_id FROM AULAS_DISCIPLINAS where disciplina_id=(?)"
         query_params = (disciplina_id, )
-        id_aulas_para_excluir = self.executar_query(query, query_params)[0]
+        id_aulas_para_excluir = self.executar_query(query, query_params)
 
         for aula in id_aulas_para_excluir:
             query = "DELETE FROM HORARIOS where id=(?)"
-            query_params = (aula, )
+            query_params = aula
             self.executar_query(query, query_params)
 
             query = "DELETE FROM AULAS where id=(?)"
-            query_params = (aula, )
+            query_params = aula
             self.executar_query(query, query_params)
 
         query = "DELETE FROM AULAS_DISCIPLINAS where disciplina_id=(?)"
