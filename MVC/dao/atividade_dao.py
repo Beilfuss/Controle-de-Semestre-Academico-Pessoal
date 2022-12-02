@@ -27,7 +27,7 @@ class AtividadeDAO(AbstractDAO):
 
         # Persiste um colega no banco de dados e instancia o objeto correspondente no cache
         query = "INSERT INTO ATIVIDADES(disciplina_id, nome, tipo, data, temGrupo, priorizar, peso_nota) VALUES(?, ?, ?, ?, ?, ?, ?)"
-        query_params = (disciplina_id, dados["nome"], "prova",
+        query_params = (disciplina_id, dados["nome"], "Prova" if dados[0] else "Trabalho",
                         dados["data"], dados["grupo"], dados["priorizar"], dados["peso"])
 
         try:
@@ -40,10 +40,30 @@ class AtividadeDAO(AbstractDAO):
 
             # instancia o objeto  com os dados do banco
             atividade = Atividade(id, disciplina_id,
-                                  nome, tipo, data, temGrupo, priorizar, peso_nota)
+                                  nome, tipo, data, temGrupo != 0, priorizar != 0, peso_nota)
 
             self._cache[id] = atividade
 
             return atividade
         except Exception as err:
             return False
+
+    def obter_por_id(self, id):
+
+        cached_atividade = self._cache.get(id)
+        if (cached_atividade is not None):
+            return cached_atividade
+
+        query = "SELECT id, disciplina_id, nome, tipo, data, temGrupo, priorizar, peso_nota from ATIVIDADES WHERE id=:id"
+        query_params = {"id": id}
+
+        atividade = self.executar_query(query, query_params)[0]
+
+        return atividade
+
+    def obter_por_disciplina(self, disciplina_id):
+
+        atividades = list(filter(lambda atividade: atividade.disciplina_id ==
+                                 disciplina_id, self._cache.values()))
+
+        return atividades

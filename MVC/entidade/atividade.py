@@ -14,7 +14,7 @@ class Atividade:
             self.__tipo = tipo
         if isinstance(data, str):
             self.__data = data
-        if isinstance(pesoNota, Nota):
+        if isinstance(pesoNota, int):
             self.__peso_nota = pesoNota
         if isinstance(grupo, bool):
             self.__grupo = grupo
@@ -86,3 +86,15 @@ class Atividade:
     def priorizar(self, priorizar: bool):
         if isinstance(priorizar, bool):
             self.__priorizar = priorizar
+
+    def desempacotar(self):
+        return {
+            "id": self.id,
+            "disciplina_id": self.disciplina_id,
+            "nome": self.nome,
+            "tipo": self.tipo,
+            "data": self.data,
+            "peso_nota": self.peso_nota,
+            "temGrupo": self.grupo,
+            "priorizar": self.priorizar
+        }

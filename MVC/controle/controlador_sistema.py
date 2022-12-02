@@ -56,6 +56,9 @@ class ControladorSistema:
         else:
             return []
 
+    def obter_atividades_da_disciplina(self, disciplina_id):
+        return self.__controlador_atividade.obter_por_disciplina(disciplina_id)
+
     def abrir_tela(self):
 
         dict_opcoes = {'Cadastrar Disciplina': self.cadastrar_disciplina,

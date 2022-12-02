@@ -19,8 +19,13 @@ class ControladorDisciplina:
 
         while (True):
             disciplina = self.__dao.obter_por_id(dados_disciplina["id"])
+            atividades = self.__controlador_sistema.obter_atividades_da_disciplina(
+                disciplina.id)
+            atividades_dados = [atividade.desempacotar()
+                                for atividade in atividades]
 
-            botao, valores = self.__tela_disciplina.abrir(dados_disciplina)
+            botao, valores = self.__tela_disciplina.abrir(
+                dados_disciplina, atividades_dados)
 
             self.__tela_disciplina.fechar()
 
