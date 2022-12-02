@@ -28,8 +28,8 @@ class ControladorSistema:
     def cadastrar_disciplina(self):
         self.__controlador_disciplina.incluir_disciplina()
 
-    def cadastrar_atividade(self):
-        self.__controlador_atividade.cadastrar_atividade()
+    def cadastrar_atividade(self, disciplina):
+        self.__controlador_atividade.cadastrar_atividade(disciplina)
 
     def popular_colegas(self, colegas_ids):
         return self.__controlador_colega.obter_colegas(colegas_ids)
@@ -55,7 +55,6 @@ class ControladorSistema:
             return self.popular_colegas(grupo.colegas)
         else:
             return []
-        
 
     def abrir_tela(self):
 
