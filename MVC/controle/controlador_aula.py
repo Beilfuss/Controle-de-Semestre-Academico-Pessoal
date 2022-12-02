@@ -58,7 +58,7 @@ class ControladorAula:
     def adicionar_horario(self, dados_tela, dados_aula, horarios):
         try:
 
-            # Adicionar mais verificações
+
             if (dados_tela['Segunda-feira'] == False and dados_tela['Segunda-feira'] == False and dados_tela['Terça-feira'] == False and dados_tela['Quarta-feira'] == False and dados_tela['Quinta-feira'] == False and dados_tela['Sexta-feira'] == False and dados_tela['Sábado'] == False) or dados_tela['horario'] == "":
                 raise ValueError
             
