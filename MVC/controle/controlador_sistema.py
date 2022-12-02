@@ -2,6 +2,7 @@ from limite.tela_inicial import TelaInicial
 from controle.controlador_disciplina import ControladorDisciplina
 from controle.controlador_colega import ControladorColega
 from controle.controlador_grupo import ControladorGrupo
+from controle.controlador_atividade import ControladorAtividade
 from temp.temp_atividade import ControladorAtividadeTemp
 
 
@@ -10,6 +11,7 @@ class ControladorSistema:
     def __init__(self):
         self.__tela_inicial = TelaInicial(self)
         self.__controlador_disciplina = ControladorDisciplina(self)
+        self.__controlador_atividade = ControladorAtividade(self)
         self.__controlador_colega = ControladorColega(self)
         self.__controlador_grupo = ControladorGrupo(self)
         self.__controlador_temp = ControladorAtividadeTemp(self)
@@ -25,6 +27,9 @@ class ControladorSistema:
 
     def cadastrar_disciplina(self):
         self.__controlador_disciplina.incluir_disciplina()
+
+    def cadastrar_atividade(self):
+        self.__controlador_atividade.cadastrar_atividade()
 
     def popular_colegas(self, colegas_ids):
         return self.__controlador_colega.obter_colegas(colegas_ids)

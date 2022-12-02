@@ -28,6 +28,7 @@ class ControladorDisciplina:
                 "Alterar Disciplina": lambda disciplina: self.alterar_disciplina(disciplina, dados_disciplina),
                 "Excluir Disciplina": lambda disciplina: self.excluir_disciplina(disciplina.id),
                 "Colegas": lambda disciplina: self.abrir_tela_colegas(disciplina),
+                "Cadastrar Atividade": lambda disciplina: self.__controlador_sistema.cadastrar_atividade(disciplina),
                 'UseCase Grupo': lambda disciplina: self.__controlador_sistema.abrir_tela_temp(disciplina.id, disciplina.nome),
                 "Encerrar Disciplina": lambda disciplina: self.encerrar_disciplina(disciplina.id)
             }
