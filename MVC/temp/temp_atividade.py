@@ -13,7 +13,7 @@ class ControladorAtividadeTemp:
         self.__controlador_sistema = controlador_sistema
 
         self.atividade = Atividade(
-            9999, "Ph", "Trabalho", "13/05/1992", Nota(0, 1), True, True)
+            9999, "Ph", "Trabalho", "13/05/1992", Nota(0, 1), True, True, 40)
 
         self.__tela_atividade = TelaAtividade(self)
         self.__tela_disciplina = TelaDisciplina(self)

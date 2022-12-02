@@ -3,17 +3,19 @@ from entidade.nota import Nota
 
 class Atividade:
 
-    def __init__(self, id: int, nome: str, tipo: str, data: str, nota: Nota, grupo: bool, priorizar: bool):
+    def __init__(self, id: int, disciplina_id: int, nome: str, tipo: str, data: str, grupo: bool, priorizar: bool, pesoNota: int):
         if isinstance(id, int):
             self.__id = id
+        if isinstance(disciplina_id, int):
+            self.__disciplina_id = disciplina_id
         if isinstance(nome, str):
             self.__nome = nome
         if isinstance(tipo, str):
             self.__tipo = tipo
         if isinstance(data, str):
             self.__data = data
-        if isinstance(nota, Nota):
-            self.__nota = nota
+        if isinstance(pesoNota, Nota):
+            self.__peso_nota = pesoNota
         if isinstance(grupo, bool):
             self.__grupo = grupo
         if isinstance(priorizar, bool):
@@ -22,6 +24,10 @@ class Atividade:
     @property
     def id(self):
         return self.__id
+
+    @property
+    def disciplina_id(self):
+        return self.__disciplina_id
 
     @property
     def nome(self):
@@ -46,6 +52,10 @@ class Atividade:
     @property
     def priorizar(self):
         return self.__priorizar
+
+    @property
+    def peso_nota(self):
+        return self.__peso_nota
 
     @nome.setter
     def nome(self, nome: str):

@@ -35,7 +35,6 @@ class TelaAtividade:
         botao, valores = self.__janela.Read()
         self.fechar()
 
-        print(botao)
         if (botao == sg.WIN_CLOSED or botao == "cancelar"):
             self.__janela.Close()
             return (0, {})
