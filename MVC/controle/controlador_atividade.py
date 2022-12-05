@@ -11,6 +11,27 @@ class ControladorAtividade:
         self.__tela = TelaAtividade(self)
         self.__dao = AtividadeDAO()
 
+    def exibir_atividade(self, disciplina, atividade):
+
+        atividade_display = atividade.desempacotar()
+
+        opcoes = {1: lambda: self.cadastrar_grupo(
+            disciplina.id, disciplina.nome, atividade.id)}
+
+        while (True):
+
+            colegas = self.obter_colegas_do_grupo(atividade.id)
+            colegas_dados = [(colega.nome, colega.matricula)
+                             for colega in colegas]
+
+            botao, valores = self.__tela.abrir(
+                disciplina.nome, colegas_dados)
+
+            if (botao == 0):
+                return (botao, None)
+            else:
+                opcoes[botao](self.atividade)
+
     def cadastrar_atividade(self, disciplina):
         while True:
 
@@ -41,3 +62,10 @@ class ControladorAtividade:
 
     def obter_por_disciplina(self, disciplina_id):
         return self.__dao.obter_por_disciplina(disciplina_id)
+
+    def cadastrar_grupo(self, disciplina_id, disciplina_nome, atividade_id):
+        self.__controlador_sistema.cadastrar_grupo(
+            disciplina_id, disciplina_nome, atividade_id)
+
+    def obter_colegas_do_grupo(self, atividade_id):
+        return self.__controlador_sistema.obter_colegas_do_grupo(atividade_id)

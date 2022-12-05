@@ -40,6 +40,9 @@ class ControladorSistema:
     def associar_colega_disciplina(self, disciplina_id, colega_id):
         self.__controlador_disciplina.incluir_colega(disciplina_id, colega_id)
 
+    def exibir_atividade(self, disciplina, atividade):
+        self.__controlador_atividade.exibir_atividade(disciplina, atividade)
+
     def abrir_tela_temp(self, disciplina_id, disciplina_nome):
         self.__controlador_temp.ver_atividade(disciplina_id, disciplina_nome)
 

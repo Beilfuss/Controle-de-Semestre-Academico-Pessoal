@@ -34,6 +34,7 @@ class ControladorDisciplina:
                 "Excluir Disciplina": lambda disciplina: self.excluir_disciplina(disciplina.id),
                 "Colegas": lambda disciplina: self.abrir_tela_colegas(disciplina),
                 "Cadastrar Atividade": lambda disciplina: self.__controlador_sistema.cadastrar_atividade(disciplina),
+                "Ver Atividade": lambda disciplina: self.ver_atividade(disciplina, atividades, valores["row_index"]),
                 'UseCase Grupo': lambda disciplina: self.__controlador_sistema.abrir_tela_temp(disciplina.id, disciplina.nome),
                 "Encerrar Disciplina": lambda disciplina: self.encerrar_disciplina(disciplina.id)
             }
@@ -131,6 +132,15 @@ class ControladorDisciplina:
             self.__tela_disciplina.mostrar_mensagem(
                 'Atenção', 'Disciplina já existente, tente novamente!')
             return False
+
+    def ver_atividade(self, disciplina, atividades, index):
+
+        try:
+            atividade = atividades[index[0]]
+            self.__controlador_sistema.exibir_atividade(disciplina, atividade)
+        except IndexError:
+            self.__tela_disciplina.mostrar_mensagem("Atenção",
+                                                    "É necessário selecionar uma atividade!")
 
     def incluir_colega(self, disciplina, colega):
         sucesso = self.__dao.incluir_colega(disciplina, colega)
