@@ -50,31 +50,40 @@ class TelaAtividade:
 
         return botao, valores
 
-    def inicializar_cadastro(self, nome_disciplina):
+    def inicializar_cadastro(self, nome_disciplina, dados_atividade, alterar=False):
 
         layout = [
-            [sg.Text("Cadastro de Atividade", font="bold",
+            [sg.Text("Cadastro de Atividade" if not alterar else "Alteração de Atividade", font="bold",
                      justification="center", expand_x=True)],
             [sg.Text(nome_disciplina, font="bold",
                      justification="center", expand_x=True)],
-            [sg.Text("Nome*", size=(7, 1)), sg.InputText("",
+            [sg.Text("Nome*", size=(7, 1)), sg.InputText(dados_atividade["nome"],
                                                          key="nome", tooltip="Ex.: T1 - Diagrama de Classes")],
-            [sg.Text("Tipo de Atividade*"), sg.Radio('Prova', "tipo_atividade",
-                                                     default=True, size=(10, 1)), sg.Radio('Trabalho', "tipo_atividade")],
-            [sg.Text("Data*", size=(7, 1)), sg.InputText("",
+            [sg.Text("Tipo de Atividade*"),
+             sg.Radio('Prova', "tipo_atividade",
+             disabled=alterar,
+                      default=dados_atividade["tipo"] != "Trabalho", size=(10, 1)),
+             sg.Radio('Trabalho', "tipo_atividade", disabled=alterar, default=dados_atividade["tipo"] == "Trabalho")],
+            [sg.Text("Data*", size=(7, 1)), sg.InputText(dados_atividade["data"],
                                                          key="data", tooltip="Ex.: T1 - Diagrama de Classes")],
-            [sg.Text("Peso da nota (%)*", size=(7, 1)), sg.InputText("",
+            [sg.Text("Peso da nota (%)*", size=(7, 1)), sg.InputText(dados_atividade["peso_nota"],
                                                                      key="peso", tooltip="Ex.: T1 - Diagrama de Classes")],
-            [sg.Checkbox("Em grupo", default=False, key="grupo"), sg.Checkbox(
-                "Priorizar", default=False, key="priorizar")],
+            [sg.Checkbox("Em grupo", default=dados_atividade["temGrupo"], key="grupo"), sg.Checkbox(
+                "Priorizar", default=dados_atividade["priorizar"], key="priorizar")],
             [sg.Button("Cancelar", key="cancelar", button_color="red"), sg.Button(
                 "Confirmar", key=2)],
         ]
 
         self.__janela = sg.Window("Cadastrar Atividade").Layout(layout)
 
-    def abrir_cadastro(self, nome_disciplina):
-        self.inicializar_cadastro(nome_disciplina)
+    def abrir_cadastro(self, nome_disciplina, dados_atividade={"nome": "",
+                                                               "tipo": "",
+                                                               "data": "",
+                                                               "peso_nota": "",
+                                                               "temGrupo": False,
+                                                               "priorizar": False}, alterar=False):
+        self.inicializar_cadastro(
+            nome_disciplina, dados_atividade, alterar)
         botao, valores = self.__janela.Read()
         self.fechar()
 

@@ -19,7 +19,7 @@ class ControladorAtividade:
             disciplina.id, disciplina.nome, atividade.id),
             2: lambda: self.priorizar(atividade),
             3: lambda: self.excluir_atividade(atividade),
-            4: lambda: self.alterar_atividade(atividade),
+            4: lambda: self.alterar_atividade(disciplina.nome, atividade),
             5: lambda: print("TODO")}
 
         while (True):
@@ -66,8 +66,23 @@ class ControladorAtividade:
         except ValidationException as err:
             self.__tela.mostrar_mensagem(err)
 
-    def alterar_atividade(self, atividade):
-        print("alterar")
+    def alterar_atividade(self, disciplina_nome, atividade):
+        try:
+            botao, dados = self.__tela.abrir_cadastro(
+                disciplina_nome, atividade.desempacotar(), alterar=True)
+
+            if (botao == 1):
+                nome = dados["nome"]
+
+                if (not nome.isalpha()):
+                    raise ValidationException
+
+                #self.__dao.alterar_colega(colega, nome)
+
+        except ValidationException as err:
+            self.__tela.mostrar_mensagem(err)
+        except IndexError:
+            self.__tela.mostrar_mensagem("É necessário selecionar um colega!")
 
     def excluir_atividade(self, atividade):
         self.__dao.delete(atividade)
