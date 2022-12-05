@@ -61,6 +61,25 @@ class AtividadeDAO(AbstractDAO):
 
         return atividade
 
+    def alterar(self, atividade, dados):
+
+        query = "UPDATE ATIVIDADES SET nome=:nome, data=:data, peso_nota=:peso, temGrupo=:temGrupo, priorizar=:priorizar WHERE id=:id"
+        query_params = {
+            "nome": dados["nome"],
+            "data": dados["data"],
+            "peso": dados["peso"],
+            "temGrupo": dados["grupo"],
+            "priorizar": dados["priorizar"],
+            "id": atividade.id}
+
+        self.executar_query(query, query_params)
+
+        atividade.nome = dados["nome"]
+        atividade.data = dados["data"]
+        atividade.peso_nota = dados["peso"]
+        atividade.temGrupo = dados["grupo"]
+        atividade.priorizar = dados["priorizar"]
+
     def delete(self, atividade):
 
         query = "DELETE from ATIVIDADES where id=(?)"

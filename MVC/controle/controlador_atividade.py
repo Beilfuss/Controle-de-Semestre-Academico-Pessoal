@@ -13,8 +13,6 @@ class ControladorAtividade:
 
     def exibir_atividade(self, disciplina, atividade):
 
-        atividade_display = atividade.desempacotar()
-
         opcoes = {1: lambda: self.cadastrar_grupo(
             disciplina.id, disciplina.nome, atividade.id),
             2: lambda: self.priorizar(atividade),
@@ -24,6 +22,7 @@ class ControladorAtividade:
 
         while (True):
 
+            atividade_display = atividade.desempacotar()
             colegas = self.obter_colegas_do_grupo(atividade.id)
             colegas_dados = [(colega.nome, colega.matricula)
                              for colega in colegas]
@@ -73,16 +72,15 @@ class ControladorAtividade:
 
             if (botao == 1):
                 nome = dados["nome"]
+                peso = dados["peso_nota"]
 
-                if (not nome.isalpha()):
+                if (not nome.isalpha() or peso < 0 or peso > 100):
                     raise ValidationException
 
-                #self.__dao.alterar_colega(colega, nome)
+            self.__dao.alterar(atividade, dados)
 
         except ValidationException as err:
             self.__tela.mostrar_mensagem(err)
-        except IndexError:
-            self.__tela.mostrar_mensagem("É necessário selecionar um colega!")
 
     def excluir_atividade(self, atividade):
         self.__dao.delete(atividade)

@@ -72,6 +72,11 @@ class Atividade:
         if isinstance(data, str):
             self.__data = data
 
+    @peso_nota.setter
+    def peso_nota(self, peso_nota: int):
+        if isinstance(peso_nota, int):
+            self.__peso_nota = peso_nota
+
     @nota.setter
     def nota(self, nota: Nota):
         if isinstance(nota, Nota):
