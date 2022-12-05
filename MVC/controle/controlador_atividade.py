@@ -25,7 +25,7 @@ class ControladorAtividade:
                              for colega in colegas]
 
             botao, valores = self.__tela.abrir(
-                disciplina.nome, colegas_dados)
+                disciplina.nome, colegas_dados, atividade_display)
 
             if (botao == 0):
                 return (botao, None)

@@ -7,26 +7,37 @@ class TelaAtividade:
         self.__controlador_atividade = controlador_atividade
         self.__janela = None
 
-    def inicializar_componentes(self, disciplina_nome, dados_display=[]):
+    def inicializar_componentes(self, disciplina_nome, colegas_display, dados_atividade):
 
         layout = [
-            [sg.Text("Atividade 1", font="bold",
+            [sg.Text(dados_atividade["nome"], font="bold",
                      justification="center", expand_x=True)],
             [sg.Text(disciplina_nome, font="bold",
                      justification="center", expand_x=True)],
-            [sg.Text("Dados da disciplina")],
+            [sg.Text("Tipo: {tipo}".format(
+                tipo=dados_atividade['tipo']))],
+            [sg.Text("Data de Entrega: {data}".format(
+                data=dados_atividade['data']))],
+            [sg.Text("Peso: {peso}%".format(
+                peso=dados_atividade['peso_nota']))],
+            [sg.Text("Nota: -")],
+            [sg.Text("Grupo: {grupo}".format(
+                grupo="Sim" if dados_atividade['temGrupo'] else "Não"))],
+            [sg.Button("Alterar Nota"), sg.Button("Priorizar", key=2)],
             [sg.Text("Grupo", font="bold",
                      justification="center", expand_x=True)],
-            [sg.Table(dados_display, headings=[
+            [sg.Table(colegas_display, headings=[
                 "Nome", "Matricula"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
             [sg.Button("Criar/Alterar Grupo", key=1)],
-            [sg.Button("Voltar", key=0)]
+            [sg.Button("Excluir Atividade", key=3, button_color="red"),
+             sg.Button("Alterar Atividade", key=4), sg.Button("Voltar", key=0)]
         ]
 
         self.__janela = sg.Window("Colegas").Layout(layout)
 
-    def abrir(self, disciplina_nome, dados_display=[]):
-        self.inicializar_componentes(disciplina_nome, dados_display)
+    def abrir(self, disciplina_nome, colegas_display=[], dados_atividade={}):
+        self.inicializar_componentes(
+            disciplina_nome, colegas_display, dados_atividade)
         botao, valores = self.__janela.Read()
         self.fechar()
 
