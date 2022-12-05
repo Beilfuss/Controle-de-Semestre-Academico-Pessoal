@@ -61,6 +61,14 @@ class AtividadeDAO(AbstractDAO):
 
         return atividade
 
+    def delete(self, atividade):
+
+        query = "DELETE from ATIVIDADES where id=(?)"
+        query_params = (atividade.id,)
+        self.executar_query(query, query_params)
+
+        self._cache.pop(atividade.id)
+
     def obter_por_disciplina(self, disciplina_id):
 
         atividades = list(filter(lambda atividade: atividade.disciplina_id ==

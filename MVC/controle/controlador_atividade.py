@@ -35,6 +35,8 @@ class ControladorAtividade:
                 return (botao, None)
             else:
                 opcoes[botao]()
+                if (botao == 3):
+                    return (0, None)
 
     def cadastrar_atividade(self, disciplina):
         while True:
@@ -68,7 +70,7 @@ class ControladorAtividade:
         print("alterar")
 
     def excluir_atividade(self, atividade):
-        print("Excluir")
+        self.__dao.delete(atividade)
 
     def priorizar(self, atividade):
         try:

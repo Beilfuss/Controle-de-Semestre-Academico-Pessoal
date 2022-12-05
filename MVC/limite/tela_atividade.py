@@ -23,7 +23,10 @@ class TelaAtividade:
             [sg.Text("Nota: -")],
             [sg.Text("Grupo: {grupo}".format(
                 grupo="Sim" if dados_atividade['temGrupo'] else "Não"))],
-            [sg.Button("Alterar Nota", key=5), sg.Button("Priorizar", key=2)],
+            [sg.Text("Prioridade: {grupo}".format(
+                grupo="Sim" if dados_atividade['priorizar'] else "Não"))],
+            [sg.Button("Alterar Nota", key=5), sg.Button(
+                "Priorizar", key=2)],
             [sg.Text("Grupo", font="bold",
                      justification="center", expand_x=True)],
             [sg.Table(colegas_display, headings=[
