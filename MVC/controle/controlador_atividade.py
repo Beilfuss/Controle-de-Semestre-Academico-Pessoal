@@ -71,7 +71,10 @@ class ControladorAtividade:
         print("Excluir")
 
     def priorizar(self, atividade):
-        print("priorizar")
+        try:
+            self.__dao.priorizar(atividade)
+        except Exception as err:
+            self.__tela.mostrar_mensagem(err)
 
     def obter_por_disciplina(self, disciplina_id):
         return self.__dao.obter_por_disciplina(disciplina_id)
