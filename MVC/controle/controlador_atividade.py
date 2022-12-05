@@ -16,7 +16,11 @@ class ControladorAtividade:
         atividade_display = atividade.desempacotar()
 
         opcoes = {1: lambda: self.cadastrar_grupo(
-            disciplina.id, disciplina.nome, atividade.id)}
+            disciplina.id, disciplina.nome, atividade.id),
+            2: lambda: self.priorizar(atividade),
+            3: lambda: self.excluir_atividade(atividade),
+            4: lambda: self.alterar_atividade(atividade),
+            5: lambda: print("TODO")}
 
         while (True):
 
@@ -30,7 +34,7 @@ class ControladorAtividade:
             if (botao == 0):
                 return (botao, None)
             else:
-                opcoes[botao](self.atividade)
+                opcoes[botao]()
 
     def cadastrar_atividade(self, disciplina):
         while True:
@@ -59,6 +63,15 @@ class ControladorAtividade:
 
         except ValidationException as err:
             self.__tela.mostrar_mensagem(err)
+
+    def alterar_atividade(self, atividade):
+        print("alterar")
+
+    def excluir_atividade(self, atividade):
+        print("Excluir")
+
+    def priorizar(self, atividade):
+        print("priorizar")
 
     def obter_por_disciplina(self, disciplina_id):
         return self.__dao.obter_por_disciplina(disciplina_id)
