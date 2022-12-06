@@ -77,7 +77,7 @@ class AtividadeDAO(AbstractDAO):
         atividade.nome = dados["nome"]
         atividade.data = dados["data"]
         atividade.peso_nota = dados["peso"]
-        atividade.temGrupo = dados["grupo"]
+        atividade.grupo = dados["grupo"]
         atividade.priorizar = dados["priorizar"]
 
     def delete(self, atividade):

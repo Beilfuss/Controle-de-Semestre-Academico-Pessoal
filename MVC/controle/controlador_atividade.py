@@ -14,7 +14,7 @@ class ControladorAtividade:
     def exibir_atividade(self, disciplina, atividade):
 
         opcoes = {1: lambda: self.cadastrar_grupo(
-            disciplina.id, disciplina.nome, atividade.id),
+            disciplina, atividade),
             2: lambda: self.priorizar(atividade),
             3: lambda: self.excluir_atividade(atividade),
             4: lambda: self.alterar_atividade(disciplina.nome, atividade),
@@ -38,14 +38,13 @@ class ControladorAtividade:
                     return (0, None)
 
     def cadastrar_atividade(self, disciplina):
+
         while True:
 
             opcao_escolhida, dados = self.__tela.abrir_cadastro(
                 disciplina.nome)
-
             if opcao_escolhida == 0:
                 break
-
             return self.incluir_atividade(disciplina.id, dados)
 
     def incluir_atividade(self, disciplina_id, dados):
@@ -93,9 +92,14 @@ class ControladorAtividade:
     def obter_por_disciplina(self, disciplina_id):
         return self.__dao.obter_por_disciplina(disciplina_id)
 
-    def cadastrar_grupo(self, disciplina_id, disciplina_nome, atividade_id):
-        self.__controlador_sistema.cadastrar_grupo(
-            disciplina_id, disciplina_nome, atividade_id)
+    def cadastrar_grupo(self, disciplina, atividade):
+
+        if (atividade.grupo):
+            self.__controlador_sistema.cadastrar_grupo(
+                disciplina.id, disciplina.nome, atividade.id)
+        else:
+            self.__tela.mostrar_mensagem(
+                "Não é possível cadastrar grupo porque o trabalho é individual.")
 
     def obter_colegas_do_grupo(self, atividade_id):
         return self.__controlador_sistema.obter_colegas_do_grupo(atividade_id)
