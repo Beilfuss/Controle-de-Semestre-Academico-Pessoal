@@ -11,7 +11,12 @@ class TelaAtividade:
 
         priorizar_button_text = "Priorizar" if not dados_atividade[
             "priorizar"] else "Remover Prioridade"
-        
+
+        grupo_display = [[sg.Text("Grupo", font="bold", justification="center", expand_x=True)],
+                         [sg.Table(colegas_display, headings=["Nome", "Matricula"], key="row_index",
+                                   select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
+                         [sg.Button("Criar/Alterar Grupo", key=1)]] if dados_atividade["temGrupo"] else [sg.Text("")]
+
         layout = [
             [sg.Text(dados_atividade["nome"], font="bold",
                      justification="center", expand_x=True)],
@@ -30,11 +35,7 @@ class TelaAtividade:
                 grupo="Sim" if dados_atividade['priorizar'] else "Não"))],
             [sg.Button("Alterar Nota", key=5), sg.Button(
                 priorizar_button_text, key=2)],
-            [sg.Text("Grupo", font="bold",
-                     justification="center", expand_x=True)],
-            [sg.Table(colegas_display, headings=[
-                "Nome", "Matricula"], key="row_index", select_mode=sg.TABLE_SELECT_MODE_BROWSE, justification="left", num_rows=8, expand_x=True)],
-            [sg.Button("Criar/Alterar Grupo", key=1)],
+            grupo_display,
             [sg.Button("Excluir Atividade", key=3, button_color="red"),
              sg.Button("Alterar Atividade", key=4), sg.Button("Voltar", key=0)]
         ]
