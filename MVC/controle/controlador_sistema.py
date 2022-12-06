@@ -3,7 +3,7 @@ from controle.controlador_disciplina import ControladorDisciplina
 from controle.controlador_colega import ControladorColega
 from controle.controlador_grupo import ControladorGrupo
 from controle.controlador_atividade import ControladorAtividade
-from temp.temp_atividade import ControladorAtividadeTemp
+
 
 
 class ControladorSistema:
@@ -14,7 +14,7 @@ class ControladorSistema:
         self.__controlador_atividade = ControladorAtividade(self)
         self.__controlador_colega = ControladorColega(self)
         self.__controlador_grupo = ControladorGrupo(self)
-        self.__controlador_temp = ControladorAtividadeTemp(self)
+
 
     def inicializar_sistema(self):
         self.abrir_tela()
@@ -43,8 +43,6 @@ class ControladorSistema:
     def exibir_atividade(self, disciplina, atividade):
         self.__controlador_atividade.exibir_atividade(disciplina, atividade)
 
-    def abrir_tela_temp(self, disciplina_id, disciplina_nome):
-        self.__controlador_temp.ver_atividade(disciplina_id, disciplina_nome)
 
     def cadastrar_grupo(self, disciplina_id, disciplina_nome, atividade_id):
         self.__controlador_grupo.cadastrar_grupo(

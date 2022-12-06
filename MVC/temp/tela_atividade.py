@@ -3,8 +3,8 @@ import PySimpleGUI as sg
 
 class TelaAtividade():
 
-    def __init__(self, controlador_temp):
-        self.__controlador_temp = controlador_temp
+    def __init__(self):
+
         self.__janela = None
 
     def inicializar_componentes(self, disciplina_nome, dados_display=[]):
@@ -38,7 +38,7 @@ class TelaAtividade():
 
     def fechar(self):
         self.__janela.Close()
-        
+
     def mostrar_mensagem(self, mensagem: str):
 
         layout = [[sg.Text(mensagem)],
