@@ -1,3 +1,4 @@
+import functools
 from limite.tela_dados_disciplina import TelaDadosDisciplina
 from limite.tela_disciplina import TelaDisciplina
 from dao.disciplina_dao import DisciplinaDAO
@@ -23,8 +24,12 @@ class ControladorDisciplina:
             atividades_dados = [atividade.desempacotar()
                                 for atividade in atividades]
 
+            atividades_peso_total = functools.reduce(
+                lambda total, atividade: total+atividade.peso_nota, atividades, 0)
+
+        
             botao, valores = self.__tela_disciplina.abrir(
-                dados_disciplina, atividades_dados)
+                dados_disciplina, atividades_dados, atividades_peso_total != 100)
 
             self.__tela_disciplina.fechar()
 
