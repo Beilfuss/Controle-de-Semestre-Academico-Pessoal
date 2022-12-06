@@ -1,5 +1,4 @@
 
-# from readline import insert_text
 from dao.abstract_dao import AbstractDAO
 from entidade.colega import Colega
 
@@ -46,6 +45,15 @@ class ColegaDAO(AbstractDAO):
         colega = colegas[0] if len(colegas) != 0 else None
 
         return colega
+
+    def obter_por_disc(self, disciplina_id):
+
+        query = "SELECT colega_id FROM COLEGAS_DISCIPLINAS where disciplina_id=(?)"
+        query_params = (disciplina_id,)
+
+        colega_ids = self.executar_query(query, query_params)
+
+        return [self.obter_por_id(id) for id, in colega_ids]
 
     def persist_colega(self, nome, matricula):
         # Persiste um colega no banco de dados e instancia o objeto correspondente no cache
