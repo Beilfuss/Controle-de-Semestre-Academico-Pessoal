@@ -54,8 +54,7 @@ class ControladorAtividade:
             nome = dados["nome"]
             peso = int(dados["peso"])
 
-            # aprimorar validação
-            if (not nome.isalpha() or peso < 0 or peso > 100):
+            if (not nome.replace(" ", "").isalpha() or peso < 0 or peso > 100):
                 raise ValidationException
 
             atividade = self.__dao.persist_atividade(disciplina_id, dados)
