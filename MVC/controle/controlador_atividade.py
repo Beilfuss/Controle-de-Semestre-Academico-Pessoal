@@ -30,7 +30,7 @@ class ControladorAtividade:
             botao, valores = self.__tela.abrir(
                 disciplina.nome, colegas_dados, atividade_display)
 
-            if (botao == 0):
+            if (botao == "cancelar" or botao == 0):
                 return (botao, None)
             else:
                 opcoes[botao]()
@@ -65,17 +65,18 @@ class ControladorAtividade:
 
     def alterar_atividade(self, disciplina_nome, atividade):
         try:
+
             botao, dados = self.__tela.abrir_cadastro(
                 disciplina_nome, atividade.desempacotar(), alterar=True)
 
-            if (botao == 1):
+            if (botao == 2):
                 nome = dados["nome"]
-                peso = dados["peso_nota"]
+                peso = dados["peso"]
 
-                if (not nome.isalpha() or peso < 0 or peso > 100):
+                if (not nome.replace(" ", "").isalpha() or int(peso) < 0 or int(peso) > 100):
                     raise ValidationException
 
-            self.__dao.alterar(atividade, dados)
+                self.__dao.alterar(atividade, dados)
 
         except ValidationException as err:
             self.__tela.mostrar_mensagem(err)
@@ -93,8 +94,6 @@ class ControladorAtividade:
         return self.__dao.obter_por_disciplina(disciplina_id)
 
     def cadastrar_grupo(self, disciplina, atividade):
-
-        
 
         if (atividade.grupo):
             self.__controlador_sistema.cadastrar_grupo(
