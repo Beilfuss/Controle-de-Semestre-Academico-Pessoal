@@ -94,6 +94,8 @@ class ControladorAtividade:
 
     def cadastrar_grupo(self, disciplina, atividade):
 
+        
+
         if (atividade.grupo):
             self.__controlador_sistema.cadastrar_grupo(
                 disciplina.id, disciplina.nome, atividade.id)

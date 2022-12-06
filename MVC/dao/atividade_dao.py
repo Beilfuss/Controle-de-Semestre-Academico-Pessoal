@@ -97,9 +97,11 @@ class AtividadeDAO(AbstractDAO):
 
     def priorizar(self, atividade):
 
+
         query = "UPDATE ATIVIDADES SET priorizar=:priorizar WHERE id=:id"
-        query_params = {"priorizar": True, "id": atividade.id}
+        query_params = {
+            "priorizar": not atividade.priorizar, "id": atividade.id}
 
         self.executar_query(query, query_params)
 
-        atividade.priorizar = True
+        atividade.priorizar = not atividade.priorizar

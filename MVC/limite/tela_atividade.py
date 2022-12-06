@@ -9,6 +9,9 @@ class TelaAtividade:
 
     def inicializar_componentes(self, disciplina_nome, colegas_display, dados_atividade):
 
+        priorizar_button_text = "Priorizar" if not dados_atividade[
+            "priorizar"] else "Remover Prioridade"
+        
         layout = [
             [sg.Text(dados_atividade["nome"], font="bold",
                      justification="center", expand_x=True)],
@@ -26,7 +29,7 @@ class TelaAtividade:
             [sg.Text("Prioridade: {grupo}".format(
                 grupo="Sim" if dados_atividade['priorizar'] else "Não"))],
             [sg.Button("Alterar Nota", key=5), sg.Button(
-                "Priorizar", key=2)],
+                priorizar_button_text, key=2)],
             [sg.Text("Grupo", font="bold",
                      justification="center", expand_x=True)],
             [sg.Table(colegas_display, headings=[
