@@ -89,7 +89,7 @@ class ControladorAula:
             return dados_aula, horarios
 
         except JaExistenteException:
-            self.__tela_dados_aula.mostrar_mensagem("Atenção", "Este horário já foi adicionado!")
+            self.__tela_dados_aula.mostrar_mensagem("Atenção", "Já há aula nesse dia e horário!")
             return dados_aula, horarios
 
     def excluir_horario(self, dados_aula, dados_tela):
@@ -103,7 +103,8 @@ class ControladorAula:
             return dados_aula, dados_aula
 
         except ValueError:
-            self.__tela_dados_aula.mostrar_mensagem("Atenção", "Nenhum horário selecionado para ser excluído ou não há horários a serem selecionados!")
+            self.__tela_dados_aula.mostrar_mensagem("Atenção", "Dados inválidos. Tente novamente!")
+            # Para uma futura melhor especificação: self.__tela_dados_aula.mostrar_mensagem("Atenção", "Nenhum horário selecionado para ser excluído ou não há horários a serem selecionados!")
             return dados_aula, dados_aula
     
     def validar_aula(self, dados_aula, horarios):

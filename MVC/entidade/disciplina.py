@@ -1,4 +1,5 @@
 from entidade.colega import Colega
+from entidade.falta import Falta
 
 
 class Disciplina:
@@ -135,6 +136,12 @@ class Disciplina:
         if isinstance(aula, int):
             self.__aulas.remove(aula)     
     
+    def remover_falta(self, id: int):
+        if isinstance(id, int):
+            for f in self.__faltas:
+                if f.id == id:
+                    self.__faltas.remove(f)
+
     def desempacotar(self):
 
         return {
@@ -145,6 +152,7 @@ class Disciplina:
             "numAulas": self.numAulas,
             "rec": self.rec,
             "aulas": self.aulas,
+            "faltas": self.faltas,
             "colegas": self.colegas,
             "ativo": self.ativo
         }

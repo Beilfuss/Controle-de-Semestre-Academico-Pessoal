@@ -36,7 +36,7 @@ class TelaDisciplina():
             [sg.Text("Média Parcial: ")],
             [sg.Text("Faltas Remanescentes: ")],
             [sg.Submit(button_text="Encerrar Disciplina", button_color="red"), sg.Submit(
-                button_text="Colegas"), sg.Submit(button_text="Registrar Falta")],
+                button_text="Colegas"), sg.Submit(button_text="Registrar Faltas")],
             [sg.Text("")],
             [sg.Text("Lista de Atividades")],
             alerta_peso_display,

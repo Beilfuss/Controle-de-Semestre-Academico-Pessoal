@@ -1,6 +1,8 @@
+import datetime
 import functools
 from limite.tela_dados_disciplina import TelaDadosDisciplina
 from limite.tela_disciplina import TelaDisciplina
+from limite.tela_faltas import TelaFaltas
 from dao.disciplina_dao import DisciplinaDAO
 from excecoes.jaExistenteException import JaExistenteException
 
@@ -10,6 +12,7 @@ class ControladorDisciplina:
         self.__controlador_sistema = controlador_sistema
         self.__tela_disciplina = TelaDisciplina(self)
         self.__tela_dados_disciplina = TelaDadosDisciplina(self)
+        self.__tela_faltas = TelaFaltas(self)
         self.__dao = DisciplinaDAO()
 
     def listar_disciplinas(self):
@@ -61,7 +64,8 @@ class ControladorDisciplina:
                     "Colegas": lambda disciplina: self.abrir_tela_colegas(disciplina),
                     "Cadastrar Atividade": lambda disciplina: self.__controlador_sistema.cadastrar_atividade(disciplina),
                     "Ver Atividade": lambda disciplina: self.ver_atividade(disciplina, atividades, valores["row_index"]),
-                    "Encerrar Disciplina": lambda disciplina: self.encerrar_disciplina(disciplina.id)
+                    "Encerrar Disciplina": lambda disciplina: self.encerrar_disciplina(disciplina.id),
+                    "Registrar Faltas": lambda disciplina: self.registrar_faltas(disciplina)
                 }
 
                 if botao == "Voltar" or botao is None:
@@ -193,3 +197,99 @@ class ControladorDisciplina:
         else:
             self.__controlador_sistema.gerir_aulas(
                 disciplina, aula_selecionada, opcao)
+
+    def registrar_faltas(self, disciplina):
+
+        while True:
+
+            try:
+
+                faltas = []
+                for falta in disciplina.faltas:
+                    faltas.append([falta.dia, falta.numFaltas])
+
+                dados_faltas = {'nome': disciplina.nome, 'faltas': faltas}
+
+                botao, valores = self.__tela_faltas.abrir(dados_faltas)
+
+                self.__tela_faltas.fechar()
+
+                if botao == "Voltar":
+                    break
+
+                elif botao == "Cadastrar Faltas":
+
+                    if valores['dia'] == "" or valores['numFaltas'] == "":
+                        raise ValueError
+
+                    valores['numFaltas'] = int(valores['numFaltas'])
+
+                    data = self.validar_data_falta(valores['dia'])
+                    if valores['numFaltas'] > 10 or not data:
+                        raise ValueError
+
+                    dados_faltas = {"disciplina_id": disciplina.id, "dia": valores['dia'], "numFaltas": valores['numFaltas']}
+                    self.__dao.persist_faltas(dados_faltas)
+
+                    self.checar_risco_faltas(disciplina)
+
+                elif botao == "Excluir Falta":
+                    if valores['row_falta_index'] == []:
+                        raise Exception
+                    else:
+
+                        for falta in disciplina.faltas:
+                            if falta.dia == faltas[valores['row_falta_index'][0]][0] and falta.numFaltas == faltas[valores['row_falta_index'][0]][1]:
+                                id = falta.id
+                                disciplina_id = falta.disciplina_id
+
+                        self.__dao.delete_falta(id, disciplina_id)
+                
+            except ValueError:
+                self.__tela_disciplina.mostrar_mensagem("Atenção!", "Dados inválidos. Tente novamente!")
+            except Exception:
+                self.__tela_disciplina.mostrar_mensagem("Atenção!", "Nenhuma falta selecionada!")
+
+    def validar_data_falta(self, data):
+    
+        try:
+        
+            if len(data) > 10:
+                raise ValueError
+            elif data[2:3] != "/" or data[5:6] != "/":
+                raise ValueError
+            
+            dia = int(data[0:2])
+            mes = int(data[3:5])
+            ano = int(data[6:10])
+            
+            hoje = datetime.date.today()
+            ano_atual = hoje.year
+            
+            if dia < 1 or dia > 31:
+                raise ValueError
+            elif mes < 1 or mes > 12:
+                raise ValueError
+            elif ano != ano_atual:
+                raise ValueError
+            else:
+                return True
+            
+        except ValueError:
+            self.__tela_disciplina.mostrar_mensagem("Atenção!", "Dados inválidos. Tente novamente!")
+            return False
+
+    def checar_risco_faltas(self, disciplina):
+        
+        total_faltas = 0
+        for falta in disciplina.faltas:
+            total_faltas += falta.numFaltas
+
+        faltas_possiveis = int(disciplina.numAulas * 0.25)
+        faltas_restantes = faltas_possiveis - total_faltas
+
+        if total_faltas == faltas_possiveis or total_faltas < faltas_possiveis and faltas_restantes <= 3:
+            self.__tela_disciplina.mostrar_mensagem("Atenção!", "Risco de reprovação por falta na disciplina {nome}! Você tem apenas {numero} falta(s) restante(s)!".format(nome=disciplina.nome, numero=faltas_restantes))
+        elif total_faltas > faltas_possiveis:
+            self.__tela_disciplina.mostrar_mensagem("Atenção!", "Você está reprovado por falta na disciplina {nome}.".format(nome=disciplina.nome))
+    
