@@ -64,13 +64,10 @@ class ControladorDisciplina:
                     "Encerrar Disciplina": lambda disciplina: self.encerrar_disciplina(disciplina.id)
                 }
 
-                if botao != "Voltar" and botao is not None:
-                    opcoes[botao](disciplina)
-                    if botao == "Excluir Disciplina":
-                        break
-
-                if botao == "Voltar":
+                if botao == "Voltar" or botao is None:
                     break
+
+                opcoes[botao](disciplina)
 
             except ValueError:
                 self.__tela_disciplina.mostrar_mensagem(

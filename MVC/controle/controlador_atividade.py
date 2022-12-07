@@ -1,6 +1,7 @@
 from limite.tela_atividade import TelaAtividade
 from dao.atividade_dao import AtividadeDAO
 from excecoes.validationException import ValidationException
+from excecoes.missingDateException import MissingDateException
 
 
 class ControladorAtividade:
@@ -52,9 +53,13 @@ class ControladorAtividade:
         try:
             nome = dados["nome"]
             peso = int(dados["peso"])
+            date = dados["data"]
 
             if (not nome.replace(" ", "").isalpha() or peso < 0 or peso > 100):
                 raise ValidationException
+
+            if (len(date) == 0):
+                raise MissingDateException
 
             atividade = self.__dao.persist_atividade(disciplina_id, dados)
 
@@ -62,6 +67,11 @@ class ControladorAtividade:
 
         except ValidationException as err:
             self.__tela.mostrar_mensagem(err)
+        except MissingDateException as err:
+            self.__tela.mostrar_mensagem(err)
+        except ValueError as err:
+            self.__tela.mostrar_mensagem(
+                'É necessário informar um peso válido (Entre 0 e 100)')
 
     def alterar_atividade(self, disciplina_nome, atividade):
         try:
@@ -72,14 +82,23 @@ class ControladorAtividade:
             if (botao == 2):
                 nome = dados["nome"]
                 peso = dados["peso"]
+                date = dados["data"]
 
                 if (not nome.replace(" ", "").isalpha() or int(peso) < 0 or int(peso) > 100):
                     raise ValidationException
+
+                if (len(date) == 0):
+                    raise MissingDateException
 
                 self.__dao.alterar(atividade, dados)
 
         except ValidationException as err:
             self.__tela.mostrar_mensagem(err)
+        except MissingDateException as err:
+            self.__tela.mostrar_mensagem(err)
+        except ValueError as err:
+            self.__tela.mostrar_mensagem(
+                'É necessário informar um peso válido (Entre 0 e 100)')
 
     def excluir_atividade(self, atividade):
         self.__dao.delete(atividade)
