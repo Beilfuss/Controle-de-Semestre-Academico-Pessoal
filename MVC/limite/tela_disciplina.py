@@ -23,7 +23,7 @@ class TelaDisciplina():
             [sg.Text("Média Parcial: ")],
             [sg.Text("Faltas Remanescentes: ")],
             [sg.Submit(button_text="Encerrar Disciplina", button_color="red"), sg.Submit(
-                button_text="Colegas"), sg.Submit(button_text="Registrar Falta")],
+                button_text="Colegas"), sg.Submit(button_text="Registrar Faltas")],
             [sg.Text("")],
             [sg.Text("Lista de Atividades")],
             [sg.Table([['Trabalho de APS', '03/10/2022', 'Trabalho', '40%', 'Sim', 10], ], ['Atividade',
