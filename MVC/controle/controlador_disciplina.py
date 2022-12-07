@@ -42,11 +42,12 @@ class ControladorDisciplina:
                 "Encerrar Disciplina": lambda disciplina: self.encerrar_disciplina(disciplina.id)
             }
 
-            if botao != "Voltar" and botao is not None:
-                opcoes[botao](disciplina)
+
+            if botao == "Voltar" or botao is None:
                 break
 
-            break
+            opcoes[botao](disciplina)
+          
 
     def abrir_tela_colegas(self, disciplina):
 
