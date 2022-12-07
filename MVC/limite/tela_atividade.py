@@ -69,7 +69,7 @@ class TelaAtividade:
                       default=dados_atividade["tipo"] != "Trabalho", size=(10, 1)),
              sg.Radio('Trabalho', "tipo_atividade", disabled=alterar, default=dados_atividade["tipo"] == "Trabalho")],
             [sg.Text("Data de Entrega*:", size=(15, 1)), sg.InputText(dados_atividade["data"], key="data",
-                                                                      tooltip="Ex.: T1 - Diagrama de Classes", disabled=True), sg.CalendarButton("Calendário", target="data", format="%d/%m/%Y")],
+                                                                      tooltip="Ex.: 15/12/2022", disabled=True), sg.CalendarButton("Calendário", target="data", format="%d/%m/%Y")],
             [sg.Text("Peso da nota (%)*", size=(15, 1)), sg.InputText(dados_atividade["peso_nota"],
                                                                      key="peso", tooltip="Ex.: T1 - Diagrama de Classes")],
             [sg.Checkbox("Em grupo", default=dados_atividade["temGrupo"], key="grupo"), sg.Checkbox(
